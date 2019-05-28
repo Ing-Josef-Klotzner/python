@@ -1,0 +1,12 @@
+c++ -x c -o find_rare_characters find_rare_characters.c
+
+/*
+-x language
+           Specify explicitly the language for the following input files
+           (rather than letting the compiler choose a default based on the
+           file name suffix).  This option applies to all following input
+           files until the next -x option.  Possible values for language are:
+
+                   c  c-header  cpp-output
+
+*/
