@@ -1,0 +1,68 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, division, print_function
+
+from sys import version_info
+if version_info.major == 3:
+    pass
+elif version_info.major == 2:
+    input = raw_input
+else:
+    print ("Unknown python version - input function not safe")
+
+"""
+wenn n ungerade ist,                                        print Weird
+wenn n gerade ist und im inklusivem Bereich von 6 bis 20,   print Weird
+
+wenn n gerade ist und im imklusivem Bereich von 2 bis 5, print Not Weird
+wenn n gerade ist und größer als 20,                     print Not Weird
+"""
+#und = and
+#oder = or
+#wenn = if
+
+#def wenn (x):
+#    if x: return True
+#    else: return False
+
+# wenn eine Zahl durch 2 dividiert wird und es ist ein Rest von 1, ist sie ungerade
+# das Zeichen   %   dividiert und liefert den Rest der Division zurück
+# der Rückgabewert von 1 ist gleichbedeutend mit "True" ("wahr")
+# andernfalls ist der Rückgabewert 0, gleichbedeutend mit "False" ("falsch")
+def ungerade_ist (n):
+    return n % 2
+
+# wenn zu einer Zahl eins addiert wird, dieses Ergebnis
+# durch 2 dividiert wird und es ist ein Rest von 1, ist sie gerade
+# der Rückgabewert von 1 ist gleichbedeutend mit "True" ("wahr")
+# andernfalls ist der Rückgabewert 0, gleichbedeutend mit "False" ("falsch")
+def gerade_ist (n):
+    return (n + 1) % 2
+
+# Zeichen   >=   bedeutet "größer oder gleich"
+# Zeichen   <=   bedeutet "kleiner oder gleich"
+# das Wort "return" liefert den darauf folgenden Rückgabewert zurück
+# wenn n größer oder gleich "von" ist und n kleiner oder gleich "bis" ist
+# wird "True" ("wahr") zurück geliefert, andernfalls "False" ("falsch")
+def im_Bereich (n, von, bis):
+    if n >= von and n <= bis: return True
+    else: return False
+
+# Zeichen   >   bedeutet "größer als"
+# wenn n größer als x ist, wird "True" ("wahr") zurück geliefert,
+# andernfalls "False" ("falsch") 
+def größer_als (n, x):
+    return n > x
+
+def main ():
+    n = int(input())
+    if (ungerade_ist (n)
+        or
+        gerade_ist (n)   and   im_Bereich (n, 6, 20)): print ("Weird")
+
+    if (gerade_ist (n)   and   im_Bereich (n, 2, 5)
+        or
+        gerade_ist (n)   and   größer_als (n, 20)): print ("Not Weird")
+
+if __name__ == '__main__':
+    main ()
