@@ -1,0 +1,2 @@
+Erste zeile aus myfile.txt
+zweite zeile aus myfile.txt

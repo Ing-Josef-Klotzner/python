@@ -1,0 +1,32 @@
+Hallo.
+
+Ich hätte neue Testdaten. Die Daten gehorchen jetzt halt nicht mehr den
+auf der FB Seite genannten Bedingungen, sondern
+
+1 <= T <= 50000
+1 <= P <= 50
+2P <= N <= 300
+1 <= M <= 9999999
+
+Ausserdem wird die Spielergröße in 100um statt cm angegeben, d.h.
+10000 <= height <= 24000
+
+Die Testdaten sind so zu generieren:
+$ ./generate_testcase.py >testdata4.txt
+$ md5sum testdata4.txt
+0b6cf5bbd45ce8bd6286dc6df7517626  testdata4.txt
+
+Dauert bei mir ca 3 minuten. Das File ist auch recht ansehnlich groß...
+[13/12/02 21:20:52] georg@georg-desktop p2 $ ls -lh testdata4.txt
+-rw-rw-r-- 1 georg georg 169M Dec  2 21:17 testdata4.txt
+
+Mein Solver (jetzt am PC in Wien):
+$ time ./problem2_v2.py testdata4.txt >solution_testdata4.txt
+
+real    0m40.279s
+user    0m40.115s
+sys     0m0.140s
+$ md5sum solution_testdata4.txt
+27f985bec594577e1f02537724f65172  solution_testdata4.txt
+
+lg
