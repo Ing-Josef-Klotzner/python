@@ -1,0 +1,217 @@
+# GPyFSA - a gtk+ GUI front-end of fsarchiver
+# Copyright (C) 2010
+# This file is distributed under the same license as the gpyfsa package.
+# a-sansara <contact AT a-sansara DOT net>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-19 13:13+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator:  a-Sansara <contact AT a-sansara DOT net>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: res/gpyfsa.glade.h:1
+msgid "(1: very fast to 9: very good)"
+msgstr ""
+
+#: res/gpyfsa.glade.h:2
+msgid "(usefull on multi-core cpu)"
+msgstr ""
+
+#: res/gpyfsa.glade.h:3
+msgid "<b>Main Options</b>"
+msgstr ""
+
+#: res/gpyfsa.glade.h:4
+msgid "Advanced Options"
+msgstr ""
+
+#: res/gpyfsa.glade.h:5
+msgid "Archives"
+msgstr ""
+
+#: res/gpyfsa.glade.h:6
+msgid "E_dit"
+msgstr ""
+
+#: res/gpyfsa.glade.h:7
+msgid "GPyFSA"
+msgstr ""
+
+#: res/gpyfsa.glade.h:8
+msgid "H_elp"
+msgstr ""
+
+#: res/gpyfsa.glade.h:9
+msgid "MB each"
+msgstr ""
+
+#: res/gpyfsa.glade.h:10
+msgid "Restore FS"
+msgstr ""
+
+#: res/gpyfsa.glade.h:11
+msgid "Save FS"
+msgstr ""
+
+#: res/gpyfsa.glade.h:12
+msgid "_Files"
+msgstr ""
+
+#: res/gpyfsa.glade.h:13
+msgid "archive description :"
+msgstr ""
+
+#: res/gpyfsa.glade.h:14
+msgid "archive path :"
+msgstr ""
+
+#: res/gpyfsa.glade.h:15
+msgid "browse"
+msgstr ""
+
+#: res/gpyfsa.glade.h:16
+msgid "compression level :"
+msgstr ""
+
+#: res/gpyfsa.glade.h:17
+msgid "compression thread :"
+msgstr ""
+
+#: res/gpyfsa.glade.h:18
+msgid "confirm :"
+msgstr ""
+
+#: res/gpyfsa.glade.h:19
+msgid "debug mode"
+msgstr ""
+
+#: res/gpyfsa.glade.h:20
+msgid "devices"
+msgstr ""
+
+#: res/gpyfsa.glade.h:21
+msgid "don't confirm"
+msgstr ""
+
+#: res/gpyfsa.glade.h:22
+msgid "encrypt data in archive (6 to 64 characters max) :"
+msgstr ""
+
+#: res/gpyfsa.glade.h:23
+msgid "exclude files and directories that match the pattern :"
+msgstr ""
+
+#: res/gpyfsa.glade.h:24
+msgid "force .fsa extension"
+msgstr ""
+
+#: res/gpyfsa.glade.h:25
+msgid "log"
+msgstr ""
+
+#: res/gpyfsa.glade.h:26
+msgid "overwrite existing archive"
+msgstr ""
+
+#: res/gpyfsa.glade.h:27
+msgid "password :"
+msgstr ""
+
+#: res/gpyfsa.glade.h:28
+msgid "refresh"
+msgstr ""
+
+#: res/gpyfsa.glade.h:29
+msgid "running..."
+msgstr ""
+
+#: res/gpyfsa.glade.h:30
+msgid "show password"
+msgstr ""
+
+#: res/gpyfsa.glade.h:31
+msgid "split archive into several files of :"
+msgstr ""
+
+#: res/gpyfsa.glade.h:32
+msgid "verboose mode"
+msgstr ""
+
+#: src/gpyfsa_conf.py:65
+msgid "device"
+msgstr ""
+
+#: src/gpyfsa_conf.py:65
+msgid "type"
+msgstr ""
+
+#: src/gpyfsa_conf.py:65
+msgid "label"
+msgstr ""
+
+#: src/gpyfsa_conf.py:65
+msgid "size"
+msgstr ""
+
+#: src/gpyfsa_conf.py:65
+msgid "used"
+msgstr ""
+
+#: src/gpyfsa_conf.py:65
+msgid "free"
+msgstr ""
+
+#: src/gpyfsa_conf.py:65
+#, python-format
+msgid "%used"
+msgstr ""
+
+#: src/gpyfsa_conf.py:65
+msgid "mount point"
+msgstr ""
+
+#: src/gpyfsa_conf.py:72
+msgid "Save archive"
+msgstr ""
+
+#: src/gpyfsa_conf.py:72
+msgid "all"
+msgstr ""
+
+#: src/gpyfsa_conf.py:72
+msgid "fsa archive"
+msgstr ""
+
+#: src/gpyfsa_conf.py:76
+msgid "pls wait ..."
+msgstr ""
+
+#: src/gpyfsa_conf.py:77
+msgid "work in progress - "
+msgstr ""
+
+#: src/gpyfsa_conf.py:78
+#, python-format
+msgid "mount %s"
+msgstr ""
+
+#: src/gpyfsa_conf.py:79
+#, python-format
+msgid "mount %s read-only"
+msgstr ""
+
+#: src/gpyfsa_conf.py:80
+#, python-format
+msgid "remount %s read-only"
+msgstr ""
+
+#: src/gpyfsa_conf.py:81
+#, python-format
+msgid "unmount %s"
+msgstr ""

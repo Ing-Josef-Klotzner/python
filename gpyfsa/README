@@ -1,0 +1,25 @@
+GPyFSA 0.34 (2012-15-07)
+=========================
+    
+Install on Archlinux
+-------------------------
+sudo pacman -U http://sourceforge.net/projects/gpyfsa/files/packages/archlinux/gpyfsa-0.34-1-any.pkg.tar.xz/download
+
+
+(re)build instruction
+-------------------------
+mkdir /tmp/gpyfsa; cd /tmp/gpyfsa;
+wget http://sourceforge.net/projects/gpyfsa/files/packages/archlinux/PKGBUILD/download
+mv download PKGBUILD
+wget http://sourceforge.net/projects/gpyfsa/files/packages/archlinux/gpyfsa.install/download
+mv download gpyfsa.install
+makepkg -s;
+
+
+Install on other distrib
+-------------------------
+install pkg depends (look at archlinux PKGBUILD file wich provide usefull informations)
+
+simply untar archive, then launch ./gpyfsa/gpyfsa
+
+you can also use python2 disutils and setup.py

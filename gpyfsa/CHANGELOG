@@ -1,0 +1,18 @@
+GPyFSA 0.34 (2012-15-07)
+=========================
+    
+New General Features
+-------------------------
+
+    * Add Tab Archives Infos
+    * Add Archlinux Package
+
+
+Bugfixes
+-------------------------
+
+    * [#3544379] disable selection if vfat type devices
+    * [#3544364] untruncated password on savefs command
+    * [#3540527] images displaying 
+    * [#3540526] application launching with strict call python2
+    * [#2988575] add log file wich doesn't exist by default

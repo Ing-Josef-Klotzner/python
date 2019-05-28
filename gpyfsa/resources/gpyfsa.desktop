@@ -1,0 +1,12 @@
+
+[Desktop Entry]
+Name=GPyFSA
+Comment=GUI front end of fsarchiver with mounting facilities
+Version=0.34
+Icon=gpyfsa
+Exec=gpyfsa
+Terminal=false
+Type=Application
+StartupNotify=false
+MimeType=
+Categories=System;

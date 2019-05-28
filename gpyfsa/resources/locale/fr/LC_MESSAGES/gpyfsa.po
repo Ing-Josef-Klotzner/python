@@ -1,0 +1,220 @@
+# GPyFSA - a gtk+ GUI front-end of fsarchiver
+# Copyright (C) 2010
+# This file is distributed under the same license as the gpyfsa package.
+# a-sansara <contact AT a-sansara DOT net>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-19 13:13+0200\n"
+"PO-Revision-Date: 2010-04-19 12:57+0200\n"
+"Last-Translator:  <contact AT a-sansara DOT net>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: res/gpyfsa.glade.h:1
+msgid "(1: very fast to 9: very good)"
+msgstr "(1: très rapide - 9: très bon)"
+
+#: res/gpyfsa.glade.h:2
+msgid "(usefull on multi-core cpu)"
+msgstr "(utile pour processeur multi-coeur)"
+
+#: res/gpyfsa.glade.h:3
+msgid "<b>Main Options</b>"
+msgstr "<b>Options Principales</b>"
+
+#: res/gpyfsa.glade.h:4
+msgid "Advanced Options"
+msgstr "Options Avancées"
+
+#: res/gpyfsa.glade.h:5
+msgid "Archives"
+msgstr ""
+
+#: res/gpyfsa.glade.h:6
+msgid "E_dit"
+msgstr "E_dition"
+
+#: res/gpyfsa.glade.h:7
+msgid "GPyFSA"
+msgstr ""
+
+#: res/gpyfsa.glade.h:8
+msgid "H_elp"
+msgstr "Aid_e"
+
+#: res/gpyfsa.glade.h:9
+msgid "MB each"
+msgstr "MB chacun"
+
+#: res/gpyfsa.glade.h:10
+msgid "Restore FS"
+msgstr "Restauration SF"
+
+#: res/gpyfsa.glade.h:11
+msgid "Save FS"
+msgstr "Sauvegarde SF"
+
+#: res/gpyfsa.glade.h:12
+msgid "_Files"
+msgstr "_Fichiers"
+
+#: res/gpyfsa.glade.h:13
+#, fuzzy
+msgid "archive description :"
+msgstr "chemin d'archive :"
+
+#: res/gpyfsa.glade.h:14
+msgid "archive path :"
+msgstr "chemin d'archive :"
+
+#: res/gpyfsa.glade.h:15
+msgid "browse"
+msgstr "choisir..."
+
+#: res/gpyfsa.glade.h:16
+msgid "compression level :"
+msgstr "niveau de compression :"
+
+#: res/gpyfsa.glade.h:17
+msgid "compression thread :"
+msgstr "threads en compression :"
+
+#: res/gpyfsa.glade.h:18
+msgid "confirm :"
+msgstr "confirmation :"
+
+#: res/gpyfsa.glade.h:19
+msgid "debug mode"
+msgstr "mode debug"
+
+#: res/gpyfsa.glade.h:20
+#, fuzzy
+msgid "devices"
+msgstr "partition"
+
+#: res/gpyfsa.glade.h:21
+msgid "don't confirm"
+msgstr "sans confirmation"
+
+#: res/gpyfsa.glade.h:22
+msgid "encrypt data in archive (6 to 64 characters max) :"
+msgstr "encrypter les données dans l'archive (6 à 64 caractères max)"
+
+#: res/gpyfsa.glade.h:23
+msgid "exclude files and directories that match the pattern :"
+msgstr "exclure les fichiers et répertoires répondant au pattern :"
+
+#: res/gpyfsa.glade.h:24
+msgid "force .fsa extension"
+msgstr "forcer l'extension .fsa"
+
+#: res/gpyfsa.glade.h:25
+msgid "log"
+msgstr ""
+
+#: res/gpyfsa.glade.h:26
+msgid "overwrite existing archive"
+msgstr "réécrire sur les archives existantes"
+
+#: res/gpyfsa.glade.h:27
+msgid "password :"
+msgstr "mot de passe :"
+
+#: res/gpyfsa.glade.h:28
+msgid "refresh"
+msgstr "rafraîchir"
+
+#: res/gpyfsa.glade.h:29
+msgid "running..."
+msgstr ""
+
+#: res/gpyfsa.glade.h:30
+msgid "show password"
+msgstr "afficher le mot de passe"
+
+#: res/gpyfsa.glade.h:31
+msgid "split archive into several files of :"
+msgstr "découper l'archive en plusieurs fichier de "
+
+#: res/gpyfsa.glade.h:32
+msgid "verboose mode"
+msgstr "mode verbeux"
+
+#: src/gpyfsa_conf.py:65
+msgid "device"
+msgstr "partition"
+
+#: src/gpyfsa_conf.py:65
+msgid "type"
+msgstr ""
+
+#: src/gpyfsa_conf.py:65
+msgid "label"
+msgstr "étiquette"
+
+#: src/gpyfsa_conf.py:65
+msgid "size"
+msgstr "taille"
+
+#: src/gpyfsa_conf.py:65
+msgid "used"
+msgstr "utilisé"
+
+#: src/gpyfsa_conf.py:65
+msgid "free"
+msgstr "inutilisé"
+
+#: src/gpyfsa_conf.py:65
+#, python-format
+msgid "%used"
+msgstr "%utilisé"
+
+#: src/gpyfsa_conf.py:65
+msgid "mount point"
+msgstr "point de montage"
+
+#: src/gpyfsa_conf.py:72
+msgid "Save archive"
+msgstr "Sauvegarder l'archive"
+
+#: src/gpyfsa_conf.py:72
+msgid "all"
+msgstr "tous"
+
+#: src/gpyfsa_conf.py:72
+msgid "fsa archive"
+msgstr "archive fsa"
+
+#: src/gpyfsa_conf.py:76
+msgid "pls wait ..."
+msgstr "patientez svp ..."
+
+#: src/gpyfsa_conf.py:77
+msgid "work in progress - "
+msgstr "traitement en cours - "
+
+#: src/gpyfsa_conf.py:78
+#, python-format
+msgid "mount %s"
+msgstr "monter %s"
+
+#: src/gpyfsa_conf.py:79
+#, python-format
+msgid "mount %s read-only"
+msgstr "monter %s en lecture seule"
+
+#: src/gpyfsa_conf.py:80
+#, python-format
+msgid "remount %s read-only"
+msgstr "remonter %s en lecture seule"
+
+#: src/gpyfsa_conf.py:81
+#, python-format
+msgid "unmount %s"
+msgstr "démonter %s"
