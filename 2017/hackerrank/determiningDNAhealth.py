@@ -37,7 +37,7 @@ tc14 expected out: 5042937153 8619278502
 def determiningDNAhealth (n, g, h, fldL):
     # create dict of genes
     # px ... initial position (index start 1);   h ... health
-    # values: [(p1, h1), (p2, h2), ... ]
+    # values: [[p1, p2,..], [hs2, hs2], ... ]    hs ..health sums
     genD = defaultdict (lambda: [[], [0]])
     subs = set ()
     mxLen = 0
@@ -64,7 +64,7 @@ def determiningDNAhealth (n, g, h, fldL):
                 if gn not in subs: break
                 if gn not in genD: continue
 #                print (i, j, gn)
-                # eveluate precomputed healthes
+                # evaluate precomputed healthes
                 ids, hs = genD [gn]
                 sm += hs [bRight (ids, l)] - hs [bLeft (ids, f)]
         mn = min (sm, mn)
