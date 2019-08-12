@@ -1,0 +1,22 @@
+Nachtrag zu meiner e-mail von 22:51
+
+"Wenn man es mit zwei mal dem bug-file aufruft, müsste der bug einmal gefunden werden"
+
+Definitiv nicht, solange dies nicht ausreichend spezifiziert ist. Da dies ein weiterer Punkt der mangelnden Testspezifikation in der Testbeschreibung ist, möchte ich noch näher darauf eingehen.
+
+Mittels der übersandten Files ist zu erkennen, dass die Landschaft exakt rechteckig ist, während der bug dies nicht ist. Es ist dies nicht näher spezifiziert und daher war ich davon ausgegangen, dass alle, also auch weitere Testdaten auf den übersandten beruhen, also landscape jedenfalls rechteckig ist
+
+Eine meiner Optimierungen beruhen darauf, dass die landscape rechteckig ist. Einen bug, der nicht rechteckig ist, als landscape also als parameter2 zuzuführen muss daher zwangsläufig zu unrichtiger Ausgabe führen.
+
+Beweis: macht aus dem bugfile eine landscape file, fügt also 2 blanks ein, damit es rechteckig wird und das Ergebnis ist DANN wie erwartet:  1
+
+Ich weiß nicht wie viele Beispiele ich nun noch anführen soll, damit ihr einseht, dass eure Spezifikation mangelhaft ist.
+
+Ich denke nun immer mehr, dass ihr keinen Programmierer braucht, sondern eher einen Tester / Analysten der gleich damit anfängt euren Bewerbungstest zu korrigieren.
+
+Mit auch beiden letzten angeführten Fähigkeiten kann ich jedenfalls ebenfalls dienen (und dies ist auch direkt mit beruflicher jahrelanger diesbezüglicher Erfahrung verbunden.
+
+Ich denke weiters, dass ein eher kleines Unternehmen Mitarbeiter, welche höchst flexibel wie ich und mit sehr breit gefächerten generalistischem Wissen und Können sehr gut gebrauchen kann.
+
+mit freundlichen Grüßen
+

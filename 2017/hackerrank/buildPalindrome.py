@@ -19,139 +19,6 @@ from time import time
 #setrecursionlimit (100000)
 
 """
-10
-ottloictodtdtloloollllyocidyiodttoacoctcdcidcdttyoiilocltacdlydaailaiylcttilld
-jevgfsuujwrunvgvgwpfbknkruvwzgxxgksmexqvxbghfffseuugxkwexhzfbpu
-qquhuwqhdswxxrxuzzfhkplwunfagppcoildagktgdarveusjuqfistulgbglwmfgzrnyxryetwzhlnfewczmnoozlqatugmd
-jwgzcfabbkoxyjxkatjmpprswkdkobdagwdwxsufeesrvncbszcepigpbzuzoootorzfskcwbqorvw
-dczatfarqdkelalxzxillkfdvpfpxabqlngdscrentzamztvvcvrtcm
-bqlizijdwtuyfrxolsysxlfebpolcmqsppmrfkyunydtmwbexsngxhwvroandfqjamzkpttslildlrkjoyrpxugiceahgiakev
-kfnfolpcfblpncetyhtrwxkbosccskxbuvcrosavnpxzoeoyyghbbqkflslfkqbbhgyyjj
-qrxpxnloeozxpnvasorcvubxksccsobkxwrthytecnplbfcplofx
-mlfcpidlqrvngnvttaifcbopnwezesomkxhaiafmvkbjaisyr
-btultpnxbcrmornqumatserhieqggrivouwfnbnghdfall
-pb
-kkb
-rfq
-xzj
-zlc
-zdw
-s
-k
-w
-n
-out:
--1
-oozlzoo
-lxsysxl
-folpcfblpncetyhtrwxkbosccskxbuvcrosavnpxzoeoyyghbbqkflslfkqbbhgyyoeozxpnvasorcvubxksccsobkxwrthytecnplbfcplof
-rvngnvr
-bkkb
--1
-zlz
--1
--1
-
-10
-uxivudydgxwsgmhlracaayipsojleqhpygshcvxvchsgyphqeljospiyaacuvmeewpdwpiymwbhoxebjibxphief
-gtsawcdivtltrshjqnkkmdtjgscnozmojnhigippjemzzzbcvoyplxenffmfdzdiojuodgbulvarlhmgswxgdyduviyaov
-ddqpcjxzftwrlgptrkbkrlwgsnlcaudzdujbb
-qlfzikgxohvhtuvcjmmwvhkxcg
-lcjqoneppydpspiwqbkpsunexicskpmzmokfrcvrszcvdyfwuhtzptbbnxbhqjomxrbhjqxv
-daserfpkscixqylqprawyquevhvuzcvfmbe
-gfirlz
-zbczeghmuhx
-pcvqejw
-owqsfhov
-uuvepr
-riyfwsts
-ppomdfdtvv
-tdfdmopp
-ibdknprn
-ptjpjtrq
-ervhveh
-gdfigxq
-egfncsa
-ascnfg
-
-out:
-ivudydgxwsgmhlracaayipsojleqhpygshcvxvchsgyphqeljospiyaacarlhmgswxgdyduvi
-trkbkrt
-xicskpmzmpkscix
-geg
-qeq
-rr
-ppomdfdtvvtdfdmopp
-rtjpjtr
--1
-gfncsaascnfg
-
-10
-tsqejfoxyvszpuuvetdfluuhxpeopuxmdylaysttenjmcedcumoeeicjtxkkvxcxvkkxtjcifbeutdcsdrviozobdytwsi
-mseetqckeeomucdecmjnettsyalydmxupoepxhuulfdtevuupzsvyynamdjxnsmkiewkwdpzjpkibcbbmzbiwpmjczcehtczqjzl
-bkiimwwkwkbwwkwwmiikbwmikbiiwbkkwimmwiwiwkmkbkm
-hjxhxvluhtdnzgxjfgedtzfxhzeoootvjqeegoysgoppdvvzd
-drouylqobsgemwdoibqvcyedfvqoebvdujgsulahkprfrxco
-xbfzlwcxfvqaavfegpkhalusgjudvbeqzqifuaoubukyp
-tqflceilpmszizfw
-bonxplcyqittpk
-ngoqbpielolgfelgbpofbifnf
-jkhhyhdcjxzymxcddavzkzwyhwtsj
-uoavyovdbielzdobgqcjzn
-jbexalkghywioxzbvx
-chwszhvcdooejlcqvqmhx
-hcwccwchcljeoodcvhzswhcf
-eavwjmgvhuesssaxgmoywdg
-vwvgdwyomgxassseuhvgmjw
-qatxbuzxpstpyggyptsuqmx
-enprpmypxzubxtatesstwhy
-bximeeswyndfh
-m
-
-out:
-yvszpuuvetdfluuhxpeopuxmdylaysttenjmcedcumoeeicjtxkkvxcxvkkxtjcieeomucdecmjnettsyalydmxupoepxhuulfdtevuupzsvy
--1
-ebvdujgsulahkprfrpkhalusgjudvbe
-lpmpl
--1
-ava
-chwszhvcdooejlchcwccwchcljeoodcvhzswhc
-wjmgvhuesssaxgmoywdgvwvgdwyomgxassseuhvgmjw
-atxbuzxpstpyggyptspxzubxta
-meem
-
-10
-zbvebyeucepgcdpmghcibfxgrvnacytonmliivrkbblvnmhiprgeryrpjpjykchneyfymiefymajrnrjamyfeimyfwmedxbmxag
-imxmxgjlnnfkwbrqshxfcanwpoflqejafdktnlpgvlexcygyenhckyjpjpryregrpihmnvlbbkrviilmnotycmlilwztbscfh
-zfffzzzzzzzzzfffffffzfzzzzzzfzzfzzzfzffzfffffffzzfzfzffzzzzff
-qnabqokracewqildmvgchtqkbjovegqaqrymqeutaqbluspigttdenepi
-wdozitqgqiphvwuijwhsmgogxomlcggiwkhnarjisvcdpzggtlludvdulltggzpdcvsijranhkwiinzxcd
-xewculofitylhxhzxmjdlisupdylshahciggcptullyisxsczjqawagn
-imtpftgy
-tkfntylnflbfutsyovxmligoaiqz
-iiiimasfxxmd
-kzrelybyekpnkzyyblhwr
-kccurpzpumcsm
-qhebhqrfigammagifrqhbehqmscmupzprucc
-ayxjeqkkrrrkqgeagvkvrvqgkkjaeugerxkk
-fzztoidbwcpcsnthnmdicbbnlowmdcdztmic
-qtkqbajuldlwrpkrtfblbftrkprwldlujyql
-pzbnsbzhanbiypuziqurwabrbxmhbrdpdrer
-pgjlcktlaqsalnoiphbtuy
-rrghseznkmzukaiihat
-actadtninwc
-z
-out:
-cytonmliivrkbblvnmhiprgeryrpjpjykchneyfymiefymajrnrjamyfeimyfyenhckyjpjpryregrpihmnvlbbkrviilmnotyc
--1
-cggiwkhnarjisvcdpzggtlludvdulltggzpdcvsijranhkwiggc
-fbf
--1
-ccurpzpumcsmqhebhqrfigammagifrqhbehqmscmupzprucc
--1
-bajuldlwrpkrtfblbftrkprwldlujab
-grrg
--1
 """
 def bisect_left (sa, x, text, lo = 0, hi = None):
     if lo < 0:
@@ -220,20 +87,11 @@ def solve (a, b, sta, stb):
     sa = suffixArray (s, n)
     """umg. auf kasai lcp   l_p longest common prefix (length list)"""
     l = kasai_lcp (s, sa, n)
-    #just to show suffixArray and lcp
-#    print ("suffixes of", s)
-#    print (sa)
-#    for i in sa:
-#        print (s_ [i : ])
-#    print ("kasai lcps of a + b_")
-#    print (l)
     _l_ix_ = 0   # find max l, where found lcp is in a and b_
     mx = 0
     for i in range (n):
         if not l [i]: 
             continue
-#        print ((str (i) + " " + str (l [i]) + " " + s [sa [i] : sa [i] + l [i]]).ljust (10), end = " ")
-
         # l  Liste der Längen gemeinsamer prefixe zwischen a und b
         # check, if found lcp is in a and b_ and not in a or b_ only
         if (sa [i] < la and sa [i + 1] >= la or
@@ -241,24 +99,6 @@ def solve (a, b, sta, stb):
             if l [i] > mx:
                 mx = l [i]
                 _l_ix_ = i
-#    if len (sa) > 1:
-#        l_ix = l.index (max (l))
-#        isa = l_ix; isb = l_ix + 1
-#        if sa [isb] < sa [isa]: isa, isb = isb, isa
-#        l_ct = l [l_ix]; L = sa [isa]; R = L + l_ct
-#        Lb = lb - sa [isb] + la - l_ct; Rb = Lb + l_ct
-#    else: return -1
-#    x1 = a [R] if R < la else ""
-#    x2 = b [Lb - 1] if Lb - 1 >= 0 and Lb - 1 < lb else ""
-#    if x1 == "": x = x2
-#    elif x2 == "": x = x1
-#    elif x1 < x2: x = x1
-#    else: x = x2
-#    lcp_palin_l_ = a [L : R]; lcp_palin_r_ = b [Lb : Rb]
-#    # for super palindrome - lcp can be from a or b only
-#    lcp_palin_ = lcp_palin_l_ + x + lcp_palin_r_ if lcp_palin_l_ else ""
-##    print ()
-##    print ("palin a + b_ unbalanced", lcp_palin_)
     if len (sa) > 1:
         l_ix = _l_ix_
         isa = l_ix; isb = l_ix + 1
@@ -274,8 +114,6 @@ def solve (a, b, sta, stb):
     else: x = x2
     lcp_palin_l = a [L : R]; lcp_palin_r = b [Lb : Rb]
     lcp_palin = lcp_palin_l + x + lcp_palin_r if lcp_palin_l else ""
-#    print ()
-#    print ("palin a + b_", lcp_palin)
 
     res_pal = lcp_palin
 
@@ -285,21 +123,9 @@ def solve (a, b, sta, stb):
     s_a = a + a_; na = la * 2; s_b = b + b_; nb = lb * 2
     saa = suffixArray (s_a, na)
     l_a = kasai_lcp (s_a, saa, na)
-#    print ()
-#    print ("kasai lcps of partly palindromes of a")
-#    print (saa)
-#    print (l_a)
-#    for i in range (na):
-#        if l_a [i]: print ((str (i) + " " + str (l_a [i]) + " " + s_a [saa [i] : saa [i] + l_a [i]]).ljust (10), end = " ")
     sab = suffixArray (s_b, nb)
     l_b = kasai_lcp (s_b, sab, nb)
-#    print ()
-#    print ("kasai lcps of partly palindromes of b")
-#    for i in range (nb):
-#        if l_b [i]: print ((str (i) + " " + str (l_b [i]) + " " + s_b [sab [i] : sab [i] + l_b [i]]).ljust (10), end = " ")
     """ code used for super palindrome and puzzle palindrome """
-    l_a_ix = l_a.index (max (l_a)); l_a_p = l_a [l_a_ix]
-    l_b_ix = l_b.index (max (l_b)); l_b_p = l_b [l_b_ix]
     # find a_palin which "La" == R
     La = Ra = 0
     for ix, La in enumerate (saa):
@@ -310,14 +136,12 @@ def solve (a, b, sta, stb):
             break
     p_a = a [La : Ra]
     p_a_palin = p_a if p_a == p_a [::-1] else ""
-#    print ("part of palindrome in a", p_a_palin)
     # find b_palin which "Rbp" == Lb
     Lbp = Rbp = 0
     twice = False
     for ix, Lbp in enumerate (sab):
         if ix > 0 and Lbp + l_b [ix - 1] == Lb:
             Rbp = Lbp + l_b [ix - 1]
-            print (Lbp, Rbp)
             if Rbp == Lbp: continue
             if twice == False:
                 twice = True
@@ -325,7 +149,6 @@ def solve (a, b, sta, stb):
             break
     p_b = b [Lbp : Rbp]
     p_b_palin = p_b if p_b == p_b [::-1] else ""
-#    print ("part of palindrome in b", p_b_palin)
     """ super palindrome, if exists
 this is a palindrome consistent of 
 part of palindrome + found pal in a or b + part of palindrome_
@@ -338,9 +161,6 @@ part of palindrome + found pal in a or b + part of palindrome_
     if len (s_pal_) > len (res_pal): res_pal = s_pal_
     elif len (s_pal_) == len (res_pal) and s_pal_ < res_pal:
         res_pal = s_pal_
-#    print ()
-#    print ("super palindrome a", s_pal)
-#    print ("super palindrome b", s_pal_)
     
     """          puzzle palindrome          """
     # find in a, combine with b and vice versa
@@ -352,14 +172,14 @@ part of palindrome + found pal in a or b + part of palindrome_
     # with b cut text from end of pal to end of b
     p_ca_pal = ""
     for l_a_ix, l_a_ct in enumerate (l_a):
-        if l_a_ct <= 1: continue
+        if l_a_ct < 1: continue
         isaa = l_a_ix; isaa_ = l_a_ix + 1
         if saa [isaa_] < saa [isaa]: isaa, isaa_ = isaa_, isaa
         Lax = saa [isaa]; Rax = Lax + l_a_ct
         pala = a [Lax : Rax]
         if pala != pala [::-1]: continue
         # pala now are only palindromes for further processing
-        cuta_ = a [ : Lax] [::-1]; s_ca = cuta_ + b
+        cuta_ = a [ : Lax] [::-1]; s_ca = cuta_ + '$' + b + '|'
         nca = len (s_ca)
         saca = suffixArray (s_ca, nca)
         l_ca = kasai_lcp (s_ca, saca, nca)
@@ -367,8 +187,14 @@ part of palindrome + found pal in a or b + part of palindrome_
         isaca = l_ca_ix; isaca_ = l_ca_ix + 1
         if saca [isaca_] < saca [isaca]: isaca, isaca_ = isaca_, isaca
         Lca = saca [isaca]; Rca = Lca + lca_ct
-        # finde linken nachbar prefix dessen Eintrag in sacb 0 ist 
-        aix = saca.index (0) - 1
+        # finde den prefix dessen Eintrag in saca 0 ist 
+        aix = saca.index (0)
+        # wenn l_ca [aix - 1] > l_ca [aix], dann nimm aix - 1, weil nächster anderer prefix ist
+        if aix and l_ca [aix - 1] > l_ca [aix]: aix -= 1
+        # wenn beide prefixe in cuta_ oder beide in b liegen -> ungültig, continue
+        lca = len (cuta_)
+        if (saca [aix] < lca and saca [aix + 1] < lca or 
+            saca [aix] >= lca and saca [aix + 1] >= lca): continue
 #        if palb == "sys": print (sacb, sacb [aix], l_cb [aix])
         found_ = s_ca [saca [aix] : saca [aix] + l_ca [aix]]
         found = found_ [::-1]
@@ -377,22 +203,20 @@ part of palindrome + found pal in a or b + part of palindrome_
             p_ca_pal = p_ca_palin
         elif len (p_ca_palin) == len (p_ca_pal):
             p_ca_pal = p_ca_palin if p_ca_palin < p_ca_pal else p_ca_pal
-#        print (p_ca_palin, end = "  ")
     if len (p_ca_pal) > len (res_pal): res_pal = p_ca_pal
     elif len (p_ca_pal) == len (res_pal) and p_ca_pal < res_pal:
         res_pal = p_ca_pal
         
-#    print ()
     p_cb_pal = ""
     for l_b_ix, l_b_ct in enumerate (l_b):
-        if l_b_ct <= 1: continue
+        if l_b_ct < 1: continue
         isab = l_b_ix; isab_ = l_b_ix + 1
         if sab [isab_] < sab [isab]: isab, isab_ = isab_, isab
         Lbx = sab [isab]; Rbx = Lbx + l_b_ct
         palb = b [Lbx : Rbx]
         if palb != palb [::-1]: continue
         # palb now are only palindromes for further processing
-        cutb = b [Rbx : ]; s_cb = cutb + a_
+        cutb = b [Rbx : ]; s_cb = cutb + '$' + a_ + '|'
         ncb = len (s_cb)
         sacb = suffixArray (s_cb, ncb)
         l_cb = kasai_lcp (s_cb, sacb, ncb)
@@ -400,9 +224,14 @@ part of palindrome + found pal in a or b + part of palindrome_
         isacb = l_cb_ix; isacb_ = l_cb_ix + 1
         if sacb [isacb_] < sacb [isacb]: isacb, isacb_ = isacb_, isacb
         Lcb = sacb [isacb]; Rcb = Lcb + lcb_ct
-        # finde linken nachbar prefix dessen Eintrag in sacb 0 ist 
-        bix = sacb.index (0) - 1
-#        if palb == "sys": print (sacb, sacb [aix], l_cb [aix])
+        # finde den prefix dessen Eintrag in sacb 0 ist 
+        bix = sacb.index (0)
+        # wenn l_cb [bix - 1] > l_cb [bix], dann nimm bix - 1, weil nächster anderer prefix ist
+        if bix and l_cb [bix - 1] > l_cb [bix]: bix -= 1
+        # wenn beide prefixe in cuta_ oder beide in b liegen -> ungültig, continue
+        lcb = len (cutb)
+        if (sacb [bix] < lcb and sacb [bix + 1] < lcb or 
+            sacb [bix] >= lcb and sacb [bix + 1] >= lcb): continue
         found_ = s_cb [sacb [bix] : sacb [bix] + l_cb [bix]]
         found = found_ [::-1]
         p_cb_palin = found + palb + found_ if found else ""
@@ -410,7 +239,6 @@ part of palindrome + found pal in a or b + part of palindrome_
             p_cb_pal = p_cb_palin
         elif len (p_cb_palin) == len (p_cb_pal):
             p_cb_pal = p_cb_palin if p_cb_palin < p_cb_pal else p_cb_pal
-#        print (p_cb_palin, end = "  ")
     if len (p_cb_pal) > len (res_pal): res_pal = p_cb_pal
     elif len (p_cb_pal) == len (res_pal) and p_cb_pal < res_pal:
         res_pal = p_cb_pal
