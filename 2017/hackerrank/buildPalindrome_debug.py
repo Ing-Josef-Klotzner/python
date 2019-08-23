@@ -11,7 +11,7 @@ else:
     print ("Unknown python version - input function not safe")
 
 from os import environ
-#from collections import defaultdict
+from collections import defaultdict
 from time import time
 #from sys import maxsize
 
@@ -19,6 +19,13 @@ from time import time
 #setrecursionlimit (100000)
 
 """
+tc6:
+1
+jaqsoqgfpovigxfvhltpwptojsardozogrltulberiywireebjddkdhpyleypylevvglkckubmygxzqmeeyehvsgrslryxfqgrmdsqwptajbqzvethuwyfgdcbkdgxzurjpoahrhdpqexzsrpgvdutabogkwkuehfzwhvamsntzuvcrqzplxhykiaoapjzkznmlsnezsskdlosiyfawaznbuwenovcsfkfuhntglvesxsrrnzkbhzkhzmvkjevsrbdiclckmsgpgngyckzvgysvwcgwayjokqactfxtivfbdwprufivtggzhbpvlxfkisdneogdseenjlewrobjhpppjczyxeaiqanaztksnpfwyhdjvipgwzznmnnxwraiieicscdhryzvrhtoprratxufcithokiogudggzpvjctbahnzdwtokiatsriqzwedrrfzbrkgvynbbfomoiawwmmjiqvhdlnsvwnwbktehykevhacvdflm
+nkrljmijvfxdvdydmvkjsbpmcgmnftseumhbdiohzcjvpayxqwdpychqctudlkedtbjduqbzwxvoxjlajstaoqnrrrpxcndmwhlwdygnnordxmujnljbdatxghfzqrwvfgakwmoawlzqjypmhllbbuuhbpriqsnibywlgjlxowyzagrfnqafvcqwktkcjwejevzbnxhsfmwojshcdypnvbuhhuzqmgovmvgwiizatoxgblyudipahapiduylbgxotaziiwgvmvogmqzuhhubvnpydchsjowmfshxnbzvejewjcktkwqcvfaqnfrgazywoxljglwybinsqirpbhuubbllhmpyjqzlwaomwkagfvwrqzfhgxtadbjluhtevzqbjatpwqsdmrgqfxyrlsrgsvfymgrfmzxqpejcixxppqgvuawutgrmezjkteofjbnrvzzkvjtacfxjjoki
+out:
+vsgrslryxfqgrmdsqwptajbqzvethuljbdatxghfzqrwvfgakwmoawlzqjypmhllbbuuhbpriqsnibywlgjlxowyzagrfnqafvcqwktkcjwejevzbnxhsfmwojshcdypnvbuhhuzqmgovmvgwiizatoxgblyudipahapiduylbgxotaziiwgvmvogmqzuhhubvnpydchsjowmfshxnbzvejewjcktkwqcvfaqnfrgazywoxljglwybinsqirpbhuubbllhmpyjqzlwaomwkagfvwrqzfhgxtadbjluhtevzqbjatpwqsdmrgqfxyrlsrgsv
+
 tc1:
 10
 ottloictodtdtloloollllyocidyiodttoacoctcdcidcdttyoiilocltacdlydaailaiylcttilld
@@ -123,6 +130,7 @@ wjmgvhuesssaxgmoywdgvwvgdwyomgxassseuhvgmjw
 atxbuzxpstpyggyptspxzubxta
 meem
 
+tc4
 10
 zbvebyeucepgcdpmghcibfxgrvnacytonmliivrkbblvnmhiprgeryrpjpjykchneyfymiefymajrnrjamyfeimyfwmedxbmxag
 imxmxgjlnnfkwbrqshxfcanwpoflqejafdktnlpgvlexcygyenhckyjpjpryregrpihmnvlbbkrviilmnotycmlilwztbscfh
@@ -221,73 +229,89 @@ def solve (a, b, sta, stb):
     tim = time ()
     a_ = a [::-1]; b_ = b [::-1]; s = a + b_
     n = len (s); la = len (a);  lb = len (b)
+    jsl = False
+    if la > 100 or lb > 100: jsl = True   # just show length of palindromes
     sa = suffixArray (s, n)
     """umg. auf kasai lcp   l_p longest common prefix (length list)"""
     l = kasai_lcp (s, sa, n)
-    #just to show suffixArray and lcp
-#    print ("suffixes of", s)
-#    print (sa)
-#    for i in sa:
-#        print (s [i : ])
-#    print ("kasai lcps of a + b_")
-#    print (l)
-    _l_ix_ = 0   # find max l, where found lcp is in a and b_
+    print ()
+    print ("time to build suffix array sa", time () - tim)
+    tim = time ()
+    _l_ix = 0   # find max l, where found lcp is in a and b_
     mx = 0
+    ctl = defaultdict (tuple)
     for i in range (n):
         if not l [i]: 
             continue
 #        print ((str (i) + " " + str (l [i]) + " " + s [sa [i] : sa [i] + l [i]]).ljust (10), end = " ")
-
         # l  Liste der Längen gemeinsamer prefixe zwischen a und b
-        # check, if found lcp is in a and b_ and not in a or b_ only
+        # check, if found lcp is in a and b_ and not in a only or b_ only
+        """ mk m_l list from lcp l of tuples (plen, pix) - keep it lexographical 
+            valid entries only if length of com prefix is from a and b_ and not a only or b_ only
+            keep it lexogr. by ctl dict (right border is key and content is (length / indices to lcp/SA))
+            only add different prefixes to dict - how identify different ones? -> different right border
+            - when combining prefixes with existing palins in a or b they could overlap !
+            ... so not just search for R_prefix == L_exist_pal, search if within others L to R """
         if (sa [i] < la and sa [i + 1] >= la or
             sa [i] >= la and sa [i + 1] < la):
-#            print (s [sa [i] : sa [i] + l [i]], s [sa [i + 1] : sa [i + 1] + l [i + 1]], end = " ")
-            if l [i] > mx:
-                mx = l [i]
-                _l_ix_ = i
-#    if len (sa) > 1:
-#        l_ix = l.index (max (l))
-#        isa = l_ix; isb = l_ix + 1
-#        if sa [isb] < sa [isa]: isa, isb = isb, isa
-#        l_ct = l [l_ix]; L = sa [isa]; R = L + l_ct
-#        Lb = lb - sa [isb] + la - l_ct; Rb = Lb + l_ct
-#    else: return -1
-#    x1 = a [R] if R < la else ""
-#    x2 = b [Lb - 1] if Lb - 1 >= 0 and Lb - 1 < lb else ""
-#    if x1 == "": x = x2
-#    elif x2 == "": x = x1
-#    elif x1 < x2: x = x1
-#    else: x = x2
-#    lcp_palin_l_ = a [L : R]; lcp_palin_r_ = b [Lb : Rb]
-#    # for super palindrome - lcp can be from a or b only
-#    lcp_palin = lcp_palin_l_ + x + lcp_palin_r_ if lcp_palin_l_ else ""
-#    print ()
-#    print ("palin a + b_ unbalanced", lcp_palin_)
+            if len (sa) > 1:
+                isa = i; isb = isa + 1
+                if sa [isb] < sa [isa]: isa, isb = isb, isa
+                ct = l [i]; L = sa [isa]; R = L + ct
+                Lb = lb - sa [isb] + la - ct; Rb = Lb + ct
+#            ct = l [i]; L = sa [i] if sa [i] < la else sa [i + 1]; R = L + ct
+            # if same right side, it is same prefix, change entry if longer
+            min_pre_len = max (1, mx - 2)
+            if ct > min_pre_len:
+                if R in ctl:
+                    ctd, _, _, _, _, _ = ctl [R]
+                    if ct >= ctd:
+#                        print ("enlarge", s [R - ctl [R] [0] : R], "->", R - L, i, s [L : R], end = " ")
+                        ctl [R] = (ct, i, L, R, Lb, Rb)
+                else:
+#                    print ("uniques: ", R - L, i, s [L : R], end = "  ")
+                    ctl [R] = (ct, i, L, R, Lb, Rb)
+            if ct > mx:
+                mx = ct
+                _l_ix = i   # index of longest prefix
+    # build m_l list from dict ctl
+    m_l = sorted (list (ctl.values ()))
+#    print ("m_l", m_l, "len ctl", len (ctl), "_l_ix", _l_ix, s [sa [_l_ix] : sa [_l_ix] + l [_l_ix]])
+
+    """
+    längster prefix wird kombiniert wird mit bis 3 Folgezeichen (palindrome) in a, Vorfolgezeichen in b
+    """
     if len (sa) > 1:
-        l_ix = _l_ix_
-        isa = l_ix; isb = l_ix + 1
+        isa = _l_ix; isb = isa + 1
         if sa [isb] < sa [isa]: isa, isb = isb, isa
-        l_ct = l [l_ix]; L = sa [isa]; R = L + l_ct
+        l_ct = l [_l_ix]; L = sa [isa]; R = L + l_ct
         Lb = lb - sa [isb] + la - l_ct; Rb = Lb + l_ct
-    else: return -1
+    else: return "-1"
     x1 = a [R] if R < la else ""
-    x2 = b [Lb - 1] if Lb - 1 >= 0 and Lb - 1 < lb else ""
-    if x1 == "": x = x2; Lft = False
-    elif x2 == "": x = x1; Lft = True
-    elif x1 < x2: x = x1; Lft = True
-    else: x = x2; Lft = False
+    if R + 1 < la and a [R] == a [R + 1]: x1 = a [R : R + 2]
+    if R + 2 < la and a [R] == a [R + 2]: x1 = a [R : R + 3]
+    x2 = b [Lb - 1] if Lb - 1 >= 0 else ""
+    if Lb - 2 >= 0 and b [Lb - 2] == b [Lb - 1]: x2 = b [Lb - 2 : Lb]
+    if Lb - 3 >= 0 and b [Lb - 3] == b [Lb - 1]: x2 = b [Lb - 3 : Lb]
+    Lft = False; x = ""
+    lx1 = len (x1); lx2 = len (x2)
+    if lx2 > lx1 or lx2 == lx1 and x2 < x1: x = x2; Lft = False
+    elif lx1 > lx2 or lx2 == lx1 and x1 < x2: x = x1; Lft = True
     if not x1 and not x2: sg1 = "_"; sg2 = ""
     elif Lft: sg1 = ","; sg2 = "_"
     else: sg1 = "_"; sg2 = ","
     lcp_palin_l = a [L : R]; lcp_palin_r = b [Lb : Rb]
     lcp_palin = lcp_palin_l + x + lcp_palin_r if lcp_palin_l else ""
     lcp_palin_p = " " + lcp_palin_l + sg1 + x + sg2 + lcp_palin_r if lcp_palin else ""
-    print ()
-    print ("palin a + b_", "{:7.5f}".format (time () - tim), lcp_palin_p)
+    lcp_palin_pl = " " + str (len (lcp_palin_l)) + sg1 + str (len (x)) + sg2 + str (len (lcp_palin_r)) if lcp_palin else ""
+    if jsl: print ("palin a + b_", "{:7.5f}".format (time () - tim), lcp_palin_pl, lcp_palin_l [ : 5], "..")
+    else: print ("palin a + b_", "{:7.5f}".format (time () - tim), lcp_palin_p)
 
     res_pal = lcp_palin
 
+    """ puuzle palindrome fact tc14_1: 
+        length b: 49473,   1630 + 29033 + 1630
+                          cutb_ + palb  + cutb """
     # trying to find part of palindrome in a + a_ and b + b_
     # these are no standalone answers, as it is not ollowed to 
     # combine with empty string from other (b or a)
@@ -305,160 +329,230 @@ def solve (a, b, sta, stb):
 #    print ("kasai lcps of partly palindromes of b")
 #    for i in range (nb):
 #        if l_b [i]: print ((str (i) + " " + str (l_b [i]) + " " + s_b [sab [i] : sab [i] + l_b [i]]).ljust (10), end = " ")
-    """ code used for super palindrome and puzzle palindrome """
+    """ code used for super palindrome """
+    # get max a_palin if "La" == R
+
+    """ change to find from longest of l_a list a_palin which "La" == R """
 #    l_a_ix = l_a.index (max (l_a)); l_a_p = l_a [l_a_ix]
-#    l_b_ix = l_b.index (max (l_b)); l_b_p = l_b [l_b_ix]
-    # find a_palin which "La" == R
-    La = Ra = 0
-    for ix, La in enumerate (saa):
-        if ix > 0 and La == R:
-            ix_ = ix if l_a [ix] > l_a [ix - 1] else ix - 1
-            Ra = La + l_a [ix_]
-            if Ra == La: continue
-            break
-    p_a = a [La : Ra]
-    p_a_palin = p_a if p_a == p_a [::-1] else ""
+#    La = saa [l_a_ix]; Ra = La + l_a_p
+#    p_a = a [La : Ra]
+#    p_a_palin = p_a if p_a == p_a [::-1] and La == R else ""
+
 #    print ()
 #    print ("part of palindrome in a", p_a_palin)
-    # find b_palin which "Rbp" == Lb
-    Lbp = Rbp = 0
-    twice = False
-    for ix, Lbp in enumerate (sab):
-        if ix > 0 and Lbp + l_b [ix - 1] == Lb:
-            Rbp = Lbp + l_b [ix - 1]
-#            print (Lbp, Rbp)
-            if Rbp == Lbp: continue
-            if twice == False:
-                twice = True
-                continue
-            break
-    p_b = b [Lbp : Rbp]
-    p_b_palin = p_b if p_b == p_b [::-1] else ""
+    # get max b_palin if "Rbp" == Lb
+
+    """ change to find from longest of l_b list b_palin which "Rbp" == Lb """
+#    l_b_ix = l_b.index (max (l_b)); l_b_p = l_b [l_b_ix]
+#    Lbp = sab [l_b_ix]; Rbp = Lbp + l_b_p
+#    p_b = b [Lbp : Rbp]
+#    p_b_palin = p_b if p_b == p_b [::-1] and Rbp == Lb else ""
+
 #    print ("part of palindrome in b", p_b_palin)
     """ super palindrome, if exists
 this is a palindrome consistent of 
 part of palindrome + found pal in a or b + part of palindrome_
     """
-    s_pal = lcp_palin_l + p_a_palin + lcp_palin_r if La == R else ""
-    s_pal_p = lcp_palin_l + "_" + p_a_palin + "_" + lcp_palin_r
-    if len (s_pal) > len (res_pal): res_pal = s_pal
-    elif len (s_pal) == len (res_pal) and s_pal < res_pal:
-        res_pal = s_pal
-    s_pal_ = lcp_palin_l + p_b_palin + lcp_palin_r if Rbp == Lb else ""
-    s_pal_p_ = lcp_palin_l + "_" + p_b_palin + "_" + lcp_palin_r
-    if len (s_pal_) > len (res_pal): res_pal = s_pal_
-    elif len (s_pal_) == len (res_pal) and s_pal_ < res_pal:
-        res_pal = s_pal_
-#    print ()
-    print ("super palindrome a ", s_pal_p)
-    print ("super palindrome b ", "{:7.5f}".format (time () - tim), s_pal_p_)
-    
+#    s_pal = lcp_palin_l + p_a_palin + lcp_palin_r if La == R else ""
+#    s_pal_p = lcp_palin_l + "_" + p_a_palin + "_" + lcp_palin_r if La == R else ""
+#    s_pal_pl = str (len (lcp_palin_l)) + "_" + str (len (p_a_palin)) + "_" + str (len (lcp_palin_r)) if La == R else ""
+#    if len (s_pal) > len (res_pal): res_pal = s_pal
+#    elif len (s_pal) == len (res_pal) and s_pal < res_pal:
+#        res_pal = s_pal
+#    s_pal_ = lcp_palin_l + p_b_palin + lcp_palin_r if Rbp == Lb else ""
+#    s_pal_p_ = lcp_palin_l + "_" + p_b_palin + "_" + lcp_palin_r if Rbp == Lb else ""
+#    s_pal_p_l = str (len (lcp_palin_l)) + "_" + str (len (p_b_palin)) + "_" + str (len (lcp_palin_r)) if Rbp == Lb else ""
+#    if len (s_pal_) > len (res_pal): res_pal = s_pal_
+#    elif len (s_pal_) == len (res_pal) and s_pal_ < res_pal:
+#        res_pal = s_pal_
+##    print ()
+#    if jsl:
+#        print ("super palindrome a ", s_pal_pl)
+#        print ("super palindrome b ", "{:7.5f}".format (time () - tim), s_pal_p_l)
+#    else: 
+#        print ("super palindrome a ", s_pal_p)
+#        print ("super palindrome b ", "{:7.5f}".format (time () - tim), s_pal_p_)
+    print ("time to build suffix array saa, sab", time () - tim)
+
+    """          puzzle palindrome 2         """
+    # combine and find maximum palindrome:
+    # combine m_l list with all palindromes in a and in b, check if overlap / fit, find maximum
+    tim = time ()
+    p2_ca_pal = p2_ca_pal_p = p2_ca_pal_pl = ""; l_p2_ca_pal = 0
+    for isaa, l_a_ct in enumerate (l_a):
+        if l_a_ct < 1: continue
+        isaa_ = isaa + 1
+        if saa [isaa_] < saa [isaa]: isaa, isaa_ = isaa_, isaa
+        if saa [isaa] > la or isaa_ < na and saa [isaa_] < la: continue
+        Lax = saa [isaa]; Rax = Lax + l_a_ct
+        pala = a [Lax : Rax]
+        if pala != pala [::-1]: continue
+        for ct, i, L, R, Lb, Rb in m_l:
+            if R >= Lax and R < Rax: 
+                df = R - Lax; fd = a [L : Lax]; fd_ = b [Lb + df: Rb]
+#                print ("f a", a [L:R], fd + "," + pala + "_" + fd_, end = "  ")
+                p2_ca_palin = fd + pala + fd_ if fd else ""
+                p2_ca_palin_p = fd + "," + pala + "_" + fd_ if fd else ""
+                if jsl: p2_ca_palin_pl = str (Lax - L) + "," + str (Rax - Lax) + "_" + str (Rb - Lb - df) if fd else ""
+                l_p2_ca_palin = 2 * (Lax - L) + Rax - Lax
+                if (l_p2_ca_palin > l_p2_ca_pal or 
+                    l_p2_ca_palin == l_p2_ca_pal and p2_ca_palin < p2_ca_pal):
+                        l_p2_ca_pal = l_p2_ca_palin
+                        p2_ca_pal = p2_ca_palin
+                        p2_ca_pal_p = p2_ca_palin_p
+                        if jsl: p2_ca_pal_pl = p2_ca_palin_pl
+    if l_p2_ca_pal > len (res_pal): res_pal = p2_ca_pal
+    elif len (p2_ca_pal) == len (res_pal) and p2_ca_pal < res_pal:
+        res_pal = p2_ca_pal
+    if jsl: print ("puzzle palindrome 2 a ", "{:7.5f}".format (time () - tim), p2_ca_pal_pl, p2_ca_pal [ : 5], "..")
+    else: print ("puzzle palindrome 2 a ", "{:7.5f}".format (time () - tim), p2_ca_pal_p)
+    tim = time ()
+    p2_cb_pal = p2_cb_pal_p = p2_cb_pal_pl = ""; l_p2_cb_pal = 0
+    for isab, l_b_ct in enumerate (l_b):
+        if l_b_ct < 1: continue
+        isab_ = isab + 1
+        if sab [isab_] < sab [isab]: isab, isab_ = isab_, isab
+        if sab [isab] > lb or isab_ < nb and sab [isab_] < lb: continue
+        Lbx = sab [isab]; Rbx = Lbx + l_b_ct
+        palb = b [Lbx : Rbx]
+        if palb != palb [::-1]: continue
+        for ct, i, L, R, Lb, Rb in m_l:
+            if Rbx >= Lb and Rbx < Rb:
+                df = Rbx - Lb; fd = a [L : R - df]; fd_ = b [Rbx : Rb]
+#                print ("f b", fd + "_" + palb + "," + fd_, b [Lb : Rb], end = "  ")
+                p2_cb_palin = fd + palb + fd_ if fd else ""
+                p2_cb_palin_p = fd + "," + palb + "_" + fd_ if fd else ""
+                if jsl: p2_cb_palin_pl = str (R - df - L) + "," + str (Rbx - Lbx) + "_" + str (Rb - Rbx) if fd else ""
+                l_p2_cb_palin = 2 * (Rb - Rbx) + Rbx - Lbx
+                if (l_p2_cb_palin > l_p2_cb_pal or 
+                    l_p2_cb_palin == l_p2_cb_pal and p2_cb_palin < p2_cb_pal):
+                        l_p2_cb_pal = l_p2_cb_palin
+                        p2_cb_pal = p2_cb_palin
+                        p2_cb_pal_p = p2_cb_palin_p
+                        if jsl: p2_cb_pal_pl = p2_cb_palin_pl
+    if l_p2_cb_pal > len (res_pal): res_pal = p2_cb_pal
+    elif len (p2_cb_pal) == len (res_pal) and p2_cb_pal < res_pal:
+        res_pal = p2_cb_pal
+    if jsl: print ("puzzle palindrome 2 b ", "{:7.5f}".format (time () - tim), p2_cb_pal_pl, p2_cb_pal [ : 5], "..")
+    else: print ("puzzle palindrome 2 b ", "{:7.5f}".format (time () - tim), p2_cb_pal_p)
+
     """          puzzle palindrome          """
     # find in a, combine with b and vice versa
-    # for all longest common prefixes > 1 of l_a,
+    # for all longest common prefixes > 1 of l_a (a + a_),
     # which are palindromes (pal): cut text from a until begin
     # of each palindrome; get sap, lcpp lists of cutted text + b_ 
     # -> plcp (puzzle lcp)
     # build   plcp + pal + plcp_ (reverse) and take longest
     # with b cut text from end of pal to end of b
-    tim = time ()
-    p_ca_pal = p_ca_pal_p = ""
-    for l_a_ix, l_a_ct in enumerate (l_a):
-        if l_a_ct < 1: continue
-        isaa = l_a_ix; isaa_ = l_a_ix + 1
-        if saa [isaa_] < saa [isaa]: isaa, isaa_ = isaa_, isaa
-        Lax = saa [isaa]; Rax = Lax + l_a_ct
-        pala = a [Lax : Rax]
-        if pala != pala [::-1]: continue
-        # pala now are only palindromes for further processing
-        cuta_ = a [ : Lax] [::-1]; s_ca = cuta_ + '$' + b + '|'
-#        print (cuta_, end = " ")
-        nca = len (s_ca)
-        saca = suffixArray (s_ca, nca)
-#        print (saca)
-        l_ca = kasai_lcp (s_ca, saca, nca)
-#        print (l_ca)
-        l_ca_ix = l_ca.index (max (l_ca)); lca_ct = l_ca [l_ca_ix]
-        isaca = l_ca_ix; isaca_ = l_ca_ix + 1
-        if saca [isaca_] < saca [isaca]: isaca, isaca_ = isaca_, isaca
-        Lca = saca [isaca]; Rca = Lca + lca_ct
-        # finde den prefix dessen Eintrag in saca 0 ist 
-        aix = saca.index (0)
-        # wenn l_ca [aix - 1] > l_ca [aix], dann nimm aix - 1, weil nächster anderer prefix ist
-        if aix and l_ca [aix - 1] > l_ca [aix]: aix -= 1
-        # wenn beide prefixe in cuta_ oder beide in b liegen -> ungültig, continue
-        lca = len (cuta_)
-        if (saca [aix] < lca and saca [aix + 1] < lca or 
-            saca [aix] >= lca and saca [aix + 1] >= lca): continue
-#        print ("pala", pala, end = " ")
-        found_ = s_ca [saca [aix] : saca [aix] + l_ca [aix]]
-#        print ("found_", found_, aix, l_ca [aix], end = " ")
-        found = found_ [::-1]
-        p_ca_palin = found + pala + found_ if found else ""
-        p_ca_palin_p = found + "," + pala + "_" + found_
-        if len (p_ca_palin) > len (p_ca_pal):
-            p_ca_pal = p_ca_palin
-            p_ca_pal_p = p_ca_palin_p
-        elif len (p_ca_palin) == len (p_ca_pal):
-            p_ca_pal = p_ca_palin if p_ca_palin < p_ca_pal else p_ca_pal
-            p_ca_pal_p = p_ca_palin_p if p_ca_palin < p_ca_pal else p_ca_pal_p
-#        print (p_ca_palin, end = "  ")
-    if len (p_ca_pal) > len (res_pal): res_pal = p_ca_pal
-    elif len (p_ca_pal) == len (res_pal) and p_ca_pal < res_pal:
-        res_pal = p_ca_pal
-    print ("puzzle palindrome a ", "{:7.5f}".format (time () - tim), p_ca_pal_p)
-        
-#    print ()
-    tim = time ()
-    p_cb_pal = p_cb_pal_p = ""
-    for l_b_ix, l_b_ct in enumerate (l_b):
-        if l_b_ct < 1: continue
-        isab = l_b_ix; isab_ = l_b_ix + 1
-        if sab [isab_] < sab [isab]: isab, isab_ = isab_, isab
-        Lbx = sab [isab]; Rbx = Lbx + l_b_ct
-        palb = b [Lbx : Rbx]
-        if palb != palb [::-1]: continue
-        # palb now are only palindromes for further processing
-        cutb = b [Rbx : ]; s_cb = cutb + '$' + a_ + '|'
-        ncb = len (s_cb)
-        sacb = suffixArray (s_cb, ncb)
-#        print (sacb)
-        l_cb = kasai_lcp (s_cb, sacb, ncb)
-#        print (l_cb)
-        l_cb_ix = l_cb.index (max (l_cb)); lcb_ct = l_cb [l_cb_ix]
-        isacb = l_cb_ix; isacb_ = l_cb_ix + 1
-        if sacb [isacb_] < sacb [isacb]: isacb, isacb_ = isacb_, isacb
-        Lcb = sacb [isacb]; Rcb = Lcb + lcb_ct
-        # finde den prefix dessen Eintrag in sacb 0 ist 
-        bix = sacb.index (0)
-        # wenn l_cb [bix - 1] > l_cb [bix], dann nimm bix - 1, weil nächster anderer prefix ist
-        if bix and l_cb [bix - 1] > l_cb [bix]: bix -= 1
-#        print ("palb", palb, bix, s_cb [sacb [bix] : sacb [bix] + l_cb [bix]], end = " ")
-        # wenn beide prefixe in cuta_ oder beide in b liegen -> ungültig, continue
-        lcb = len (cutb)
-        if (sacb [bix] < lcb and sacb [bix + 1] < lcb or 
-            sacb [bix] >= lcb and sacb [bix + 1] >= lcb): continue
-        found_ = s_cb [sacb [bix] : sacb [bix] + l_cb [bix]]
-        found = found_ [::-1]
-        p_cb_palin = found + palb + found_ if found else ""
-        p_cb_palin_p = found + "_" + palb + "," + found_
-        if len (p_cb_palin) > len (p_cb_pal):
-            p_cb_pal = p_cb_palin
-            p_cb_pal_p = p_cb_palin_p
-        elif len (p_cb_palin) == len (p_cb_pal):
-            p_cb_pal = p_cb_palin if p_cb_palin < p_cb_pal else p_cb_pal
-            p_cb_pal_p = p_cb_palin_p if p_cb_palin < p_cb_pal else p_cb_pal_p
-#        print (p_cb_palin, end = "  ")
-    if len (p_cb_pal) > len (res_pal): res_pal = p_cb_pal
-    elif len (p_cb_pal) == len (res_pal) and p_cb_pal < res_pal:
-        res_pal = p_cb_pal
-    print ("puzzle palindrome b ", "{:7.5f}".format (time () - tim), p_cb_pal_p)
+#    tim = time (); Lax_ = Rax_ = 0
+#    p_ca_pal = p_ca_pal_p = p_ca_pal_pl = ""; l_p_ca_pal = 0
+#    #mx_ix = l_a.index (max (l_a))
+#    for isaa, l_a_ct in enumerate (l_a):
+#        if l_a_ct < 1: continue
+#        isaa_ = isaa + 1
+#        if saa [isaa_] < saa [isaa]: isaa, isaa_ = isaa_, isaa
+#        if saa [isaa] > la or isaa_ < na and saa [isaa_] < la: continue
+#        Lax = saa [isaa]; Rax = Lax + l_a_ct
+#        pala = s_a [Lax : Rax]
+#        lpaa = Rax - Lax   # len (pala)
+#        if la > 9500 and lpaa < 10 or la > 2500 and lpaa < 5  or la > 100 and lpaa < 3 or pala != pala [::-1]: continue
+#        # pala now are only palindromes for further processing
+#        cuta_ = a [ : Lax] [::-1]; s_ca = cuta_ + '$' + b + '|'
+##        print (cuta_, end = " ")
+#        nca = len (s_ca)
+#        saca = suffixArray (s_ca, nca)
+##        print (saca)
+#        l_ca = kasai_lcp (s_ca, saca, nca)
+##        print (l_ca)
+#        # finde den prefix dessen Eintrag in saca 0 ist (Beginn cuta_)
+#        aix = saca.index (0)
+#        # wenn l_ca [aix - 1] > l_ca [aix], dann nimm aix - 1, weil nächster anderer prefix ist
+#        if aix and l_ca [aix - 1] > l_ca [aix]: aix -= 1
+##        print ("pala", pala, aix, s_ca [saca [aix] : saca [aix] + l_ca [aix]], end = " ")
+#        # wenn beide prefixe in cuta_ oder beide in b liegen -> ungültig, continue
+#        lca = len (cuta_)
+#        if (saca [aix] < lca and saca [aix + 1] < lca or 
+#            saca [aix] >= lca and saca [aix + 1] >= lca): continue
+##        print ("pala", pala, end = " ")
+#        found_ = s_ca [saca [aix] : saca [aix] + l_ca [aix]]
+##        print ("found_", found_, aix, l_ca [aix], end = " ")
+#        found = found_ [::-1]
+#        l_found = l_ca [aix]
+#        l_p_ca_palin = 2 * l_found + Rax - Lax
+#        p_ca_palin = found + pala + found_ if found else ""
+#        p_ca_palin_p = found + "," + pala + "_" + found_ if found else ""
+#        p_ca_palin_pl = str (l_found) + "," + str (Rax - Lax) + "_" + str (l_found) if found else ""
+#        if (l_p_ca_palin > l_p_ca_pal or 
+#            l_p_ca_palin == l_p_ca_pal and p_ca_palin < p_ca_pal):
+#                l_p_ca_pal = l_p_ca_palin
+#                Lax_ = Lax; Rax_ = Rax
+#                p_ca_pal = p_ca_palin
+#                p_ca_pal_p = p_ca_palin_p
+#                p_ca_pal_pl = p_ca_palin_pl
+##        print (p_ca_palin, end = "  ")
+#    if len (p_ca_pal) > len (res_pal): res_pal = p_ca_pal
+#    elif len (p_ca_pal) == len (res_pal) and p_ca_pal < res_pal:
+#        res_pal = p_ca_pal
+#    if jsl: print ("puzzle palindrome a ", "{:7.5f}".format (time () - tim), p_ca_pal_pl, p_ca_pal [ : 5], "..", Lax_, s_a [Lax_ : Lax_ + 5] + "..." + s_a [Rax_ - 5 : Rax_], Rax_, "length of a", la)
+#    else: print ("puzzle palindrome a ", "{:7.5f}".format (time () - tim), p_ca_pal_p)
+#        
+##    print ()
+#    tim = time (); Lbx_ = Rbx_ = 0
+#    p_cb_pal = p_cb_pal_p = p_cb_pal_pl = ""; l_p_cb_pal = 0
+#    #mx_ix = l_b.index (max (l_b))
+#    for isab, l_b_ct in enumerate (l_b):
+#        if l_b_ct < 1: continue
+#        isab_ = isab + 1
+#        if sab [isab_] < sab [isab]: isab, isab_ = isab_, isab
+#        if sab [isab] > lb or isab_ < na and sab [isab_] < lb: continue
+#        Lbx = sab [isab]; Rbx = Lbx + l_b_ct
+#        palb = s_b [Lbx : Rbx]
+#        lpab = Rbx - Lbx   # len (palb)
+#        if lb > 2500 and lpab < 10 or lb > 100 and lpab < 3 or palb != palb [::-1]: continue
+#        # palb now are only palindromes for further processing
+#        cutb = b [Rbx : ]; s_cb = cutb + '$' + a_ + '|'
+#        ncb = len (s_cb)
+#        sacb = suffixArray (s_cb, ncb)
+##        print (sacb)
+#        l_cb = kasai_lcp (s_cb, sacb, ncb)
+##        print (l_cb)
+#        # finde den prefix dessen Eintrag in sacb 0 ist (Beginn cutb)
+#        bix = sacb.index (0)
+#        # wenn l_cb [bix - 1] > l_cb [bix], dann nimm bix - 1, weil nächster anderer prefix ist
+#        if bix and l_cb [bix - 1] > l_cb [bix]: bix -= 1
+##        print ("palb", palb, bix, s_cb [sacb [bix] : sacb [bix] + l_cb [bix]], end = " ")
+#        # wenn beide prefixe in cuta_ oder beide in b liegen -> ungültig, continue
+#        lcb = len (cutb)
+#        if (sacb [bix] < lcb and sacb [bix + 1] < lcb or 
+#            sacb [bix] >= lcb and sacb [bix + 1] >= lcb): continue
+##        if jsl: print ("palb length", len (palb), end = " ")
+##        else: print ("palb", palb, end = " ")
+#        found_ = s_cb [sacb [bix] : sacb [bix] + l_cb [bix]]
+#        found = found_ [::-1]
+#        l_found = l_cb [bix]
+#        l_p_cb_palin = 2 * l_found + Rbx - Lbx
+#        p_cb_palin = found + palb + found_ if found else ""
+#        p_cb_palin_p = found + "_" + palb + "," + found_ if found else ""
+#        p_cb_palin_pl = str (l_found) + "_" + str (Rbx - Lbx) + "," + str (l_found) if found else ""
+#        if (l_p_cb_palin > l_p_cb_pal or
+#            l_p_cb_palin == l_p_cb_pal and p_cb_palin < p_cb_pal):
+#                l_p_cb_pal = l_p_cb_palin
+#                Lbx_ = Lbx; Rbx_ = Rbx
+#                p_cb_pal = p_cb_palin
+#                p_cb_pal_p = p_cb_palin_p
+#                p_cb_pal_pl = p_cb_palin_pl
+##        print (p_cb_palin, end = "  ")
+#    if len (p_cb_pal) > len (res_pal): res_pal = p_cb_pal
+#    elif len (p_cb_pal) == len (res_pal) and p_cb_pal < res_pal:
+#        res_pal = p_cb_pal
+#    if jsl: print ("puzzle palindrome b ", "{:7.5f}".format (time () - tim), p_cb_pal_pl, p_cb_pal [ : 5], "..", Lbx_, b [Lbx_ : Lbx_ + 5] + "..." + b [Rbx_ - 5 : Rbx_], Rbx_, "length of b", lb)
+#    else: print ("puzzle palindrome b ", "{:7.5f}".format (time () - tim), p_cb_pal_p)
     return res_pal
     
 
 def buildPalindrome (a, b):
     sta = set (a); stb = set (b)
-    if sta.isdisjoint (stb) or a == "" and b == "": return -1
+    if sta.isdisjoint (stb) or a == "" and b == "": return "-1"
     res = solve (a, b, sta, stb)
     return res
 
@@ -469,9 +563,59 @@ def main ():
         a = input ()
         b = input ()
         result = buildPalindrome (a, b)
-        print (result)
-        fptr.write (str (result) + '\n')
+        if len (result) < 50: print (result)
+        else: print ("result > 50 in length", result [ : 50] + "...")
+        fptr.write (result + '\n')
     fptr.close ()
 
 if __name__ == '__main__':
     main ()
+
+"""
+tc0 - part
+5
+aeenyaulnadoqjkzwdbzmogeiiywrfvuhzublopafnxftpktilcsvbpmocapvinieppkobjhfykimmhecqvebpboskoojublktktzxkllyrwgnkywyhflncpggsxckaobobahgeybavprlfqaarwfxaaawvuxtumfrkulcydzawdkiqvfybjyrqsaurznbmudbatyydqpsgsxssubzjdjioeidugdaztttgbxjmuojlequmjtixitjsvtncxwdtldmdycnxkvdqyatvtyrzahuuwjsquwzxybjjnsmwxudxjurmacoaocwipmtapywobjzxofoneokcjeclvlbiivymruroxxhxsjlcilnfyzhmldhcfgrbjcmuwfgjcufidnreyilkcaltxcdebvwacqbuxhqpzemfuksaykrdhxlligmcqsyhzwtsodftahgzsqajgetoujkwygxdanrpcbsgepsnigqvfnlwiyacipvlevfinerclsysapittihgloqdsjbaaktdozepizqguhvcrbxxvkdxhcnisokwyraesdwlpnjjnjlxprhbilnaunrwynmvdaruczuzyownelriwctmhzwohuxtklimniqhqrddoiptzoytvcsrndsazppreliilzprovhcrfniilyxxfduyqzirhzqzmghvdfyozzpmtgmochkgbpfavibeazsenfiowtdqluuktycqqtlgwdkgxwktruiphokqklnsoiugxnxkqaxaofnvgppbnlphfbtfunewxvggzzoztghvgufjrubuesblducoccewkaucnwdjqaagauyhsmvbsfyjkqyxmgdctitrrtcmnnelohrctnvqwsoebgxoiqddtdmibixndfzltbcwovwgvslwfgcwskfzchdqwxhclkasgbfynzvfrighgtierscdjxfcicrioxyvlilkpgdgzkixpqzojlmxnsxenasxpvmsrsntaukldmnekxwnqfvyctkylgcxzbvsuqyxjleievdwbecxezjkbqmtouqabjhcykttdopqgukzoeptbxslebjyhtradxrfoedxmsgxgbgbiiocxzxhvhpqmdbviuhaklzbhixrvyaonpalttosplfzjimdrxesbbarusarflcualucdbhercpamrcbaibeibbtfuuuupkhnmqopsdbbsrxnypngvotchupdlmopbdpnnimqrixedirziugevtcktvrtgrjwjbrhqglpfkmzcjomofsfdqqsvgnzzeinhivxiltqpmcxqpbtjpbwcdkrbdngavfgwzauuveilavftxtbsiwuqzwxkwglhqopwycbiuxzvccsrtdtkstkxlzoxrghggakjfaznharerkwvvgebarseyxcpbixlypfrpurwntnondswgrsxqxnwtrqoisctvypokgjzfutzemdkaroouvyeyvsnenituvymyuoeehyixryutjoyyrssbqrnapsclooimbrewvfzmwklpubxuteqqbupulxurasgwcnuqwusfdrldydbhviulvymaiodbxjkuwjucsplfjeaisjtcprxcoazbasxltlesaeznerykqepnyulvtcunakvhxjlmhljnevpuqyzshstcdexkhkormxpklkknorokkeadlkcfoxcmpjkhrwyahrotaprgloteomgkxzewfjjgvtamamooduskaccmbqrhtuzrftebixfktsvijpwgswmvzvfguqqikyfyxylcchezfxcoyqmvrqixbeyuzrumthwcodumvtwmmukxuolmxymesszpmlobbbiwhmcrkfsrklyrdiodrgvsphgiasojaavhnnvjjdflpttmecoxjwyvvwqtuffuykklnyatqiphuwjatnxzwgfwgoyhdxnqirnnsjlbwmabebqepstnyxylzberbougmqroxpinjgzqapipmkiegtsykmavtzdthplblgoqefnnjktaecanwsxubclsajpbdrhkpurcyrxhvuixdtzfzgdzbkijzgytmlflxtcfzjpcdgxsbeswgrdqmdytrvqawaikvfcbaezxfhalstvwejizhsveviszthhlimvhktyjajuykptuykqucabgdkqgfimbotbcvpnwsxuwnpvwphvphhnxbrfxrqmndgsjddbfcmmyzvncmqliygqkxfhylwazfjfkgqoimqcupgosezxcxuejnbygyvuwpcmiikqsbunafsclkvehwdpawbtxsmmevnforkkbpblimlakzpuisoigpjlpbwvwbnwknvbfptiakxnusvzhltmylrmdapmpqcxihmpgkijtygxlfqwoyevvgpmdxkbuncakemgdxkndslycvamszqg
+knvappatgxtoiknjrjjoilqbooatluwolsesmvltzdflbmwzrnmsviknnbylvqozfysmcpxjhshbgwekraryojmycgvbyhotrdotvurlrjhrryyzlncqectjossprimhfylqgbfqqfhzhhbxsdhrlxckiktpksdwduuttwavxzbjbrlqgcuihkxowrcollamqahgcpvmtpfjibdsziuaeppewoqubarmmgzmjfolyucdqxaudmbkcgxmmyfwwiqjdcspxlgzlyizzbpvvsrbezmwzqapodexnxalxtczlanwrrlzorqmsinxndpzgjragwrsmjjesarullazbukqxugymciecgjfszuqgnywhnktsfbsatakbusnxedseikjfyhgcgmzlgyzdnbwivosqqeffqbmpexmpgfjbkgqsurtizjrkyixxfldfjpvlnaxcqcupkkysziciisgkjmbsxujryhfozwvipyqwohegndowghmrroejbvllldksbmynzobqtsislcmmsojytwrufhazrpzwmfcblitnnosngumfcyvoopncwafwmfeeyfgovjheamhzddsipyrblxmvkwqyvqxiyzfcmxlcmwjshjtsnrmftkehvxlmiwtxgzjocelrnjppcyuvpyzasgwjtfdsmzffubkeakekxmyneidlgzmxcbarodxnqtzswfvwtiasmggwcjevqplwsqykilgydehlrvnrunvuyymrrtopcjhluttshkudgjoepqzwkfzsleydonzbhuftwwsapjpfaqtjbubiwouctxzyxrdgdzorbhjzyksjydqdzavfvqmeusxpvxzuipacbesuvkwyxuzumlyimrinqajfzropbgxqpkchczkyklhsqabqymmvmsylyjedlxgsmbvcozyuodyrmkijrvismkokiwpsmjebtdvizugxiemukvvkzomnntqihudjsmdzrmbnomvlowygwsiebnxulocteptljrhfxgohxogjrxyoqebxbwmlzmakolkgwqjmqmmbjchgvrycasqedsrxjorwkgicxqqlxebbxfcuvqucntoggvdawwsijfzhftiejmyffuaubnwohxyhypeulnezziuzchasnibdteurauqprlzoqkuoyqhjswgtrzxduirdfeixfhrkwwpkncmybkrqrsflytrufamqvodztuboolmgcibgoggrvbjrdcsijoorrdgopvatbzuoqetulniwlfyocwvbsjosrqlvipzphcelywiprsdhdplavaprpphvbyyqnamgopxszcvwtfmyurxienuaqefozksujoxuedezqymardpumxaebfjskhabuyiervaobrxtiuhtebdsyrqoyxnjvvxzrdoumrhelkshmyrsxfpleomdlemvwmcbcyxvdkwwwebndpbeomrxjyuaklakqvgoswwxfvptoiowdhdlkyezkmqwhbemeefqdazhroibfxfpjylxdxwcmedeysjflgptmkuatnnhuersrdzimupaiwmxmhlfypjjztenqnuptezkgoeglqvmdjfknpksswblxbidotxnfgziqlhchxatoasladltswaegooshjriqhzviamdomqdwpcqauvkxthvyivhgysgznwnktbzqsetujqyrhxfmjgapjeoxounyfjwwyljrohksqkbonbxydthjipcqvknxehudznszvhwjfickotjbfmkmjoiuchmgqwgtfzpawwchulzfhkfuvkrcliaolvzzwmeespggxgzlkxulzjetbynzfshvvepmuyixipflvtonaagiofnhzkfjrmqenpglubtxlkuczncqynrwngbixeznigesseccgvqsxhixkdzsmtllsafhfwhdgbpulhdxowqoroxpjetypusxyglpivlcrosocfryflikhtrabgtshwbqfnjxcityvtyukzvzhtqifjvaujqjejsslpshhtisortbxrrspqsmxlrsnhdgsizqzurjtrcgldqfpvpvqzptxzfmfucgbwbmdjfkkknfkbsyacuzbbqvepcgagoylngtjdvphuuiuyxnjmkixaerorgeqgsdmdinsixucarxusookicrqaqtrstjqvmsddzvxtcnpwcfjbkmaogxrgyxbjgqqjjzkmufsvtjcvqbkpbwgowiddzeawdzfuyohyqzpyujgtjhtqwbvdyjrpycv
+ijdjnlihihddjrnijhiiadjaaljjdnlalyaahijlyrjjnijylnlidinddydhjhdrainajddnnlnlrnadhiiayhdnihjlyrjydijlyrraaddllyalhhhlyjlharjrajdydhhdyiinrrnddynynaydiyrirajyhlnahidrriyiyjrdyihrihlhihnnhyndhlljayhaaraaldiyjhnyhyhillhrinaryhylyidjhrnnyilhndjaryaiyyjinnrndlirhydaryhdrajilnhhinihnllldyijyidnjjrinrindyaarjhjjldyhrryjljhyjjhrlhyahdalhyhlailyiliyiiyalaydaanaidhdnrrijhirnjarhlnhnhrjdajhiyhhihjarlllihlhrlahrnnjdrndyjlrrhrdyjyhrjdjayihryrldjaiiinyhyidaylnnjararhynnidnjhnnndhlrahyhdajjlahjajlalhhilhdnrlyjhlyajrydayjianhhrhjynljyhajdhjriirnjnlianhhnyrlaildyrljhrdihrjdjhdynrrairrijnharnhnylhrjhhharrdnlyyylyihliryidndyyirndlrildrijlrlrrrilhhihlijrranjiddaiydhjjnrjddhdhdhijljjjnynnjnjirhdjjyjdnrinlrdyaayhyhrnnyrhndljyhrdjljaydrljdlryiajadylaajinljliajjldrlnndajllydrlhdjjrhhianldndahyiydjahnrraiarhnlhndyijyyliharllariayayliryhlnydajlrrdjydilrdrhliarynarrlaynninrnadrradijrdlaildhllyjnyaarnanajidriinaririhjlrjhiajiirljaahyainlyjilyyharnaynldiayiidrilrnalyrydjjnjdnhnrjhajrlhjjniyrrlnylhnaijiyndynlndriryirljayrdyaajrrddyjinrlhardhdrlhylnniriihjhladayllhdiylnhnaydyjylljlajnrylrnahirrrrljrjnnjlyjrajiidinjidjilyaaaryndnyllaahjllhynrrijndyaranrairydhahhnhihnliarhydirnnrhrihhdynnhjrhdhlhdnyrylnliilyhijiiylrydnydyjlnaadjairanaaljinajyihdlnryjrlaiyidnayayjdlyhnhnlihrialjairjiyddrrjhrajyidanildiayyylrrylyhlinrdrnhhlhhrhjylidrinyrynyaianddadairnldyrndjlrijyjjaydaalrniialnyralhhhajjjjlaiayiarrnhjadrrhahrrjhydiranrhayyhydlairnninadayiyahiyiijndnhlhrnydnanaranahiyrdinadllrdlynyaaidjryairjajjrniyynnijdhidinlayrhyhijnjiljrjjjarjynyddyndrihjilahnaniyayiyajdaijjnnandrdrlaiaalddddhjhihiyljhdjldhddhajjylrhhinnhhndyrjnrdryhydyjrhlyildynljyyhajnaiylraadrrjlrlryrdnhnylarnilljarldyhladrinijdjhrlijjhinrhrlhnirnhynhadnijdnnnnhayhinnynnjrirjlhnriyidaaljyddyrdiyjididyldlhnahirnyrinhiyahniaajhdjyrainyjlldyyynyrndiyrnaadjyariadaalrrinrairilhlhjrdaaahrlharjnhjnidnliraahnnndanjhdlrjyrajhhyadjyryyyaylllryhhlajydlrynlnjarnynyyryjyhyraailnrhdlhajndaalrjjljnyrirrnayrjyyrlyrnilnadjhdaijjrhalnjndlradlddrrriljldrljjlrhrlhnjajlhirllahlyaarirhajynnhhraaahladjildnyrddiarirddinrnrnyrnnalhihrihhilirnalynyljiahydhrllldyhnhlairjindilayaaijaldnrrnljjdjdianhajjldlhjlyynialnhdiyyrjlhnyhilhdndrnaajjynadldirldnaayijrdjhahrhldylaijydindjhrannilaiyhynahijinjrjriajiadlaryjynjiihlyhyyljlyhynrllhhdjniyliyirjjayinhdljanjndrhidanljhdjlrjayyydjjjljjlrdlahjailayyryy
+spzskwqkgwcqzstwgpsspbsmzcvmqftwmtboewqmtbfkffsevtxbuqtootgpwogcxekstfbqzfuwcvwpqbeuguufpgqpqsccsweqmgpmxzmxowbxotxtwmewptxcxxoembssgfowgbpwskzsmuwwtwetvquutmpqvvtgceckkgeckqguwmpbuzzsmzbqueoooezfqccwtgguqwkwomvbuvxeqqzbcbqsepvmqtstqpwmockevxvmfzcgpxxfkbkqpoqwmotxccfovktspzbtvtzoocpwoqoxfumcpomumkbxzegzocuukkoqvbcpmfzvtxuqwgbofzxouppvfzpvsfzcbzxszepxxebfvgocsgqtgqsuxovbzumcvzzxmvteskvkxxpbgbgzszebcwqfbbpfsmkowmebmbvxuevmxogkmfvpqpxueusqzxvfobumqzfuxpzfsgvosbectbkfcsszefxezueewvoftteuzbevtctcbovpmbopxcvgvqtuzbwbtpbxfbcexccmzpempmstfcpcsubxpzvuxwowzxccgxouktcpmgwveubqtgebteuwqvkececpzqqtmmgcbomkoeqofmquftpepcmtvgkpmwvzppbzzoewzktbtozoxqgppqpzxgusgbxguqfecexksokzeusxcemgbsgpkwmoktqkvbfmgubtcpqgmkouuppouxcxufgcgbfwuksvtwoqpoovtefuwzboubqtwgguwzfbceowtewvsmusgbtpszckgqbozepwmoxxqcfkzbwgfqtwfpfevbcecxqzcmwkqfgxttpctuuemeomtgukgkucboepccwkspmewwtgztewmucxkptzeqvbmkscousbkfguozukewmompzskbxsbzxuzmfqtfmepmvbsttkczqzqmkmbgebgfcfcevotkuxscgtqbfsgbmmvqxecfozgvsevqteuemgmmxfwsxfxuzsogcgvvouftuwxpgzczkomsxvbuwesxbpwqbuvwuefcsctopuvgczsqgcexkfkcqwkxfqwtbksugvkescsvckptfqxpzbpmwuksqwefvgktxxwpfqkeuvmpvtcxwqpmsqkccopsebpqomqvsecfxmbvwfzgmffmbmbbubtxcbtvmebembmmkbbxqkbwoeppqovzbqggptfkpbwvzzzzbvbsumoctwmttxweqbvuwqckfzqvzfkuccxtfvumtzepuqbksmfgkomczpbosueqtgmwocwzgukksvwwuotgbpvvzcoccsuokuwmescemwessbumeekfkvgsfztfpkxsmbcmumgeuczbumqzmmcecuoqcgxkpctcuotszusvxpgggtbsstsusxfqqmctpsegwzkbcwtqzspptzbtuvfckwsbugpqvxtvxsbxwfeupopvubsbtwmcmgxommuzozgbbctvvzqbkozuwwwefoxzzgtcpucopgextoppfvvtcpoxqspqpwqgmoqgwkwevtkxsqqswzsbeskzotpufeuegwfbqfmgctopqfuxvsgmutcuogocwmwmseusemgomwzgceqpgsuumgbzwvtftpxxzeetqzeeeetbvoeeskwucvstksvttwxqttteeuemxsxsxqzboooffoecbpcuotqwxzqppkcukubxoovqxowfqkopugqcevukcmstbmcsxeeosgkqfpkefgckouveovukgwezgmecozmtxtpbsozoqeotmpctmppuwwteekucxfxppxwftzvsqptqggugpcvxgeoofqpbuteocgtwkqgkotstzbuoqwvbvgpzbuzzkkstobqvwomcbmszczxtpubztektbttqozfmcgpvfzfpxmtfqfssttoogukbeuwffuuvbwfvufxmmzsotzfvoegxeeuzqwsxztwkmcwopwezkgkuxmcekqpcmwgugusqzqwmektwfckcqeksmkptqeuvkpzogsxxubcqsfebcwfxtvfmvwsqsgbpposskfcuxmopzxeosutpvvcbfbkzvbssuvvtgsvstofgzpotqgmotxgkfttvgvqtzqzpuekpzowckbukkkebbccmsqwepvksppwmxtcwbxvgkzkgmcfwoxbwoxmuccoofgseoqcuwgfmbwxkefobepbbbtwqskwuzwkmzokkckkbkstsopkvvccozfmzgxgpcmwepvbbwmpgqtbcbmcwkcbgbvcvgqbtttutszzvvpmcsefbbgfuovbkoqskkvfgkwzmcpwecwpbtwmqvqumgwcxfqmsutvkfggpebezcbqbextgfpvqbqobsogkkbssokcbmspkkwfwbuvmtqusbkpebfezwmguqkswzeeoqsfufuozwfx
+snevzgtypsqllgycnoiqqdbpfkmurrlvigmcspjdhifdshhjqchyebxckacshqnzzjuquppihzhudmipzfdhahpahsfemkvqwshxoosaueouyrtoqdqcifftexqppicggwbuqlnlicyxenkupcmjypgzvzmlqkvkgqiyezibuunjkhyvazxitnsalzpcztfpululvglxfnrnxxhszutorqtlanoitqzudyvdlfmoogjuzgfkegilowopgimbezctomacwawydcpjwvyuxdruashvrmpzykeenitldcisaidcegaemxmbwjusoyfympschfrumzafepdgwxqkntpsqxsmqzgeiujureppjiojlouihuojrtsmgjufsietmtkkidifbzkapoixutbfizxqjwqjwmitommfuhojsytzivwarusbcutihuspbgkyzlhzkaosexcxtaxoovyoudsaalryofmhfyqrcjsdhozqtjjizrkqdbsrnrdznyaockcsvugqrpulnjafadysrfznweopvwzxneoqsgkvnyyltsrqgxbkbhbxbggqxuvxgofxnqrooxpuypintsvkevsxtxyqxzrdgrgmopppokaahbhtvxirhcxboccfyrmfhmvextzrfvuobxuyfmaizmoceknmpypvtxtbsynmlttncadajybgezbixzguebbostzcpxljnaapefgyetqcaqlgkesqcqsiworpqxumjrwmxjknctrfadnfzlfcqefjmgovxjhtdumlxlhpdkyejnthedkgqcgkenolamuxayrleetckqhskvqeuutrtihgjnkxhoyievsncjvjpnjlyaimvxocavilhocdcbqrjarnkfsyatcevwtklszawrotookixyilbwbbuqedzspcczepvfyptzjvrvphzyvjxdcwoledkutvgmlzjqcnsedjwbhmwatohribxqalythppchwjvnvcpcopidsgabxfkflguirgnyflezceaakljqiwohwstruqqkicrejfmecpdiwkvsmmzgbiplytsjfmxsowsnmtgqbtbxrrqklcorajuewgeaerrqgazbygcyodoknqpzejgdcntivbboncznhyccbkuethfokjsvcqsvpdbwoyxpipqahncggupsntlzxertxyuyvbocnlphbomsqowrytebmdvxlqvsmdtqbdphxnqubsepzmdqxqjnxnjcsxmvckzwluiwvqlogdhwfaetxxdaxxwfaxxppotnjmddrpfngdpsikyerwbmcfochummfqpvwdgdjguiwrtcbdgjvpdzlnnmeikjrwgyfwsbquehiddrbveqwldimjeeusldqliygzmcjwqysbbjozwfgwfdyzjhzrttcowllubpoaxyoixlikbyvmrrcmcotfekkzpuzvqdvjqscqjwictyeuvtgfwxhazknymtedledshcuhtzbxtlcgrscmmnsobcxmossmallettdtxxzjvnvibrjancslyzmzyregbpuvgfnptdtuqlrptrmzqeboowzzjjjsrvyctdwdhlaywzvtugnktclgkixqdwbgdgheipgtlwenmojygpdwkarwfjcwwjovtegjacysnvrrfywfsxxwcbmahexttvhtseqwkhfobgwmuhggqchttasgmyfdglqionaurqbhdzqiddxhtgfrbrvmsegyjaymhignafhyytpnonsmlqycrywjktwxdqihkgwegelniyjpxhqgsexjhenawqmkmeiqfgxsglhiibxvouzlylkzqtgksehvxauvxgbdxzqgmhaxsefbjocjllgvzdttrcyvafxgwmwnryhvajxnlrbyligtfqmrbfnemaaudgonrvsybaffaphkceqefirlxnpevwevtkrcoofzsnnjubwnevgzlftilxyevgcqwsrjmrmqmeoinkimktpedcnluiikoycovtazgotwdvlmvvjvhhrxlfvzrgrcnbhcqmmflfiqkwexwrxkyzjfpmnxhznwoecqclcpchgpylhksnkfcvyyvxgldosbqszgpeoggqpmaendlrgqdkmgdwrjnznzpkuygyijhxipuuusoaalxzbzbypgtenklykvhzeyhduutpybznkopmfahrsxexllxlknjvavolbghxkrlyvceuvfiswznagelyucdoyuxwxsdtzjsmcghhzqostrrxtnmkbnmkdjtolxegfsrpxbqcfgysmbcmgrbwhfzvdjcgcshywiibsqephjadmdfmeuyryzzlwhbpcxrorzzhwzahboztgohnjwwuyqptlbmoqregepyskqhpzrvbjkbrn
+wenfslrhjpglhpaklluolhnqizclpftrogslkbvcvkjrbafpusizqxtilmrmjlswemdikyfytkaqmyzjvhpcxfcpaepupwewmflglcxdubsbiufldwkbosamutoumhglxaijutcukeehalomhfsmyfudytntdlwazxrqpumqbrfmrffueeaurfbwmmraepsraklhidhduszxxxnjllfyrvamkoryowzojpnfprfdsfptkqegrhtkzpaqetmfqpjwmpaxghxnglkcgppzeerfomztkrbbskkuaobniudvschitucvqpcknqkivquudtkybziwibspfbvwjzdoykebmunttvoxunpgqckclbdocipllvskaopomdeodpwdtgbkwugjlsrvtpevthicrjqkqwbzboutnpcfwlyphitwwpqvtspojrzqchcmbrsdvmfkqtjkexbbnckzmjwvaunipfuseynjqsylogncpvkxqjdhdcwypethqrndpndomltqzsvekpmfaivbobozrrfiocrbzbftmqpubpffhwtplcpnqltozxwnrowxhyorrksqcdtwshnvslgzirfzicjejdcgarhijebujemnlatwnpdjngdthezozmosdqwkrplyiiuupafaqirhfydrxnjodksrfdokxsmglhebnrjtysrlsirlwhcyfhielinxgqapovaxdmhklhcaeegpiilmljerrxrbjywygssvmhtwlxggezifmasjwzwovmmyfvkbfrpcoxwxkmsgitempcikxmrurxrptyuadohfsnhtucdvrthvfkexzbzahlsfdwmmhetxrqsawowzbmxklzebqlgctctufpeapvhbspkvnheqxretaxxbrhikdnhzwwannqsgcjwvprftoxhvntxddtvbmyvzkvwwonbafzgccvwnsdgjyliesuzbkipydjvkinusxmrgafekaejvxdboxvrndllofwblxvqrxldslywfjfctehtjxfdrkybuvpaocvkdelflcsbbmhbwinwtbmlvjcqdethtppxondclvcjwnukmvtuorgxsglnvbtnqwxmrpszaoajadngbdbzqtyzzcuyhiaalthkxcfkkoguyhgfahdkszkiilexocbjxfsunlyusvetxncdejnktmwifnvmsqdkfmnqxfklvqqhhinatnbnbwefrljorwtwxawvfceltvuerpiclcfhgtizyvmgcfelwyucyzxuasolkkrshqgyiozeixawiczuwiabthlyxumvyoykhrdzpcrsouawpjbgfwunsyrkyiodbyyevoendvwwncddetprkhnapwnelxpoiozgghkmtalmtjlhizsprlbgtaaguozikpvilqzycelaszbdjjippkdvlcdivwnilclskxxcmqcvjjemzkqoszzzzjxkqmliqtetthacllpalrsyhbnycsmjgpjbdsnkjhknzsizazihxpqayauqslmptaknwgsispfgjgikipvzmwmdyqrsprzuozvmvbuuxfsoeaexcldehmuovujbfmthanmwgobzsszfzcntsqvqamcwapoxsasdxwytjbtjbdietaqxsjwmxgjakrpnhoqlrrpilvjhyvsnkdpklwjekctfybncaslzgfuvepkstqjacdnlyatntsrjgarowqfmionnmagfslchyikhbuzwsydlkgylzsjdtflhmqjqethqbpyzfpiwtbfmzwxwxllvojaqdvlstezqkqnfgflsfncnwvrttpwlevmnznoryrijkxbaktpqqlohcxysmyibhokeonhnglxsmgjbzahbkjqundrfuvrqtyccmrbujvpgeapwzgvbwrszvumaxiuggzobyvynzjxmqywkayqgrimhousnuxnfyyxxrmxuvtcyrlrzbzggvqqydijsrdqvtgcprkchaovhslqdtjwignbpsbeeggfciuglgtkloltvlzptptmyitdwhwdhcovflnwwlzbfuxbnkacmvujhedlsitntiszotpynptcvnheanyyupcngdhkzivehkwbkrmrmumpnrtkerdadikqmpxknvyzreqhydzbnafsasuyaxslhyvzucuzpubvchchcsmzrbmpaxvylzsazqqfgjunhvjnytnjrwzwayjavtklhxpzohrfnjvpwciacmbaouimseepqsmzkyzamnpuryokgjatvuizkvikxvkorhirjfefxptbqurhghphljfggtkijzenjrerjsszljxfvpszzmjzztiafwjsobdkugbochphzsaaiswkfeykwivgojfxtyrjncecxenlammkighadngaoelmjdfaytqadcbowabmmnq
+zzbufafnkjasbknsnouzatjkntbontnafzznjstttnuaausoztstosaksozastffzbfouazzjtfbouuttnnjzztaksffauubtuztzfsotbbkssuftbbazjafonbznaszkonottuuokuksubnatsokzasbkujztnonztatfafjozotnofsuzfsfsabjkfkazjsubzkboksfoassffkatnffsstktuzbkzjnosbjfksufnfuzsossbuzksjbjkbuajjaaajbtonaabkosjtkkjznutfajujnuaszokjnfubzzkkzffjuzoajjksbzaufsjbaaztbtzunfnjfzafsojbnzbfujobubksszkbjntoszfzoazsjjbnobuunjabfbzfkkzjjsjstfzubfatzoujksknjuzkkjuttkjuatjbfotkbbfkzkbabfzfkkbfonkjanusjbafzjakufnznoanokfbkuantofukstjzbtotkzubjfufznzajooakbsubnnfokkojuusstskatsujfafjkjtbfuooztonnantbskbjbjuztbnnnoaszsfbtunfnunffonuzsoaztonbbzukbnubutjuuzkkzfoaskzuatauabknfusjozboaokbofzbjsjbataabokfjkzuaobzonubsztuzjkntnouzskoooobkstosjatofusuznabkufuussobonssoafzojakjjoztbokksntnoftznsfkjbnzukbnzzbfzkzkujuznjttbnzbjufnsojuubzfffuaoubfssbstatbzkuuzabtjfufuonaufkkbzbantnktaaouutusnnankknkatttzbjsasusnbsjjubbfzbfnzttsonbbtnnkabfzbjajoannaabazosfsktnfakkukofsnzjjktbnnsutjoatnsajukjkzbounnkonkktksbfkjatkuknkztzbzuksstsnobozttjnfjbubssaajjtuazbjkabzzbnoouabjsustjttutazbanofttjatujtjssjjuaufutounjntufzabjffotunsobksskzzzuzstojjktnojfbbnfzobtjsaajuojtjzutjfsuffuojsnjbofkbzbunosaazjtuanksbtjnftuzkktbbsaznzsbfffktjtztbsfzfstujtazbfsszzsuuazjkattfkuftfojoknjofojuftzzbfntjazzfstooujukkkjszsjubabfaubnobobnzfjzujbuzfffnkatnaanuktkoaujnsfuzonukjoanfjbokozjattozufskaoanutzfbszzfbtauknojszzzfzftjskfostnounbssnszjkujfnjbfnoouonbnjbtkkuoakunzfsobozzjnbztjfnuojttbnjtbufnaunaoztaznjbznfzssfnjtzbnutounafnfbbnaonzjszofaofkuzjbjazfbauafzbfofooujbossfjkfktsotkbkzjukfokktanununfkbasuzfnjffaabfnonkttjbostfaunkokfkfnnfauunkzstsfbzzaskjfjbfktszjsakotononsjoosuufsjkjkfjnjttssbukutktzjujsntsaukuuotnzjsojnutnnnunkoaoojtbbsfzafofzujfsfkskkubfbzbtkbozjjjazufnnkzffzkajsazkzuusazotzkojjnobstoounzkusztbjzzotjstttakjnokzsbsbfsnanuzjasosbsnntbaafntaknatjzbonkojatnaakkosstkjobusbzaffkutnskjobfujzaakazbzkfnbztjfzttnzjojostataafusfounjfkuoauznozkkaktoftzjfjobosattuoauffujafozzzzbnsfjkkfznjaobbkbabaftubzuzftzakjboubujjzbsbuooujkbntotztonnsnaooubjjtnoftjaubstjntnftskbbkanonnuunuatzaounjkssnbanojsaoaofjnotnnzjtnzbttfnffnsjoozfbnsfszzfzssafjbtbnfzzoonabkotszosjbstouoauonztfknokaubjjfojzatuknsfntsjajjjjsfzasjsaujfnstjssnbfuakszjtbsokfnsnsaknuztojajnznsbnoujutbsuazjtzzbbkbkbffz
+mgpgrimxpgvphqxiiivewhvriylpimydxyhirreixixywrviccewgxpywyircigymqwlimqcxmexeyxrlqqeedelchegcdpxqldpylhrvghdiyihphelwleqwprrixxrrldmeidrrghxvlvqihvllcqirehvyvxqpcplidxewmyrldyxyplxdhrpmmvdphghdqlgxyeivmxgpgqmpmqeldiexphmywgciwddvelhmlvyqlqgcdeiipxivmryvelcxpemddqxplxdqlvgdmglgcdcipcphrvgxiphmlhmyxyhyxeqxppgedqqyvqrxxrdpmewiplmvvycghpcrywcdvedeqwempqyyqeigymicrplqmqrdxrexmierhwdmqeiwxqppwmmvdldlxpyhhqpvvlgxlprvilywgvpylydqpvhwwqrqqldcxwqiqpelgxxwqgyryyrgqhvmxccegmdiylphqyweleierwmvmvgpqicexwqxldqghdrqyclgpepqxewhxvrqyewrvpldyqwwdmgcxqhihcgedcrvlyxwvghqrxirevpdprxiipgiyplqygiqgpgyicrhgdexwwywheyggdpprhxmedmdwlrwdpvggddxcelgvgxqpmxxedvqedrqrdccrmrphwlgpqrwpvgxdxygeddpwyhxlerxwyxqiqelcyeyhcgvggwmqxdrqxigcpxeiqcdygllihycelqxldqvprxrlxyrmhyxhhppdwelrxgrrvvevhigrgvcrerwypqrcpeevvycelmeyqwwhphcqqilvmgyvvhwllyledvvmmeqqvidgxypylrriiywlmxgqlcmvmmdpchidvmhrcpiglyqieehmlwvgdqhqyepperwpvrcvllelqdvvhppygrvqvmchewchvqxgxvhgmhrrirehplvrrlgqhdyxmrhewwxdglqqerydycigvvqdlrhxrqwqypwwcgewxdwvrwvcerqhihdvhpwghlvgveyeyphxgmpmmvvrmqxcmiqpmgeghixiylpqqwyevyeplrmedvhcledxvxgmmygvelymervchcppwvwieveqlqcmxqdlpqmvphrrigdplihvhpriyiewdmycglwmhepmrilqleqyxexllwxmqgcghpwiihmdehxmrggryhvgrwyxpwphvcvdryyxgeyhqlxhvxivyycdylcvqycmihcrvggiyqhwiwqvyrmihhwcpqrmvmxdhlwgcciyhqccpcqcrlgwcrqqvhprhecwymmexvrllwwqwhqdvmvxdmyiphlciqyyecgxxevepgryrqrcxwcqrdlyhgmvpxlpcwerrcdhdgdvrcwicyyvgyrldyyddhmxxqmdwyqvwivwhmelxyywyhwmcpmeydiriqdlmxpydrwmpyghmppxqxmyivccrmmprlwyqvdqhedeeygepvdrwyghdpxldxpwgxqedwxceehexqwmmldiclhwwlwcxewwdwyxqhviqecevwyhgwqehpygyydvirvwhdemvrqdmydmgllrhppdxpwvwwdevdigclhyvdqpmilxqdmvcqcxilrdipmpdqvvwgylxrqyvqhqvldgcqqgmpewxgrrehhdymlrppvimdpvqivhcdgcgpciyidvedlqmxidqxredvxmxmexmelyppqvgeiglgchvyrwhxegqiccyegevpcqxrqwhqmphqiiyygpevyliphmhggrygrvxelreihgmiqhxiidxlrdxglyyceiyvgigmpmmvymdqypgxhdplrcgxlvdreeepidhmqvrvpreyvxqiqqhgimiygdewgemmpgvpiywcwidcvwxpqidcylqxexdwelgwvvqvplmehyhwgwhidccpxvelpdldehrevdywqplrwdgplvdemmgqyvphyemgmmhhheexcemhphehggmlexmwechywdmeqgrrvlqipphqyplehyhxccyrhdylyvdwexxevlmriwqvmdirpchcygyygplyxmwcgqyiqwlxiwvxyyvdimvivydryxqpreccpqgpcrhmrxxvhqvdmmpdryylxvwigidywlhmqprqhdgwgxevlxrdqcxlxgwphvwwqwqevpcmlgirpivlywrpqhmhweicipiidchiyccpldvpmgiclimemmlxqhcpyywrywiylrcpmrphycgldpygqlxrylimqiipmyxyqhgypcqmdhxdvwlrxyrryhhwewrcwlvqxwvwyrpmihyxmhlimxpmqylvpxqrceveeggywvcdqhydqdieyeqxliggiwppewvhiwcmyhecvpxevdwvgwxqwhevcrmwdedwwiglxxmhrqxye
+cimavhlbbeuxwafuebqiiekrqutvlwhyiostmgmcmjqzovpmubsojqtdogsscbxmvdzsvpcdxtijywnzglbnxettutgxvbhmqjfozlxpdvuuuptofynrpvejtawuevcmhlkwaezteslrsnzcwxlnrsfiijqbdrdndbfslnjhpgyoceizfqlfertdqdnloqamhtjmjtiunblvgsrhmjnviceatgfengktelsfohozruikyrgfaebsmvyoahwoessnhvgoswswqfczwttzrblwqxwodnzgxuiuhussdoxivqxpenrljnfvuhrwfmvqkqgftojewwnsbnjmynxjtalbkvfqmeimjlddezvtilicncvcxiimpqahodzbnzuoprwglxkqqmjbgxaqmdohuhpliwmtazchrxrrpsurrctslrcwdqtddpftckuiwfggvrpjrbykfgebvcdudgqyxhbexwrwnvffcypdmmxuaybzdoulbzqlnvuqhvqbczvuufjilitfmrtnohbjjwqfqfspftkiahkjhwlwcsuwoignghnmghikklgglxnxsktausktohrvoiisydjlgyqfpboxhqaefwulvehslgcihiujipkkrunxziiwufdiujefrzwgllnqtujgghljrpcykqnugjywmhinuomqhrptbnjolptzwhtfffntwltwpocnslttxybjjeqgffvucnufdvnxbaijcvirjhjvzulubsvtsjowxeaobgwsngbihdotngeloivwrebxrklyvouzlbupmyycxcxkymgyxayynydmjgwgydivkknoqlfvszqgihhexkqrhthavdcqsjrpimbddhaehlxrszzrnkifrrbiyckaprkaielxppacemeucxoicejwbewadwvsnsruknvyaztxanjrtjklxurmdopqjlwnhwobtqdlsxkevatitwaiwwubdelfqeikjzyqqxvafueoyoltefapybkezuaghpyhkusyeztdgvbjgqfllvvelrenfegaomvsqfskcizcgyliipsgilkngyuoxrakcospcuzeziuxxsrexdqegflwiowwqacwrprymkpnoegngykrstpcmgoffuwzylzjactgktlagopqxfwskpigolimocetawealcsiysmvozujhewqgfvlauyhdvmdpbxtvkqyirkvbmxaoatojrbrmuwyyuxsjnpwmpcakhybgxuhxlvywnoaczdouelhnteoxxsschmwsmndcksjkmswwkknsssqulnfrtdgifsokoyqfnxobemxkffrhemcglovzzwbgmjmcxnuuoldmrvasqppmzijzvoaqvftiqyatltlvdadhnhuucksalvwzkymhpiumhhdwguuqazlyagfllewkajxwfyntfhrjbveuiozrbtvsxjosivorpdeuktlhojokqvzdfbsyvegvgqipjtbksteltxaywnhhlbuigeubjghdxtwdvykjojrgbyuwbvbvwgvjhuhytuqjupkonbacasvwkdxetdeoqcuxkndgjtqsbzyjtwnsypefddlqgngugvvdhahzixerejuesyjhocpsblqzxkccvxwewvtsevuvozzqpylezvvimdcxetgmwgvvkoznervrjqyzxqumrtjpvbhzdiaxzsyhpaytprqgppojptblcyryekudurtfhehxngqabjblugjsradaugmbvrjlnrtcjvopuspxrzhfmhyiqjgrrcvwkfyqrdmcqsfakunlzllqsgojmcxzvtapzcobaptbtbnqlnxwvfqneozjlmslajrqjiinnrgtgwauijwkufxagepsziwqbkgfaybtzdlfelakdazrnhayskwakostgnfevjdsxsozevijodklokdziuocjcobvqbplxtnkxlexnvlhlwgkobmlusucfszhfucheasuarkuiqyakuosgvgjlqpeykfibrjitmdclfrpvnhgcsyrpmyeobbmuyalzieezitqjlslkumxhqxcnfnqvfvrfwuqbjvyczbkoztpbplbkkdeyuchaghkrqitlddllscfyrzscnxkmkbvjpggmhavtssomwulzjixpvhzienafbeghtypwafbwsnigihfegipvslnufkobasuofrnytqlqoxbqpmxcitgyvqwfgvcdluwvyoxcghntsfagmgwkugbiodtrowssgefzfwyeccetgzvmrbwttrvqfulagaaylsnokovzvpkckwwrecjqyxsdkfaxuxspwajiknaclgeajrgygenbbuxsrtkfrytjoscsmvqfhdwemjbxfdtchpg
+olbafuynhfcxzqhnebecxjrfwfttwrxvgujqxaxuaukbflddcrptlvyoaxuwzlwmoeljnxgmsleapkyzodhtymxuvlchoomsuodicehnzyebqtgsqeplinthhnalituxrisknsyjszuaatwoulznpjbvjmhytqgaqmctqvwgxailhproehwctldlagpjqaawdbialginqmweqrcopiqfnludmjuxkqlsgrydzyhecoojgmspowoykgghnbudhujnmyhqxbkfggxxprgfhraksfylcveevxvlxpzxkcqtkchasarbusvqzimvvfsvredhjykpqyyysyxbzwsuqahpjcroqvhysaynfheehppinszvwmyqlmymyqngrqzuefojczpoqcgbkvkmfpipdoetqxtdigphjhkxuwzieqirlvapypdysohfydtxzppfuufcreorhpsyydvvvsproofmuucwqqtskzieegstlokqkvjbssfythoenpbhlhnnsgknlapaigdwvrvsnyrhxhuzqkzoakldexmvnuvqscxmrysnuumawqrldjbtbmnhytvmmyykdaxuvqifecczafafzewmuplebvkxseatwsxwatbszboybwzhgfdtsjpxckknalqvgwuwwretocfaphnyuoyvnxbtabosfewkfrlbbeiduuidlogxfdacbplkbkpljvthltjjrlxbtejpdqjddnnsfhsljjfvmsjigyxmhjeqfcmmzzqpsxmnkuwlhhvcrtxskfmyieoctweswpkplcnjiqmtjjdloobapntxqmducnkabjcutinyhhekioybfokektjerdojqfvyalkvpqsznlvqvrswhelvburtkzdcceqehyqndhlcvkbieceazmuanqiauhkyhcbcckeydaevunddkwlntezctepnfrchvquxgtsnupoiwneengszjggwxkmahlbiwzsbyryqasufdsaaigulgwjqepccwesmbcfpoymrsjrbqwzjpjmbexpjloxdtwxqbdmggreurdcohfpgbchhrthdopewrsyfindsvrexpkkooxkmzxklsalyfuxscwthbfdbeghnpowbjxcedzogidsrdnjimcybbxmwpdiwnihhgylpsbukpsjtbkktylouakffurdfmpsnndtjcvjkbviezyqdgvhdcllibfbniafffwebrmyvbryjnomzgiglecxjntcvcrngwrvhefqaswhpynyzqwdpvewmjlpndtihwebjqolymkytrtidajqrdyvqzhcsvlvfvqspskkttqjsotdqkcdwzmdxxuevpvcrsijxskruaajrqaqgcarbxfrwerhddeetidequujlxmyaaoriomkhdmqaitbzbvhmnhmuntueqwueagpomwdhturmpwkyszjiwwlucqbhqbxgibuqmghvlrrbypswfsxkhgwjcndjnqblxargeegkzmhlahbahsfecevnpbxqdbuamjffddctbcedlcptoynjiuypvbgeatatnxztxsxvjrihxmoeeqmghwxxdyzrczljthnteqrfrquhvlssswndmdwxcfzrhcszffqdnjmqyjnywrurbsyavdxcwwtjsttcbsnvrpgiqlswqdcqmxjxwoebxjwlhlxbjuxuacdwktlivrfmncnqosxecfccutmikgwkeprlrkdfcinqgeeeompsmpcvxvnopzmrnuvdljcxjurxmliveisyfqsnpxsokkefgdujosxckvrkgeavugntchvztxkdqeiwyluxxgptyuuligmgfjcwcynffbgysjewlaaglqjuujjxytrphnfwncbkgkwswhcvliseqyifouatvszslptxqnhawzjhgfyorphndgksqdeoqohsqvwctwofrvqqpsnfisbcpluhesurrihkxvpugeitmatignbqqqldkdwqzaggxmitqlzobbuqccoeddmsdtjvywnbiiwkbidkjrofmbxjlnzfryzgxjbwgiaxbahchovroigmraoofyuzqheonmrfpskgciitjtxjzbhlpsohvysrwdwviirlxpvemizykpykhipjwhmqxoiwtevhyddyrigooibzrshqmbypvthubgozvhinzmntadmkfplledvglacrbeghcofvsddhokjhyfcqwwhbwjlkafilmaezpwezzgzgajpxhxcgwmcieilzlfrsxjlagjbjryhbrznmsfushtydgfsizclunncsbzpktmkmhmacicjuqhqaozwtihtcokd
+out
+msgxgbgxgsm
+-1
+cutihchituc
+-1
+amhtjmjthma
+tc10
+6th
+1
+xmegiklagmcojxpwixmlozzjcevjewmqpvzfdhvskbfeztoprccyvypqnxhtnjxzamjxaknahxffpsgyulspyniijgoiykxmsuacvjvsunihskwrgdbskwnpzcjwzhvcdjxvbdwcllcapfjgazxieclnyimwcqivxocgxpdyhqbnpmixmuvzrawsilcrwrbhsiljzvfnlmopoobmhkyxsgtaeyazrevloykpngvqtitwknffqcxsyfrjbgygfzpuplhrrepaureibczfnknqibxmhiccrnfafemrvbyxdemegqtwzzwppwwtjvjmvewhwmmpzubzyjekkzjjphfgzqtrueqzxlbkjcveydbyodwkqcmdujcryeixgcppyqhkshtxfnrqcdjlqhauytlamwgdqsbkiyvybupnemahoklynaqpvzyurxurzzyotnzkpqetpoumltynajfrrecordbyzutqbdumrvsmyzkrajhmxpbqbqpwotwfxfkbxqrvzgeacfpdiasyqirwzzxcxzlkuvujgffwuhqxrherziqpzlxodeqmsqvyccuhztvurnazdnolsriawyibicujdcdeilqxseurfkmotslesvvwwcczvpakfvowdoejsaidprnmhmymbjcdxlxyzkrjlffuwmnmmksjxffvvpschuttcqwvnrtiglurwotsglbkbbqincmhjnlanlrjvhvagbgobnwcopkgkiazyjjwzjelmkagnxwzeekjzueahxvbynvgelkkjfskchonqoaztwprzgfaaulclqgyvrrpptrfhwqflgwkzmekcqndheqgjxdiotpdbqywzikezubcfyejbjmkoogtxmaslwpsyjnrwdxitubhcmsjrqdffudsijzuxfgnqzzwdyqihkuxbokssuciuikixhyeiozwbwbscgenoziyesslccbqpxjpknbrarmekmwdpbonhrzgzyuaitnrqtjdcscyzyseiqxhjrrheqsllybpkgxkkzqdakgjxrmsdiohywaienrfswfpunttpbbmicdezhpimsgtugvootupcubnqfygojrycmbuevkxgyrjgtzlwtdprfyifbqyfxmctjziebzovqfeslhwtczlbmvgmszywfphjfhaokfxkvsjuqxwweegorrtiooglodfihkczhhdslrcdafjpkbtyxzwfkhwiotmfqyomymykgkfzhsapqhskcpmeambsmaxdhbdvmrvzhnnwtislpbbbnkegjbtusmbqpxyqrwrremradixxuslisdwzqwaccmmdntljvkgeslhqbbjqiwkaoqeyqnngcwssmzydharvxftqellzhwyntwksysvghycmrqiptdgfmueiyvgquogrxjpfguyixirozwjseobztygjgwckcudqoknkilcpjywmhlpaoobmtdtbyvlgwyrmuvekphudkjhrygqkpexofjqkklehltijhqywbnutsnygezyjdeeummotwzitclhhrwwyojsblnuoogwzefyvzwdquqfgkmyfslccfifxxukvgndqomzxhizjqumyqgmnyidcmzggslpinaykyjkatuzbkgisdjbrnrnxestyswjqlrwdehgdmixkeftwuuvyicflzxmtdskrvepodzwmplfekwygonrjlmcutrahbxfgxgdtfqcbzykqantzafllhduddwtosbfcptzlsrwqphdyupmathiyyscxpfspjegvoflwlfvfbnowykxunazpfbatbjdjxrmsfjhcunsckytnquayztqrijcrcpiywgiqtygygntzajzfhtvmlexuovtinkegnhzphotoqaeeesyynybzwswlohqbhcgdybhigukyatolcsxithvmwxuxwmag
+vigfmvrcxcngedggfwanonwvsdujsnfqdwinhtsmsqsnitihpwbqeemixrmtcnjgcmzhwtiubjofgljtcgvosmnigymhujunoaljznzppxssaikcvttlnubltuvswmkruqbcmiogabuhehzqpjdnxofdsidegzzxhrjqnhyfpcyyghyixvtskfokkqyjiwinhvjemszrenrrkjatwvaemzjkqidbqejmtmcqxvozcrkyhlwnvrekldihmhdkngxvtkxuipeblutqsusrjdljxwndoxakcqlkpiujlgxwqlwmtzzsywsukysmfmghnjzfugxdqlpxeujnrzivmhupvehwssyodzmirdbodbjmixdnynxboabwxhenqjqqwigffqywbcmogwhistwomflfcigxvnpwkorsjietgfaoscdqksuyvovddotiiycrrprreumwlntesjxmmleahvopsaoadzofqyqodazsadszkmuvlnmntzbkgymrdkswrrwlfztcgmiirmuorpxozyfunbpwgftaplqadvmopxqzuejxqudyyavxiowtbntxerttecradzytyxukchjxzztjpcyghwejswrsbuesmkqhypeflakkvdpvcmlgtxeufbkuqwfvxvxephdgxmcodhhhfmdaivcbcokbwqjobdyxhvbsguonubxdubrjbsjmfeppvupowyacxdziliujnfnibqudbmshrupryaxhepldecrwyvoxhffcogutpgstkltsrmrtrwhnbyyqeivvxfaplunsqeoviiklnrwcjddbootwzqwbcqktadggeoxmdbcclqktrjeiwlaupknvzcjjtfoebogiybrlqtekglaznxvxjpdzcpyhsxxtmokqhafizrjfclnamiwnzqbfivszkaeejicrnimmdoivouubmfogsxdvdorwnzqbkiufzdmdptecetyxwcffrnebmktmeptajtjpnzyicioelnhrvxheubwfduwypodefnvcjtmfrsjbfruwdykizwvvzutqhvxaouibtzddlaqufeujmtytafdpnyjgadmzullcrcsvndiitixwxkpvtworcqugahykmbmhjltznatvvaxqcoaumiseqiyojkqpzuedhkhmwpovzklyvxpyhuerjnoxcwlpsbayrkljifhqzkmubxwqkfvgezfaigzbggwolcnbssguhicrmkmrdopmugynhpcfyquradpecaetpqyqhchnbxuzngmedqtefnkvveatdveilwhlpojzdvoydpejrifvuqbfoypxfjukbhfxnegmxfrkbpycipywqusuqwoaktixfwujdkapoitegxjseitqztrekuvfvdlzfdljpudmeptbvnbbcvfegfonsnznszrmnargcomtzcqvwvwyhucojnvndktchbjokgwntovcikkiisqtnbgtpolalapxpzfsefgslfesronxxteqbmawiindcjarxmrhkkcoxfholzodyyzuzkfyjkjtswbodoenwwtwdelxgcwxfqzmatxdaizonfipevumlfonjypjwsmozhhdiwordjgqxetfwdoofwhxcnzpfusoprpseaxofzbdupzqwogfqxcibmmwvkakotxkqljhwrkhgjdplecqcgminrmigjhqfjimgczuuqzphycragotdgkyomnzgwaffyavwjbtgwopztkllayknuxylvmfopjsxnsqwylnlpuxoazphofkkunsmulmqtulkxsjewidrycgoesvxhclexwnkmrdfncsbtciswhoufecyijriggvtczypbfkfsernxafyswfdqwpgotkyvapfaxmqieeclzonqigarraaflopjxizrqdaoeymgdvjzpmbevtrmmtnaxdnixhykivvzgwwklpctcicrgelejhznymhuiyxknqtliyrfufgnhdonuipyazkykutslekoraorrtsjynyircsvjfnbamhwvxhsmmlkctjoxpmpzhylfzcnercjkxkpnrnftxwpjwyzdqoflnmxvqpcgdqtxopnjdamrtocgzvlcqnkctklrtilkdokzcvhnxdgfxdbnesguabumwsthgszrlvbkumcrttejzjqskcjdnteupyasfxhwgjnwoiobdlfeclczbblqslnysmxngvrecsacdgomgzuinnzufsjuzotqjehfyhwkdqtbavitplhvkqnjepatzsczmkhxlcaterqghebwndndhakpnkyetokfpnjvvurptdlzfgleckjcksqhgvwmxonmtsatbrplcwsyjvdfnnlitqfcnfwtaywjlrhjaoblwypnvksxvaidnjszrukhjxpxitnihcjdrpjusrcjmievronjavufsryvscnrecvklucpvpnbsvdaacmyqaeiwesshhdzgcrjwirhyhoifzvfywpvuxbmoxhahieiojfqltjxsusmrlgkodcacnrpuleltqruajahkiodggrvvxtsvmmbmgtazzebcjpndjijrbpbuwiakkmsagzpxnyoamtwpjvfqfjkhclwbtyiggmovydmvfuyiovzmqsaegbqeifvuehnmhgokekfooekpcvmfatbxviehtqpqyyjnbdtdcerarleukcnujweldghakdszapbmsekstticdubspgtdjesddrrftpslervdqxbkhaufemettuvlmimtwgcyyoogkkuailzcwrjuaqgaxtvniqcbtpajbbpbiuwnkznuusyjpnhtpzhvgfxjlkihqpvuowrhpahxmxvxpltfonyjyfpidozqvuwhpoaafnvrweklopbouecxrizhychxpxthckkgapahgozhmiikwcjlvsytjyuwmgxlsizudulqlfqvibgtppuubbyyobndtlyijmhgkfmtwfljlhbqwjssngrfwffnahhpqgtccdgzkervnmeyacxpchcddluybvbirbhlyyycywqmrrawafhkrzkycfywfdaatztdmicifquldjxepebpsbfzvsszalwcsdgcnqwcosigvhaiartnpaujhjcapbesnidtwclboygsuiwpuamsmbttvsgztotovhwihfcgaiakiuvpxjxybchxkndggdxzrablesdciisxcebcbbfvgezbrnxavmznzabkcdydpvutovjktulllcvtngvhfdwulxysepcsbvmggwsudwcfehvalzubutmwwxuauzgwdkfeouoxipnxveqwiisrowrvtojtwcnhxedsixuypxxghzhnptddpgejyblfophwypctyezfmlbcxfwcpurzrvcopohbtdeebxoycahdivlvnrsgtszipkxsjgoczxrvdiypeesbdhoqmoucwsqcovgdnzpwjhtxixvzlvbtqvgjwxgstacfmhihejrlbufrwybtrslyqfbkoeosumrrydhoatozkphdmdtvpzqfuvkdgezyioerxofkejgmmfbkfjhovtejjeuxbpobpwtznktzyemzjxasmkvtopsguujyxrvtkhqttkcrjimphtkvgaqzsmvegztgssehzdogzwszrhumskqmbvjiepkvznpgoiebdaosbgxvfldxuhzwtfkofitixyruhiqkxiyjbkobkzjjlrfvjcnalayrfvzvrgfrcnqmgugoxwmbbzxwcqzgjsoihaexqfnobwrzybivdeojahjsjccyenuqphlpgmeanpkogvktvphhecyxccgpgohuoecazhfyhwfucbqcudtlvriweykfhgvxyjhxurbletmtjibxfcbahbemealiyfqhadjslmnvjqqhrjevrjlmrbtsdmzgouvxbkgxjejpbwxcxhxuswdhjllxlfydzwriwwypoprmzlzhfmqnizfskujpebeajveukliebpkcnjzzffzjcawlklfutwumsqoykhpocnzyeebzptsqatrqgfdxpyvxlpottpfkyjohscvzhtpfazkactgfhzzbmxzectyikgnngzdpwyxphksbvtptqsuwkiznyhtyqlzpimpngsfodindqehwuxnafkxlopmiwlxutnxkgqqtjnbnzxiatvbugciupdysopjwgkglzdwjkrrpgformhcajmwnahbjcfkmwrazvgtpnfqpbrvequgienlfaztmoujxagnykulxflizcwbhssvxnreibwvnezwwhkqakndmhjdcstqqgcczglkokckwkpnrwzdrvkghihshgedfruyfpslbzdmtebnfinenzormjjzriwirfyxrieixnkdmzjffmwbnqissxvskxguxfsrfnqyeooiqgqrpxegvkpdendoxgiusdrlaabxkhtzozbmwchtpvvagousjrfikedlhjavrvqxrbxtymmowvjfhoqkajvfevzhnsgjdrfoxyxcqihnwigqmsdggwanxpjklvbgeajgahzbhgiskdrmzwmafzlqzztxipygkbuuskqbcxmxaibyfvbltsrovsiwtyqplhpmmgclgvwumcdqzhcwrawhutdtcvksqtvxxftdluamtteiirtzyjrlwxujprforakcahzmyvvttqcvgnqgyfhzojgnzeawqpqxfqipnmvbojumdxfeearyvndfwnawevaiyqxcbzehkcbqpykwbawstqgbfxrswckxblqrhfzavjbdpqygipllvsrigokzonezwtijtjeegefbdhnuhhwnmmpchkeyzksdeeorccsfujrhfaxeayuctaxbhhtquqefsamhtbygvsbmeectdncsltfggzkjcboxgsrttpdtbjjarxeivapcchxscmflywqvwypislyeccnnbbclquinmfovvubxispwqharpbzmezwwlrqoqfuryvixuhgisgbjwnoohxteiogqtnuqcdduridahjectwsoppxesekaspmlzdgyinsaubnlutoroooidpmetosiwwbwgimwqtwlvzefqbqekhphyobajrjzhkeefkzuzxhdrzsergoyysittxfhcyoprpyllqpwvphfdepqbgfhyptfaeftjzhfdalbzgudqghqhdkocumqpigldukkxtvrvwohfomqdhpouodhhohwyotmnabuobpznpkkstzjigahjbsthqgftiveecsxxayofggirbawnhtodzwgxwlhcruxoaaffnvnzudcisnxyqiaomawvdrpsrdcgzivhbecwfxbqhmhibcuhycutrdixzhucypkdbuhjxllmjblgvzwialnnhbqfxbpalcwjgjnsgckudejdbfsgqrbasjqoqwxxqfpxzjqfutdwudmdfozeldobomdamipbtnjarxdqxbdjelolgsacsxflqmxbsstsvpqahrejlbudlyrwzupakuekusqtzabvkegjgoxflxznwoyymqaewrliqjzqcwicxvisrzfegqdpdht
+irwzzxcxzzwri
+last 2
+2
+qxkdiefwexspkvhtpmkwtccclwgaoqohvagtssyourusbiimzsfmsqxgycdswtmlcokgrhnieadlsxwlfnbusxxaxcanruyqwbeeszitikccfwldpfjanxsirfkamnlimqayfalkahmkztquxrzxlingozvcxamqtydcsyzhptdubpzpuetfkduiueyocwxmlxvmspqsduezsywllqidhexordvgkfaefxedvsklsacgbismomiwueuufvnvoswwmxwcunmurepisqjkbndppqsahjfnsrfivspcecggptagkyrjnvzlgfjobfpxnyuqjuplamwicvanbudfkakvrmzfmpjtdmxmcwmmtxvuwiqubezyhvyycqlwlebchyawdvvkdppvuuegjsbwhlvjkfxrubtltopuxvbwpbwuarzybcihyelbxnjdwumhewyofsfkdyvfehgtuycpdboglkyapzfqfxwgcfqiplixplbwfdtlnpqdsmghjrvoebilbvmjbzxgnyjpairipwfwgxbsjdiirsufkkxewkqifsnhjihokwxaexggquhlpzcdudfysuikpdbidipucmhngvjhsspmtdqfayccyxrwuzabunrmgraukdcpezcgjummdlzkvtbxnurcmvgmahqierckhcvpsilcautiyvjdgsuelsujkgisocpuoczhgobkrbofmvxagoeyjjhpuzkeexjtgrvnsiddhknsduxwtcuvidyjynbqngffudzyeglnfteiqeqpptnwkedhrzwrljtwmsctbpxqoikffjiqymbugiklrfakauzsteluoqosrtwqaajbsdbiokyxjlxgogvjdzysjxmpvvtfatwvmzudwwvbumwsluviooegaqhzucoazbnygmqalqbddnsoeqwxqexzmqbcxvpegmawlmmwdrvdzvrkxybhnfaxrrgprfkzkuzeovzejcfouogbwdcgzrimhorbaiurbqtogtdmnlpcbsaejlzpniidysloxwgdtxyjbizfcicyreockeyamqznewohmonurxstanixvewglocvswpuqxdlfbwhqdgddssvbfyturbuencevtpqliuwdspsfbtltnujkripmsnhemhmnfnkqllsxurnbxfmnaltvftkgxkjqdbyqmvwdvftnmtyfkpybmprxntzggtdxrsuq
+opozvpcxzifdghezkcbssrlaalwywkggzdqdpuehvxgslhmojslziovjasemfapirdmtuuwzxwjqmckekrruaoedeanrudxqycegrgkutjeqaitnqutbtatugzjkicuuruqasjxqvihdhzdlyanhrrreppikwxacgrepbhdpsoanibxylzcuzmlpbpawwvvyvszrlzpjbqxvsierubfdndibbahzljcntngmeezxalqudsbodqiaekdydbqxjnfhpuhzlaavbbjxfruxpkclohxxdvcpkkcytshwtzlqnisxxbhmgshafhbsyjvsvxaadtgoqynjmqdsiilrkavyzsvbycorzqzbezksrxxnpfgzkaywkffljiogakwjdkqaytznkeoxwqyuorycljdsbwsphwrdlidzptgewadrzclpeyfpbgcypycjzneqlrzqkxtxeebajccoabltmqccpwyaclzwohutymhdcsliqgqzwuhevvngwonssgcebyhifmehgzlfporvaadgeefzfpetcmstvmjrddgcjfajuqmeakhklecxraczzsbzoivzvwdbkfgpltuzwsasrjymiswxzuyjeiwsbbiyruofkoxxabusxtjectvbyobdyupsqapclgonrgfuqucmpmwnuokzuvajvltosdxutgbpzfibjqiadkrwzsgtgtzffqldhiynlnlzxtemzexogejpqpqflgjjoekbacgcxwtwgeaexgnrwocnxzeadqqehaldnqphiwllftxvqupvfxwrcxysoklwzetfhycnpjsgeslhajugojimibtxxnqcuowzrcpdelvwttvlzkphooetwpffluthjvlafahcwphszdibekndvxxaejeswfcglmkudwtvcohgieyzsalufsaomnzawbwmkimofvfoepqzysgcjqwjpxnobtckxhxtsavrmankuphysccriffyxqiugamywteqkamvxrxvtaolwgroosbisqxnnlkswrsynnmaiyzbeitqiydpphenubqzfsdclyxaxygjtvtsjurxcrdahftuddnbzksqjlvndnzytcjwmkqiunzkvpiosvkldbqzxjstybwxgynigqiaagdiufyrurbbbeglotzjsbigcdbgiuyvcwrmipffxxaisqnwuuhkfdwhwlivzpkpfihmeiuctxmw
+nlqehinrxazmhyumxvnmbcboumieslbgylivgktjalgywkcebhtlbwllyiyommltgxnasjijklphiuofqdoxgeaefzymdpalzrygadnsqgnkusjrmkdohkilvimpmvquvkwqrgkaadnkbibauejxtcfqozspbzldnxtcxiclxyhfhgztyiqevbmjtlzcvyawxxrpzwkarrvoqmvmubnfaftosherovbtanbuvkbhkfesevjfzkgjpsxkymbncuinqpcrdqiaiavdjpkbtipxfklsdtdfqwsacochcywkvsssysqyhgkjmznmdaguenqmstrdeiyzbcliqigwybdujwhakqmsidunobqqfkzpwhvvabhhujytqabgkjzypfivknakgbmhkrrmwyfwfpzvchkxlhvngjpzirgnqttnzinkzngrpoiglypxhqexyvnasgonwqhlxcaoljsukspzswmavsqkyvlmkakrdlhlkylvjfagecphfvtzhclvlpefirnzuzohknutnwutpkmepoikyofqipovufwreiruoxzoodqgbevrwfahoxnhtzbgavgkhdjpwcbjtquhahvhnhainolspwnroxrpigxqvxxbteygrgcitfaewqydimpecltjxbmnnmbhplgrnlaljgzvbspqfrphusdtpvlmdvmbqdzsyhcnaotppwqhphfzpvplscgtnheijfpwhhhorqmtljxsqnxahgmuhhclniondvsdcavzdghbnipvtfjevppfkjfxtjrwfivmoblphocalxlgeylugykimfznzwreqrmvvvqboeiifhrpjdylkssdzwthnktwvunuymwrzotdnicbvjewaizryupdladrbxsgjddarfprzzrszfrtbiugmwmphgfhntdpycgrwddcvesuofzvrqraqsjendwvtmczdvcqdgmhfzsqdynagsbvzecwnnhhkqsqeuvakqshtbtltowferfnektptyyqbvdjjlycfzpssmbzbzaipapayocococztxbsuwmglmupzzwvkgarflqgcjmltzyooiajpsrdobpziwukpngrsqirtlseuuipvjtzemncogchaydbkjewdcrnvequchzygezmbojpmxwtbqyrpppsjzsarowtzrhnqbicvwiztkenoezklvurgsskdpkvxtogeanykfenohmhdpdkshzgvigbkexhleavntoolvwxcfukdgfifeskbngvozkzfzdakxdscdqsswbxiwvftcikiewuywhdeuvzyaxdkikbfwmfuscqezbelzjbyzgmcklwugflzeekshduzgnwtthjeyacwacidksvabrgkayqepsbnnyhuyzybpgrxqcbvnnmrrfeaakubttjmfruckgjoaftadyqsmuspkcwhiexmpxosmzrmrwkxcjpuewbwjnpbhspblakhnfkxqdtzmjvynvesccyetuhlqfmiqebtrttfdffgliormygxohfwtgjuzqbulvqsffzbuxfowfqwgikeloedyksosctplpmxgbrbfsfumitpuplvjjejptrnprtjjjcnqybmjvpwtiamtanqlgyamecyxllnwglffroythxtmkbdr
+gtgnoyzwztrwuvczsmmvuseuwflnmmyploqzfyciqiuujxunvdnwprwvultoguqokdtizwsttwwxfhscayrxjytcivljjrnmiqrcimucxxctiyttielelnusttmftheyjtdkknuyrwrnmvdpngigxidgrbuipgfqxtqzfatrqlufmunhatzsdtsoahmhrzzpxplkjfyusxrvzptockdjjfdbingkbewfoykofepsbpzvfctqhnlisecfrpjlortulncbulmpclyfmzjgxvovjozvrygjzvtouwtoxuktokdgyrljnrodqaixtpayqemazkqnluqvobjqgazckbcihmhfsqwebgicjgywnxydevcttfleaauafgqsywrbjyhngwzdvzymakxdrendojjkfysijvyjgevyhxpbdtmtdjsmkdjghuxlhxwyhoowwevifqjymdvrcpbefqrpjilfjmeqsyewyjwfahvdfddmbulleznacyynxghbeoyyrhkuxpvtespzybvyxpnrlwhbmlnasofujunmddcnrqlikvktxvvkrpdcxvnlrjfsggbwonkgvpgjgurkzxsseydiqkvhxadenidfuemocwoclhdmbvyplboqdnytahtoqipugtsgidlurbxvjtmkwnfdlrqwatybzecvfztwointocytyniuvhjrapjlfjetsnelbkhqnmyrdljivclhiqhyijdcpkmkzzoasexyxjmdhrpeeatufsaxnjomhiacmkoivpadoblqcozbvsigatmqvnitldvzdpynjchxzfvmwzzdpgccvlefsyphiceeuygkhbligtelhnebiuunehumuibuvpebzlmqjyzumpwjzhybazjyfbbdtdyaeuguqbwklwopxjdpyxszqjbcpxpgbyrsabzdbosjwmxcnlhknhaxvmuzoozhmbgevcskbeyihnpwhonsrzzvnmbknbyzacidlbrmwuoclkprwxnjsssaibhoptpeudtaeejhwuwjsliqycekeieoakkygraaczmkskkrqcdqemuolhktzdalmotjmrlrqgxafoxihtfsuekdiuqddsppbxnpubfhjkjgsdecvldcesmorpopcuaszryxhktxesfrqbotgitdvnzognfvveahyyturaolxuhksjxggospsshjmrgastucpkwpdrrdwjzi
+out
+ogtdaadtgo
+gbmhzoozhmbg
+
+tc11:
+3rd
+1
+ftonmotrzxxqbpxkjicrmjhwsqthnudrviojqgfgxywnavlrxpdqcgeyjneelnaczkyosxhuguizuhclryteoecgmlweqpputpxmzdxtwpgmzydrthuwsqpyjinlismqfjykorlyhvutubglquvpdstfmfkbyvtewcvtqjsojbnjxvpvgxhxmmdkeoohvowksobdmokyvlroblewlafxunlhhsfwgwxrdfzxmsapqioxtajmzdkfkcdgvxnudkrhunceisrsgcvkzvhnbfizounulyjnbnctvflmdtzjoczwraiwwwcnobzffdbzboeheenmieaetmksrgevvbhtjkvjhtlqziprwkcgyifsgflolvpoeeznejlicnnagaryjmzmsqycduncjgsnhfxkyzwmczsozrxlbexowztespvdpnlkenfveisvhsccfkdgddvudwccfgywvpahysmzolrbqvyfaqelxvoumslwhlnszjndqtqqdygedovmicrtbvofduklgyyhcaskzfhuwrswapsjuoducdaiitcmovcpmioktairtrtffmhbprelsrxfgfxhuyenlxuyqyzybhwvljfnufnqxpcwtdlqcbriomwokpzqlkbjadyxqpcrvxinnpgyomuqgilatjmixzzfqfshddkrnhfqkzaklwfnbrlrqqbomygdylhieompxrwtsieuxmftafdihurolvruoszxcgmjpxtzxaoiqohwsxhyacuwuffxspbezxjpofmwfvqcbtuiuicmclhuyvwarkxfqqyseexlqegtcjpavfzsznpwaosbtsmbiufebkmlymqejlpmpcsacprfukkvylfldoqbweuuueofafmdgqbstuyvpghabhbdanyqbehtndrsowtsbtrckclpuqdwukzwuwkiqeuhbkfyxozljuojsouwzhpcferbnqsvmniobmerxtgxzlavzukczprxxvsumpbdlvduvimnttqzmfxufwewxnkbwljfsbnhxsgguhtaviedmznbibbdbkguwozjzrvzeawbjxmgvegzwuqjmlmvqribuudbgotfzskxvbxfsbdkjhfsqpzitlfeczjpcbgmifnayjezkhehdvuixfxvtdjkgvkwymrhbrqhsstcpcfmotmwdzrkzkwbyubhogwcxaetbcaggjjnvemycnsobxdntwdsjoxhiyzpuczbxcolyfzmmincnvszvrdjmjrbpnchzbnnkkmnlnrjxexkwdfwagrnfhqgakifawotrjgwglgcqkyztoyyftmztognbmqwcumplgdgjhapfqdbdwljgxtrzjxkuhjpvmchkxzrokfeyshvpwygtntaltvxjufkjxvsarpyxahoeyzitmzflrlvuhyhpprjsqvpwpsimmudjhgkenfeesaezawnkhqkhinkentbxcuumbcbshemehwhgkutrmnpdypjvsxwsnsbbpccejuoaisrmbqngtbmfdsunxzgrscwcsbmxwuiqbpzwuuspqeszsescefiuqeohquxjphsmibznihabfdcgosgcruvqsfmmngygbxhmlsctieyykdqzzdinxpystzaebrigfvjdmryswvmonvqmyzaczhcsgqygjydpsfgzheldxvwxwgskbkdetrqpsgjgqebytwneredwnwlubcmirqmhhbebmzzxvmzknkrxruenjownmekeyltbpyqxjnhaxrkwxosmtpimzwhktdtzpikyqfiecwdqopydyjibwkvhcyeoccouhrristtbozvpgdonenwnydfkbymrpmjpbejywdapukithlosmsggxlspdqdduwinmbzmyeggepkvefdusjduyhvezwztsyaffznjnizapiajnpgvfnoshlczuiptfpkhbwhrhgvozlxrllnxrejivgowzoqpmanejoauqhmbhnzryqhovnicuamvbpysfbdncbgaymyuvcclhykdhlhpijsqjbpcpiuqxxxnbqjwsswicoeugcnzncorjuuvwqjmjdiynvatpbmdvvsrybkmvwnyubvsevdwckumqidyjmywyxblmgmjshqeemqtxsevjgzvaetjhjaxvpbtxmfwwzdfcsagdiwrkyvzfqlxgrmkqvtlmbrdxoptswunyoyhirjmzflzpjyvphsoivysnjvtreaymlvmztmokjgnjvolkmizqrgrhjlezeczjzsqmhscjfytzxfflzmnzbmjtkrgbdtivpnmklbastqfiqbhmmavfbhvokwoxlvmceubemopylpxduiitksjtlarokllulfuckctkrdlbhuwcpdzcmgqdzmbomounyyzkisnodmuswevujzpbnisodqrudksldfwlgaipaknnolltqiqreqoebgbparnfzvenhesuhzeafbrqgiaqwfxocjygrynwepqzdymqmvjdzqllaxvpzuhwyrjbxgndtwrfkorgfwebujhtsmgfeahnhuaulxfxaparrgkyimgddibjuqfcofcrgbfrswzrhjrhyfnebjxbcibealaxctdpbjkmnlpjmocqqohpzwtlwubnivgdpwognuxhjmkchdusnrpvwdpuseddzdrkdnqdwifagmlmbrbwfibbcahjfuknrkvwjdapmecgjylsmxcuopkvbstkuhiwsmtpjjixboocxfwekjdqhgzynbrfvktbglfflrpououafdbjlrghqzmwfjkmdbihbthyzdgkfrgnykrowfzdcjmijaxaqropmxewdrjdpqucerkevrmdkdufnwwlmugqvgcyklruodhfabrtnkyxxlmmrxporbaxmmlzqnplqupvzavjlketfzzidscxbhtihpdtwwxkitsqydchmqihdgaczbvfjkqeexhbvqyoqbfympnwjioqotrxmmaqbvnzkbhebetldpmlefxuakuixhnwipoujwprsgpwfjycrfdjiekzmtucrwpoxporzhvpquacofkwqvdfxexitbdrnuhardwzctirdaaazdgocyifotpctpfvuusjihikmfczkklslolkovevkhskyqrvwdhqzeggosvqtsgmhoicoakbqfjopxnwqtdwsolnlsutzdjcmzxlrzwmwjbzmdzyjatnjdhfgrpnxbsgcmuqeeaijosxyzcnbxfgyyieyiaftxuqgmuyigkpqcppoxojnnzyxxzydehofqxqzlselqobwuxlbvhehtgwzxeyaqfrfpvwblbgccjqujpmcvdkbnjeqrrspshwhttolblmlqkfkxyrfhcnolflewgbicqrqtjazadhsvvcbjwvtbzkfmbrpdmvrdevqwvcegkihgoeknbmuhtwidjxthbdbqyizzizuuoygavcuhmygwmjlwdevsdxarbophqljbmlkqoikowgokauglizxkrweujsvertipjafjutdhazyhxlgoafbvlllebctjrrlcauvjcurxljnklcuppkrlycfyaplveeyzroanqjxgtcypriawfthcczjmrytjfqifjwmzwyaadpausxacbelyzcnriqfkbaicnwupkbfhhlupriucwixezxuuhoohobmpthizumhdsvaguhzkpkmuseptulbxedizxuqebtkeldbnyykqghwippfqcegdtkdcgsunngxbwezhanvmobvnrrjyhgqkfytwcqcoqinoiwgugquyudyhivoingbmflnqvbimhmhwalqsyhqkcuigbjigblgqkwexfaqlomwkradtlwnlzhxcxssbgklwnaqdklvljhhkjbcuhviwauaflwtufylywtgfeyvhfluulyxgyhorfbbfzgvjcqzbbbdqgqixafipssgvaclepbtmpykwuchcmuomdjbsonqisshkxlsurdsibxfkcpvhkbmdvekicuqikxaxqqwefgdxinqsolsaggxezprnsidzrsewomojaprrrokudcskvmgsnpwkqdlttsxqcnnnjykcvoihkhhrnptnqozarjbbzyxdacigtbyfotefwklvoyyxvhgtxytmcqoiokvpwzaefldtvzsxkjdxsrlhoitslzsgutlzjlkyreiufzakewqygxzvnxmzehpxfqcenyaziuaovtkmejmseoqnqdohzdkvgqyygiqhqdwbccwpmepyjpwubwkgcpxyqtbiregpnrbeprtfffizsjfsgesegsmxpvmlccslhuckrhoffsaldfhljcmwvmcuhjheiswwjnvnifmcqzeroavalmhhnicpauilmhpcvajudpxqgahfwbfwjpxvnisezyvehrlpskxjfgvgkbvdcbrlbftoahnnujqwacmaobbbseaeytjjzkhlvftuvcvcjbecvbwirswztgsgusetopdzbfclpeawlpfefprpufwlzdnbjnnljuydpahpskvrqfocelodrrhiebvzhapsjaqpibcbmjoruaeuxmjdspmqzxwbdaehmzxctighyamlmgiazzudpxyhjhrpthdnjgzzenakppirumdkwrdchlzpslidrixinakinsrrypidiepfzclhkjmexsvimexywopdkjgwesunpklatjalmtgmjvxezpcdujkrvqycfnztvumzxqdzwvogbdwexviwvajkdvlsyxrnegzkdatqkjflrfspvugmrqcmqwouqhmqsgzzehpxqecfykdzekhopkfpsdtunzwqdsvcbcixcrksbhdqxrkuaharknwfpyxtocrpuzmhfsnyinugqrschyvxcolsrtpywcgvmuizmeadsveutmtcuubmklxzhhvthyhlmyagyjwdvjajtegmanizpgrytbnkzcejcvqejellmiwfugismnufpcwkjqvsgwvxrvupphpleigsrhmzdxqmibvwxvhkxbdouvtyapbqwcurgprfpzasjrrynlpwmtkzqwvszurbjiouhtazmycaurddzhmqnzfdpwfvnsmqvbtzrdmgsxiybvdwtyohjkjyztqpxflafbtyaffiesoupsavmtnmokywsujbzdmcrjexomcwosspyczgwtnxsqfgnfhlfaawmrcjfomlepwfsbfydfuqzpkrywiznyqqfymxjandrsveopjuediusxhfbejiqbnhyhsotwamispwsrnwmooddgqajpirmlqyanblqsrpxscpwtifnqczgmnlbkpczqcdgfoopwotvpubkwjcesmlijrrgxvhqaiypkvnlcjahojdegfjkcckfvwvqtyfddqujzmrlqecycmxnpziknmshsptustciqpalmggawmupptpirbikynblondndfcvvinygtcbxpleooexfucbilpuzrafbaefnhtabvsudohgjhikbdugmchjwijhxipixvggamcvrcbjjartcvthfmeinecowcjgxgtrneqhpwyowymibleduhusxgbhpkaiwgrdfpguhrwuflukuqzrcsvxojkifexuzixpymewkfvdujfadpwuktkqfqlhfqihwblgldkispmwoipayeeqngefceczcieztrjiwgfgmamotgfobcydwjxmplmaocnaakrqyjxqvljakqcowiealaxugocuoyxebewhomcnjxckucucrynoseizjmututjjsgrozofheoanacthmhvsednxlqycplgepnzdctqawbnejqwztcgptnvigfcufqgkrvzocxtfdbjfcqhevqqdyywbcvgqxhrhlylhmwyizhthyemlpgnhkeyqhtckraqkzsrnlqfbwqejkxkanxxcflypeopzojdmugpuemyfvjezdpyrcomognwxrdmqksxofbqmvejmbammhkehljcapfcsczbqyfcisjdulgfgiyfdxkoysjjdtdqkppkbfkqsggvdcifvfedkllsmwlibdrkyaekhatsqpbqmlwmmztqqiupenntbgmyaqkagywdhrcoesjnqaqvgmrqqxgfahqokjkzqumnyggffgyrajdhiwixiiwpoklojqzjbrsysqqjjdzywoxcnbvclqcxstxirgrorbpdhbwyzmffzrfqmeyixjufvjeksbrfpcluuzphzlbeeleamjjiwfmoneeygiyrbllfueowbnjjxepbzqjqpobnlctvccrabgxzrcoozxsbmvpnsuwocytqmeerzbjcqjfbnrwsuwfwhkoxesiuzfjkradmgtnubdjlmnfupfuvsfhorzlnmjvccvkzdmullazxgcolzxjgyujeoqfyhsjcehflneyobxpvacrvwpmrxvccaljpvtiywimyneefppyuyujvdnzhqjdghshkliqzgpcydhjullaxbkfydgbljyeqagvqdkacpghdlrieekxqvfprcompuxlykqrgtsmjtvryldestnsiywqvtkidqobwrjkihabnvlcwzwjkzlwpzzoczyjcdpvuopuwzdcdltkdeekwxbrvgbdeixswppxpydewegzhdrghjcoopighthuhlnbyuatoyspptpbfhzmpwqyqafrrcpwqpzakdtlwqvrwbmrqgohwbpnkgpwirlnhavjgcpubriqbnjyrxaywkhhdkjuuljtljgindmvbyjjwegbezhmpnlhifcnldfufrdusffuczfuprthbwarznfmrlcvyrbldczchefrjmjplkkzlstwrkphqsuumxlpjtfkeuwybwgapkzvdmbteihrxcygjfkqkzqlgckoxttxlqsoawonuqvsglvxphdwllntrackxfrimuoveynrprtxlbjjvmijqgjxemfebsfsiqswbuidgmtbbwjbjbomoqhftntkpydbdiuyiycapvcndykrericjprquhgnjhnrcfdrcustcvienrvtimmbkautsamrppqsvvltaobihlsmfrxdjefhucuozewloywcdmymmqwxgbswqirqanhxpwkzmupijlugwvtouokpfdcgdgsoraobadazqsvgsosauouwwewvsjbynqdptwqodzpunwxmbjposlscbkhzsjnscglhlsbfcwxkdptgpflkfarbzscquqnciqbqxklksnqnyzlobblmdipuogogfwcdmfivdekmujtphchguzskqqcocuyuuaifnautxwwijhsefdtqecxldwqoixkeowhbxxigqcrdfufvakzzlxtdixdkgbhxxetggpehlpnccshomzbzqlhiamypzofsjhsrdndaemcotknkjljbkfktnitoxzlhnrirhqjgzvosnfzwaivgdnrjzkzmbfrsyaturdlhoazilntpggzjzjhgdvscquaqmkjtvikgszwptlehxovjhyppiwwiyxzjzvwjvphgqsnihkgobsvmqdwcozqjejnfmwxaqtgikmnfiwfmxuvzmrsdxwgvmzxwlsdnjhhlatrnjwgpcqjxqnezkhpuawmmqpmuyyxfbhnowtzfwyoetbeirceofgddgbnuxnzzufmgjfhcpeebvdtpbypnkfvhsgspomdrvlnsjlggdcmiqcjligoiiylxamelreplyowzluzupzcavopqwdjlfpkxosnxgwutsghprquycilhlpcgwffzlqxzdkkduerdtzemykawkshfqvlscyppghcirgbeynhwtxvqvzmlfpgufprincizmlezuzakktkabmkgyvnxalepbgpkswjuzdjodlvdcvpxxlhbzfmqiofysxsyszsbekgaxnccwgqdammxtgesdaxmqgpsyalzdwxpuprhiskebwbebxghdsmiikrgphmhxonwknwpkjbdkjrcfkthifmvxozxjkqchpenoitktxmipnkygocsrklfrsehqvnzfjsdtdwrugkjqxptpahfznabtzpyanooezipfntftcgisvkvkmjamceoqebqhgdiwktzwlhkcoxpadeyttwnghvzgyclbifkjmevckqpsgaseblhlcdkujefrdbigaydvqcvsdppqisscabyrxalsfapebdzjaioidgdjuyzvjstnogmtfkdumvdkenueqllazvodtqwxojzphyyiffkncyopkzbrsprafbkmvnbqtiuiaxikffiqxhmjymejhgdrqytytqvdvoislprmwlrtxobzvcwlqmjnmbaszaazjbmrfiobrvuempvyzarrcxcocnhxupjkmoabuyofrbrunefbnbiznvyollnzndnsklwcybifoehfhrwuhsuxpuudlvbpbyqoqfiujfrdvbfoekpnmmqqwiehzelfuyhxjcwlbgufxgbcirxlzkxrhrnrmvfbolyohvvtdmnkkpnfzmlnfbzydoegdpyodxdptazkzovxvzofxbsrvjpndvfmjskqwnteatujuurktgispkypnpjzprzzgyogdonecxowevxqsqvfzzkhvnrexalhagjmgknscvlddtoohwzenhvvgesuxnsekdmciqxuvikvcvcyhictyuwlcakjlkjuloqbvvbethihjfedonyyinumdkqvgpayskhabzqwxzzhovixrxupcirfxyxqxyifkvurahtsubwhjtcmnyaqwoadvriupakppdbktriodxkxsfjievesqbemynclsmloxpowjllbytbeyjnxdoajoiaedznpuecxnybnvbskkwkdcrijfliteubliesgdcovpnuihnijineewnbxazvkhplostreglexlianvpsgobhjgxzqdzfvelvaajosemohxqrutxknnwdrspgqnmatlkqoybheoztpobruyjyuyjnpwpeblxocikxyvecawtoqjmkfhbjfxtijjouzdihxrvbwqzopgztbxblwfftptdwfmscicviwcfkwphfeultayneoctwvpxatggguvnhlyzxktgjrrkmntbctadwbhbqerorsmqcttacirncolsmtvgsltfmzmkxtfdndyibvaahlvkmuygslmnleloukvrjwibftoaorpumysiahtwxnhxkbpijxitjnpalygmyrcupxnpslsrfstbffggsxyrmjpaeldzayfpdeegebpdbbeszmgsgqirwanztlecweirqgegagqkaixhgednmemllkjxindshxlxnwameqaqbitaambvcozsywfckrfrkswdbhtsbdadlbfghwwgzhajfhrwefhrhyunohbwlqbnhbnhswtmsjupjpvhdwcpxtgnnipdnxpqxujmzxaeyccclmapohckxbermveg
+arswmqxniotdkhynibxcgcgzvdivznyojukqplqznlrrejcrlpeigrtjzrzxduyuuycuhooooikkzblriaxreztkdnoddqnowqrptvlriwyjofyjswowrhashwxztwlonmyzqbyuqpirczyatidzkohswntvezhrwfrxgpsoyessqssyfqhznqivmerodxocmegrahygbzsrjhwwuwsujrbsjpgsblkixffulwlnfgvpjgorafilikczppoydgatiyahlhxkfqdgjrtoqyaypkdhlkdmkyvkmxayoyuovmorekyuopopcypqbjjpsxaqdfiadjtgaujcrlgryckshwkgpgxfginaxvzewnbzzwabxoofonjmnewyzpppdavkmdjeqfpidpzdsymhqfwagegodjbawtqscnumezkfdtdwdktrtzqvuxniqxykgmtfeuowokghxhmrpwqrldzikwhftjghqmbzsogyzygyqrsovifwobubpapaodrrczakchnbdrnlarfbowlkoqxqncggsiuajriauoomyzlopqawaivwtdpngcautmzycfttzwvvuocchbjxaeptyyaplqsaylwvzsxmzfctdydoeiumensyhtszukdyxeupwagpfxbvyxefpfcuygjxomwvzrelhujsykykcdjhxzljabxzezsobykklcubfrjzvzfunjaixwegrobacgyycegiuovgbtejsthhnyuqjfzpwgxlhqwklcihbfvtjrboqyluudcnacupxwfctsgzrefponfqatklnvbdllqjzsfcrxpitjrgkwtyiwgeqtbqkndrcraocgwwgvqtulwcaviducpsrjtqoccupaooqkuuowmiuumimovieltxbrmdqcnxyvtnamntpbbauhnaxjaobwgtoxlcxoqtgpyfjfxklkxxitzktvhgfplawxetohshzpugyqdtqvzpsucflkrkqrthqtemoskwfhzmjdknthxkcgjfvimrctqrklwjbbfnmorpzjsmgrpkguyllceffdkxobrkoagzgboldpstfvuhxvtrvuieqiymajtlccxzqtfmilzgtlazdclyadyuntcqkgyanqgsfztqfpgufeiwjfzqgcuxxkypjoztockzvujkeofonwawcqsuhbhifbiinzenziypbvbochzpciisngbfbojzivkywunezkbwahlxiifzwzuvncmuuhmvsymmsyxjimwxwfruzgncbmybcabmxrhjqpuernqymgdiolhjygezoetxxupoisshqlghlpyzcvootckthknxtosrvecjhejnoqwugyxjwoktrunjzkbgrblkhocqczcfavsyvhomxqlywvxpgdakzopaeuzgznpsbmgradjtfnnauksrieuqlcnmutsbicprhcvazmqbozgizdgdlpgjpfmemwwwxzrrlojnxmcazullgjtxzsjcqquwtpuhhujbdaohsodewvluzxymhcsbspnwgskpqhzxhizbqmhzetvwahujzyerxslgyztcsrbpuzjsnkczxphmtxuiujjgdsfohsmdsqlxgiqpjkdqguqfrbonldgeskhmwvpqokesofzwospasflasokeqaamemngebbwlxjdytreieclpjokxbsmafroegyesxbprvbamjpdydyjazycviplvhoiixyelhdcuouqmnmkuzvdmbwvntrppnwrcdffahygugilndywschjysgniikhjplkuesrbqpesynpjwvcssradrfzcunhqtmecdzvdbqpenmejhcakevsxcadwuaaccyipruptvycpuahsugvndvujxevekzaburfpeecowcodgesnfsohvwunptmmggjzyiqsuzwpqvduecmyfpusfcczdukadktuhijgyvuugryrayhkzxgwdhtvykpboaacrvvnulhixnvalklzwpxchsxrivsbjtsynaahivvadwnxhwzdmqtgsfpypkkyazrinyphotijcscaqjbqlmgtysvikniqbipjkucnujyqxonbjkiwbxokmgzuehjbzctzkccrfrrixkawqhiyastvybhjtjmcfghamtdhkfpnxtypeclcedguwhlaxsstdrkifkcfqfsepolpqtdtysywjsagfrranqgrzxjymufwxcughodsmpwjofwjsainorlhpbriyxboiguesidotehrffmuuthygocnfqfjapivdysaypyscdcocveimpbjfdxmvdipbtxhanjfgjpudmniazwqfjwuforaquxqnclhbtczrfipyhptthlnzqvcusntvpxhwtgqobankdmuqexawtdjcdifiotsfypebndubioburgrupexaovhdkabrlpjwehtkzeqakttdiobscqqifeqjolvapphaykghlrsyvdqjgamzbdlghkloicycajdzbkryjwhcdswxrunqhyqkaqnpgsskanxrdyjnwtrqqbinsiirvjgkunavrugroxguwjyowqjczgprtbxyvatwttxqyjeyfsqvbaclehgknhgssulwqfjvlabupschedxykdrlmawcbsokcxacwgajpizkdqvgvcdcdpdvaxeejixnrbteqmktbjslrqpmquikmzcakmrpmxouvfuldnunvywzllakfgdshuupqpggpjvipvwcyhetaairqzgwnaerezgzhccbmlapxaidqtqmwzfkfxxamduhvtiakrzasgpxreyyvuohwkyowbpfqhaoqhszbtmaihnxltvsniwqmywhqsydqufadyxeisfavhmminimlcbtulkiyevkksgtofhtjbaftdhkqtioegmnvctcmegzutrhbhqzgeblwcvrndovbkbgnjzvfqllywdxyfoogiqcmlricoyyrtpasexzmahwtrlklgztbzgpuhadfijdswfikpyrobkowiufgzvtezppkogwmrzaouvxbqawlqlckzraosgfbkowytmaghsgaygxivwziwtyxpgpbolyiuyahikqttammpfkiygumyoxzsicnvezufiqcscidhtucuiafxodbpqdcwauxmhshbohkzzetucoqsbmvymdeyaybxhwyzonxgraxarjniphygvxyzafldmjdzclcnbmmgvngmddbjpuyjflgghbrwithddnebbzrrosaaeywabvaojgkztgosgmzndetmwqopiofxalixyhxtqbaqvpeggypiviyparflgyqkjlnplvuvmbwlexzpkulzohedtxniieseeuknqtkqdsbbnxqxywtmntndhigugiailithasynkyxgpkwhlkoqqxtstkawpasfgygswsusjzjpezqethycaybfdcfiykaenoztepseoatgbpkbimvofgxleoqglihyitocdrktdcpwziskpbaspdprtmmcwhpwpygvtqijqfxftkfizkueiupjpmozgoizbeiatailudhrwvnfoqfougexskmxjzaxkwevlqqecxmweuqynjqgokbihgshpkzbwdozhpxziyrsgkuoqraooinwwhgffpbpdckvcfnhnucxtethqxuzbcailrvxxyykraqbyakvrbcxahfhpqqqylvtgemtodnutezywcvmhxaysughqaqhdmvhywqcodvobmpnyfbevzdgiompqnehhhkftgjuavzvbnkmzjfpiajijibppinuimhrirfcbnembfvwspvktgybjyxktqrzzcbyfpwqhhqilowrlqmzmdojahogjxoccoqpwdkkdkvijpcvnilrjuwhakceijlqnutjqjqfwdxvqzzhblcyjhjucbqakhkpjdxfitvvrramwadzmkixmgoygupjkfznaoyneymvzengdwhaziegwyrwtwpnqlyaarjddwbbzubupyxiswbgdqzcacpvxscughteemoqssoxachleobudwbmunrgjwozrecoxjvswzhbbqjlfoifcobwcvytjdpjpwlnhnptovklcvxsxjhyjzzgnshbqhjywrlaikpvnmetjucdgwkmmataxrxniidaodkrrkwafhugkxbimnfyrfboxlcwdisjauvxowwuzzlyvqvoqhmfyiyakchhqouebjdonehzhzqyjgtnaiuyjmpikmbplidvnjlyzjlhlpfrijijbagqxjqmiwqzsccvyueoecdusfqshhdvkhtsybkwqjrenalwbakcievlxwmdzjrbinfcwxeymhdyelajyclgvuhzgzcqvuymqgldffvljtnidevytrwrrzwuwahalqirgnyplpddkmfyihwaeaosevcxytkwwfmuprenyvahlmbpcnueylylwihihkfrkaisivaninergroppelsfwjiohikkblmstycnhxsuxmudowzbqpeaejkkhnjsyzzhfpmvfmdewicxkzsjujcwsorkckotsnyfubiqzjjakcwbvtrizuiswppfgabeyhmdymkfmmgrbxrtgphcbgsgrcjsbvqjiaxqotowsjgbcrzzminesawxthdxkbpquwketwrtzfgwlcuqzfoobvqxpgsrkyqboxpndzorbixgmvsaxcvxgcugsqkijljuubfukdbmzetplarlrcxdrhxxfaebpcqyeckknkfzrcsdqbhowchffmrjxncyfpndpeltsoperfpevhatwcyernxcahjknpsnknzqgolkarbtswxvanverllvijgejgygfpnrlekqntxirijobabjjsktbayqikjfkouprsgstajfkniprdoezokhcqeifmsquybwzkvtjduwvkhtotloyybodmhumqzievfxjzuoydqtatgchfwzxcclrhegnafitcjfghbwdciteuublgdykkdglhwbbxcfdlogxmnwldksbuzwcoxkfwbcrvkrvhvzqgfikzocqgdefxqhafifpvqodgzgdgftbsdwryghxaizfpjeepekhmypabonvokjjkqfadhrwgcckrwlfrgfxklobonkssnncikfcjtkegermrhlijpdnhuzcxbcowxwkvmtwcquintfddqulrwhnkxfkcokraipkkikcezbwykbcorbwamauqzhukjggrocfglakwccpketzyijmhsghriuqtgecvckacqasggtsbwlqbpjyvdeyvmfejmddvvojohbnmlzhovuymamajzsdxjqppexrrfdwmmvyvqhccaskhxyrvhsnzcsomvpqjygkpmyjxrwyznvuivqyxpcflzqhpounlaeienudupxvmtbcwahaaicltdfdngpnpuvaglxikygwyqktdxtgpcjlddazcgtgkcmqafokbloebnwftmhrnilfmbytolmconiwakrsjaujomitiqratadsudlvekngubgsjswwuzdyemotctoejfqvjjiwpmwnqtvimonjxidrvgqhimmxslroefmjaaxbmdhpteyftzphcdgafemjvxmhjjvecqkezpnghjayjibjgzozbnvgcswufjfpbzlkzbadbopndtrdaujmexvvgxpyqjjxglheinnsdajvnetjehphmenlijpcqzpfabevszdltjuqtzfixzmpjwmjmnieuewsffevwrkmgmumbzixiqeqqbnkfadtepnalqrkopjxgugcypoaxmhtgbpkgjupkcrthcmranulzikewhiytmqiwagdfzccgyfirhpafvvzvuwsnmrywxhxourzlylbccrczmxpflwxqwuxqkkahcuhyanftxhinuekdqzyulnxjlmefjpixlfocrlgjslkextcdysbdybkukafzkbvlrmnzjwvgchrrhkittbkmyyzburcwlzwuqyfghbgzzctqewhbeebzurdnmfcejcniryeoppfospxbszjnkqkpdzunwswostwdguijsodopnaopzpkbrrepeuvuwiamdcsktvlatrsixqsjhacvbcoflsojdqcxialcoiusdwlmfxxuikldunvmjhxeoeajtvwnnzdcakrhmmfymswybhssfzjsdlcmdrvipnkolferufxftmkzmyslaucvozrehodophxonayqhxvbjxvwjqwnxrvqpjuwumdahwtepoqexyqsdhskoqkgzndnqekwifqzbjgcurmqsemwavwixljcgdoietzdcdqwktmyzdwyjerysmmthxgdpxxwlzxblzemzchcrhxqaveabyghbaftvhdblngwmztimymtqeqvnxqrceteveaqxomvcnzbaafkawfdbosuuwukbwcziiwruzznubdakbhpjlmzxeqcxhzdbdxnhbwkkexcqsfmcgihzpynhvojvyepprvdajiwqnmlcxhkbteldatfyzrmirarbabmqmetpotpeqhscrgfbksseakhcdhzkowglvaewnnluvxckhxujqjuutrgxzhhvnanexkboitgemikildtvzaszhmwfhhnnvloaicwlgnqiwemmyvvhjgxaouffxflzcokiiynoqscuejirzifcyahebzfniutuugoirtrimvoteawuepynpwurbxtrgupcbgkbsfemwozrepccdedmrieqimqlxhveadzhahfzqufqnwmalfbywyvqewnrpurlftpgnxitisrxsexmfildeuxwchvhadwmnbfqhpufeipzjniflggajuabnjghyadsdcllvtvkdtjgwtrukzxrgumclyfgjvcnxoygmbmzyoynfbnunntvszhdvukgzuasyyprkcxptfgrhfsqgvzxznmnepalsyzkwfhqpfubofhwbvygrspvtrxjcpscggzulbdrxspvuxqbtfgfxlijwvjbjqcjlgxtxjwonllkwdgszsssjroarrankmzsqonkuslmsemxrapaoylitacqrahkyrlflgstsillixntvplhkxdeymorogiebswqoempkwlzzfllqczlpuiflkjbzbpwftptanzjnvhqdyozrijljzqhywuagpxvvoxmtvbcituyhfjktmrnsovznwuataezawlgtqytfzgsaillcjqtscvmvieolfznhkonknqsumkcmrknwukddbqjnznwktwdgfddmqgudrinfdyzgfavfjxbjwskzthjndxujqyifynsiabopgkzyhwmdwasjsoizxtwszllhqlgisziymlpofwxmnywrhdzrumwjhbeeahgxvtohyfslzvzfkzvefroqkjmififaavulxqzmppyclbzwquhlhgfaytwesvlnfwflbijaiopbapkshpirdvcphoejfunzxlbxqlfivbvenfjwwxonhqhvmfqhlositfohypzmutwwlquoiipyujabbgpfvujillbujhagktjcgvqhbrvnuxaigergaqbefkwjjlkgisiouuorgoiivuhzylooimahdtyakvrsdlfudrhwowvdevktaushnipvklgtlauyejoawosknmagtvwixqzysxzkffcbaipnhqilwphravfgeiaoyaqqdqfdhxierabqjfvqgixbocjgohbrnefnlskfckdfvoknhuevitprpkajbdumfckdamwtuydqqgxalkkkkaoycoyghobcdbhxisivysgppolvenycertcorzoxmlgpkaxggtvqwyfqeymbslmknenwglpjfhbgtrjaaqogdrajqfzefjkjxsndoesfntrtepgcpsjemrrzozpmvtcxbaknaojapxmoqqhwrgsyspbmmjxawnkwwveqhossuqemssaytkfkzxwkvevqtvnbmysrwuwnisygzvbjvzjkjjmbnahrpruyydflxwwdwwncvdywwatefhzpniqulmheihzpdccdfpuxjxqpsdreklezrsfxeaaprlyokgeyjphopvsqnrsksmcckiptxicdzwhkzzztfjoeaxyptujktitraeczpvbpkdxzifvofsuhyzmeqbkwirleusumooboyxvomskkbfyjmzrqecgeufyjjtgubyddbixsqodizvvmllmdrdtmgmbqvjtzkrkpbffirstehrxnkqfjtvfjicdqcpffsccherwdamqkoaocuoivykcpbemyyughaxbqkjpbcpmmuopfmxfhsfqgnerbkqfbpaotjssnqsfgnilxrrxcdsrlniorngnhjsupgwosftmjlxipywtkzfolpefgukdutjvcngzwmqcbvdmgmxfrlnggecxugpbremvktdbcjarlntchtkfyzqljpluejfpdfixhecwxwpcplbncobqumfvdbnhybqslhftifwevwzxhhetjrkvcwofbyuyietbhftjoyifbdsmelwvjnlmjqasgqofhxeirohaeyowmrwogadcljzbyaejggfvberyullwgifusrlhziweebswiuyadpqzyizoynplewokwrgojudnxouqpulhcfvbwlpxlrhzgyswdkxbtuhyoylapfurnsijouvifejqvgcifrwglbyyelfutokhiljudfjkvvdcjsmlhbnolxgleuvsjpcfhpcehmzyepwyugrlcrkmoeyuaubdiyrilrswinmtlmumjkslmuawewowhabpeogulptuqgnoytfumwooadxophfvcrfwhizaaunmxfqwoaxrjigehpzvwxfrdyrpoavhomyzfgnsamevxlaqwliznevnjephdpjnobqufxdumrvkcujcdkqiiwqipiequixgzsjlccsxfoqicbuydhcxybmcthqafzuvjhfcuzpomqdfizevplcppcwiwzdcgfjptglonunvjksxsekepjmgfmtxtnvgiqnwakdbvasmlvdvmtwogfkwmpcxqpabmhhjyyrbmrlalmytwwnwluiwpesskchnwssukxgdvmxwlwsnbkcdoibycyldgcwgsozmbqccpvjjasrjpdguybganzqfwexourcgzydmqtcvfbryopwkowjmnezynsytalselmxdamneriahvaxdkpnykfsoqizijoyeeokstvlfssuueyasxwtqguyqffosdshlsnibbxipjtogfvlmoyzcoluzhjyiqvosyzjwrkzkhukzhhrjagiwowkilgfitxrvnxyivgvsatshecldjlpakbjnundhospjjtzsvxggxxojwqrdukwmvowapzdvmdnbdsgcqdrnccmhsgeykkneprqqsocexuqnywnyiumsodwiokfbhavhsamylaynzqlzxmcptuxxidlfezvyeofhhzfjliebgdqavymvkmgabpzlcfjhwdbikudljqkyueahwxnrhfxsmtolntqrrlenhzxwcuaqyncigwrtuvvafxzwibdogzwxiycgvfrgfjxqwyobyzwk
+out
+qxhrhlylhrhxq
+last
+1
+znpucoemopybjijhecbxdjhfvhqltocdzfcjgenkvxeyjtildnacimfajbavvkthhxlglcaoheco
+mbrkrfomqbnbpvomzkqphonlvexzyeookamgawqojqehltncqbtnionzjrodfravutlgfsfqquek
+bjijb
+"""
