@@ -19,18 +19,6 @@ from sys import exit  #, maxsize
 #setrecursionlimit (100000)
 
 """
-5
-383
-484
-392
-975
-321
-out:
-383
-484
-392
-975
-321
 """
 
 # For your reference:
@@ -45,8 +33,12 @@ class SinglyLinkedListNode (object):
         self.data = data
         self.next = next_node
         self.head = self
+#    def print_linkedList (self, llist):
+#        if llist is not None:
+#            if llist.data: print (llist.data)
+#            llist.print_linkedList (llist.next)
     def print_linkedList (self):
-        print (self.data)
+        print (self.data, end = " ")
         if self.next:
             self.next.print_linkedList ()
     def insert_node (self, item):
@@ -57,18 +49,40 @@ class SinglyLinkedListNode (object):
             while temp.next: temp = temp.next
             temp.next = SinglyLinkedListNode (item)
         return self
-
-def insertNodeAtTail (llist, data):
-    return llist.insert_node (data)
+    def insert_node_at_head (self, item):
+        if self.data == None: self = SinglyLinkedListNode (item)
+        else: self = SinglyLinkedListNode (item, self)
+        return self
+    def insert_node_at (self, item, pos):
+        x = 0
+        temp = self
+        while temp != None and x < pos:
+            prev = temp
+            temp = temp.next
+            x += 1
+        # temp is NodeAtPos
+        new = SinglyLinkedListNode (item, temp)
+        if pos > 0: prev.next = new
+        else: self = new
+        return self
+    def rev_print_linkedL (self):
+        if self and self.next:
+            self.next.rev_print_linkedL ()
+        print (self.data)
+        
+def reversePrint (llist):
+    llist.rev_print_linkedL ()
 
 def main ():
     #fptr = open (environ['OUTPUT_PATH'], 'w')
-    llist_count = int (input())
-    llist = SinglyLinkedListNode ()
-    for i in range (llist_count):
-        llist_item = int (input())
-        llist = insertNodeAtTail (llist, llist_item)
-    llist.print_linkedList ()
+    tests = int (input ())
+    for _ in range (tests):
+        llist_count = int (input())
+        llist = SinglyLinkedListNode ()
+        for i in range (llist_count):
+            llist_item = int (input())
+            llist.insert_node (llist_item)
+        reversePrint (llist)
 
 if __name__ == '__main__':
     main ()

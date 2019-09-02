@@ -26,13 +26,20 @@ from sys import exit  #, maxsize
 975
 321
 out:
-383
-484
-392
-975
 321
-
+975
+392
+484
+383
 """
+
+# For your reference:
+#
+# SinglyLinkedListNode:
+#     int data
+#     SinglyLinkedListNode next
+#
+#
 class SinglyLinkedListNode (object):
     def __init__ (self, data = None, next_node = None):
         self.data = data
@@ -50,24 +57,22 @@ class SinglyLinkedListNode (object):
             while temp.next: temp = temp.next
             temp.next = SinglyLinkedListNode (item)
         return self
+    def insert_node_at_head (self, item):
+        if self.data == None: self = SinglyLinkedListNode (item)
+        else: self = SinglyLinkedListNode (item, self)
+        return self
 
-def printLinkedList (llist):
-    llist.print_linkedList ()
+def insertNodeAtHead (llist, data):
+    return llist.insert_node_at_head (data)
 
 def main ():
-#    fptr = open (environ ['OUTPUT_PATH'], 'w')
-    try:
-        llist_count = int (input ())
-    except KeyboardInterrupt: exit ()
-
+    #fptr = open (environ['OUTPUT_PATH'], 'w')
+    llist_count = int (input())
     llist = SinglyLinkedListNode ()
-
-    for _ in range (llist_count):
-        llist_item = int (input ())
-        llist.insert_node (llist_item)
-    printLinkedList (llist.head)
-#    fptr.write ('\n'.join (result))
-#    fptr.close ()
+    for i in range (llist_count):
+        llist_item = int (input())
+        llist = insertNodeAtHead (llist.head, llist_item)
+    llist.print_linkedList ()
 
 if __name__ == '__main__':
     main ()
