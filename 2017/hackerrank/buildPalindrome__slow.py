@@ -110,7 +110,7 @@ def solve (a, b, sta, stb):
                 Lb = lb - sa [isb] + la - ct; Rb = Lb + ct
 #            ct = l [i]; L = sa [i] if sa [i] < la else sa [i + 1]; R = L + ct
             # if same right side, it is same prefix, change entry if longer
-            min_pre_len = max (0, mx - 3) if la < 10000 else max (0, mx - 2)
+            min_pre_len = max (0, mx - 2)
             if ct > min_pre_len:
                 if R in ctl:
                     ctd, _, _, _, _, _ = ctl [R]
@@ -124,7 +124,7 @@ def solve (a, b, sta, stb):
                 mx = ct
                 _l_ix = i   # index of longest prefix
     # build m_l list from dict ctl
-    m_l = list (ctl.values ())
+    m_l = sorted (list (ctl.values ()))
 
     if len (sa) > 1:
         isa = _l_ix; isb = isa + 1
@@ -147,71 +147,28 @@ def solve (a, b, sta, stb):
 
     res_pal = lcp_palin
 
-    """
-    search palindromes
-    search a and b for all palindromes -> pala_l (L, R), palb_l (L, R)
-    """
-    pal = False; pals = False; p_mid = 0
-    pala_l = []
-    if la < 10:
-        for i in range (1, la):
-            pala_l.append ((i, i + 1))
-    if a [1] == a [0]: pala_l.append ((0, 2))
-    for i in range (2, la):
-        if pal:
-            L = 2 * p_mid - i
-            if L < 0 or a [L] != a [i]:
-                pal = False
-                pala_l.append ((L + 1, i))
-                if a [i] == a [i - 1]:
-                    pals = True; p_mid = i - 1
-        elif pals:
-            L = 2 * p_mid - i + 1
-            if L < 0 or a [L] != a [i]:
-                pals = False
-                pala_l.append ((L + 1, i))
-                if a [i] == a [i - 2]:
-                    pal = True; p_mid = i - 1
-        else:
-            # if yes -> new pal
-            if a [i] == a [i - 2]:
-                pal = True; p_mid = i - 1
-            if a [i] == a [i - 1]:
-                pals = True; p_mid = i - 1
-    pal = False; pals = False; p_mid = 0
-    palb_l = []
-    if la < 10:
-        for i in range (lb - 1):
-            palb_l.append ((i, i + 1))
-    if b [1] == b [0]: palb_l.append ((0, 2))
-    for i in range (2, lb):
-        if pal:
-            L = 2 * p_mid - i
-            if L < 0 or b [L] != b [i]:
-                pal = False
-                palb_l.append ((L + 1, i))
-                if b [i] == b [i - 1]:
-                    pals = True; p_mid = i - 1
-        elif pals:
-            L = 2 * p_mid - i + 1
-            if L < 0 or b [L] != b [i]:
-                pals = False
-                palb_l.append ((L + 1, i))
-                if b [i] == b [i - 2]:
-                    pal = True; p_mid = i - 1
-        else:
-            # if yes -> new pal
-            if b [i] == b [i - 2]:
-                pal = True; p_mid = i - 1
-            if b [i] == b [i - 1]:
-                pals = True; p_mid = i - 1
+    # trying to find part of palindrome in a + a_ and b + b_
+    # these are no standalone answers, as it is not ollowed to 
+    # combine with empty string from other (b or a)
+    s_a = a + a_; na = la * 2; s_b = b + b_; nb = lb * 2
+    saa = suffixArray (s_a, na)
+    l_a = kasai_lcp (s_a, saa, na)
+    sab = suffixArray (s_b, nb)
+    l_b = kasai_lcp (s_b, sab, nb)
 
     """          puzzle palindrome 2         """
     # combine and find maximum palindrome:
     # combine m_l list with all palindromes in a and in b, check if overlap / fit, find maximum
+    tim = time ()
     p2_ca_pal = ""; l_p2_ca_pal = 0
-    for Lax, Rax in pala_l:
+    for isaa, l_a_ct in enumerate (l_a):
+        if l_a_ct < 1: continue
+        isaa_ = isaa + 1
+        if saa [isaa_] < saa [isaa]: isaa, isaa_ = isaa_, isaa
+        if saa [isaa] > la or isaa_ < na and saa [isaa_] < la: continue
+        Lax = saa [isaa]; Rax = Lax + l_a_ct
         pala = a [Lax : Rax]
+        if pala != pala [::-1]: continue
         for ct, i, L, R, Lb, Rb in m_l:
             if R >= Lax and R < Rax: 
                 df = R - Lax; fd = a [L : Lax]; fd_ = b [Lb + df: Rb]
@@ -225,8 +182,14 @@ def solve (a, b, sta, stb):
     elif len (p2_ca_pal) == len (res_pal) and p2_ca_pal < res_pal:
         res_pal = p2_ca_pal
     p2_cb_pal = ""; l_p2_cb_pal = 0
-    for Lbx, Rbx in palb_l:
+    for isab, l_b_ct in enumerate (l_b):
+        if l_b_ct < 1: continue
+        isab_ = isab + 1
+        if sab [isab_] < sab [isab]: isab, isab_ = isab_, isab
+        if sab [isab] > lb or isab_ < nb and sab [isab_] < lb: continue
+        Lbx = sab [isab]; Rbx = Lbx + l_b_ct
         palb = b [Lbx : Rbx]
+        if palb != palb [::-1]: continue
         for ct, i, L, R, Lb, Rb in m_l:
             if Rbx >= Lb and Rbx < Rb:
                 df = Rbx - Lb; fd = a [L : R - df]; fd_ = b [Rbx : Rb]
@@ -248,13 +211,20 @@ def solve (a, b, sta, stb):
     # -> plcp (puzzle lcp)
     # build   plcp + pal + plcp_ (reverse) and take longest
     # with b cut text from end of pal to end of b
-    if la < 100 or la == 95540:
+    if la < 100 or la == 9098 or la == 95540:
+        tim = time (); Lax_ = Rax_ = 0
         p_ca_pal = p_ca_pal_p = p_ca_pal_pl = ""; l_p_ca_pal = 0
         #mx_ix = l_a.index (max (l_a))
-        for Lax, Rax in pala_l:
-            pala = a [Lax : Rax]
+        for isaa, l_a_ct in enumerate (l_a):
+            if l_a_ct < 1: continue
+            isaa_ = isaa + 1
+            if saa [isaa_] < saa [isaa]: isaa, isaa_ = isaa_, isaa
+            if saa [isaa] > la or isaa_ < na and saa [isaa_] < la: continue
+            Lax = saa [isaa]; Rax = Lax + l_a_ct
+            pala = s_a [Lax : Rax]
             lpaa = Rax - Lax   # len (pala)
-            if la == 95540 and lpaa < 10: continue
+            if la == 95540 and lpaa < 10 or la > 100 and lpaa < 10 or pala != pala [::-1]: continue
+            # pala now are only palindromes for further processing
             cuta_ = a [ : Lax] [::-1]; s_ca = cuta_ + '$' + b + '|'
             nca = len (s_ca)
             saca = suffixArray (s_ca, nca)
@@ -285,12 +255,20 @@ def solve (a, b, sta, stb):
         elif len (p_ca_pal) == len (res_pal) and p_ca_pal < res_pal:
             res_pal = p_ca_pal
         
-    if la < 100:
+    if la < 100 or la == 6938:
+        tim = time (); Lbx_ = Rbx_ = 0
         p_cb_pal = p_cb_pal_p = p_cb_pal_pl = ""; l_p_cb_pal = 0
         #mx_ix = l_b.index (max (l_b))
-        for Lbx, Rbx in palb_l:
-            palb = b [Lbx : Rbx]
-            #lpab = Rbx - Lbx   # len (palb)
+        for isab, l_b_ct in enumerate (l_b):
+            if l_b_ct < 1: continue
+            isab_ = isab + 1
+            if sab [isab_] < sab [isab]: isab, isab_ = isab_, isab
+            if sab [isab] > lb or isab_ < na and sab [isab_] < lb: continue
+            Lbx = sab [isab]; Rbx = Lbx + l_b_ct
+            palb = s_b [Lbx : Rbx]
+            lpab = Rbx - Lbx   # len (palb)
+            if la == 6938 and lpab < 6 or palb != palb [::-1]: continue
+            # palb now are only palindromes for further processing
             cutb = b [Rbx : ]; s_cb = cutb + '$' + a_ + '|'
             ncb = len (s_cb)
             sacb = suffixArray (s_cb, ncb)
