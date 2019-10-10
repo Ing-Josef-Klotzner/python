@@ -252,39 +252,32 @@ def solve (a, b, sta, stb):
             only add different prefixes to dict - how identify different ones? -> different right border
             - when combining prefixes with existing palins in a or b they could overlap !
             ... so not just search for R_prefix == L_exist_pal, search if within others L to R """
-        if i == 63582:
-            ixx = sa.index (i); l_ = l [ixx - 4]; ix2 = sa [ixx + 1]; ix_1 = sa [ixx - 1]; ix_2 = sa [ixx - 2]; ix_3 = sa [ixx - 3]; ix_4 = sa [ixx - 4]; ix_5 = sa [ixx - 5]; ix_6 = sa [ixx - 6]; ix_7 = sa [ixx - 7]; ix_8 = sa [ixx - 8]
-            print ("lcp", l [ixx - 8 : ixx + 1], "sa", sa [ixx - 8 : ixx + 1], "la", la, "ix_8", ix_8, "ix_7", ix_7,  "ix_6", ix_6, "ix_5", ix_5, "ix_4", ix_4, "ix_3", ix_3, "ix_2", ix_2, "ix_1", ix_1, "ix", i, "ix2", ix2, "pre_len", l_, "pref", s [ix_8 : ix_8 + l_], s [ix_7 : ix_7 + l_], s [ix_6 : ix_6 + l_], s [ix_5 : ix_5 + l_], s [ix_4 : ix_4 + l_], s [ix_3 : ix_3 + l_], s [ix_2 : ix_2 + l_], s [ix_1 : ix_1 + l_], s [i : i + l_], s [ix2: ix2 + l_])
         if (sa [i] < la and sa [i + 1] >= la or
             sa [i] >= la and sa [i + 1] < la):
-            if s [sa [i] : sa [i] + 3] == "bnj": print (sa [i], end = "  ")
-            if len (sa) > 1: 
+            if len (sa) > 1:
                 isa = i; isb = isa + 1
                 if sa [isb] < sa [isa]: isa, isb = isb, isa
                 ct = l [i]; L = sa [isa]; R = L + ct
                 Lb = lb - sa [isb] + la - ct; Rb = Lb + ct
 #            ct = l [i]; L = sa [i] if sa [i] < la else sa [i + 1]; R = L + ct
             # if same right side, it is same prefix, change entry if longer
-
-            min_pre_len = max (0, mx - 3) if la < 10000 else max (0, mx - 2)
+            min_pre_len = max (0, mx - 2)
             if ct > min_pre_len:
                 if R in ctl:
                     ctd, _, _, _, _, _ = ctl [R]
                     if ct >= ctd:
-    #                    print ("enlarge", s [R - ctl [R] [0] : R], "->", R - L, i, s [L : R], end = " ")
+#                        print ("enlarge", s [R - ctl [R] [0] : R], "->", R - L, i, s [L : R], end = " ")
                         ctl [R] = (ct, i, L, R, Lb, Rb)
                 else:
-    #                    print ("uniques: ", R - L, i, s [L : R], end = "  ")
+#                    print ("uniques: ", R - L, i, s [L : R], end = "  ")
                     ctl [R] = (ct, i, L, R, Lb, Rb)
             if ct > mx:
                 mx = ct
                 _l_ix = i   # index of longest prefix
     # build m_l list from dict ctl
-    m_l = list (ctl.values ())
-    print ("len m_l", len (m_l))
+    m_l = sorted (list (ctl.values ()))
 #    print ("m_l", m_l, "len ctl", len (ctl), "_l_ix", _l_ix, s [sa [_l_ix] : sa [_l_ix] + l [_l_ix]])
-    for _, _, L, R, Lb, Rb in m_l:
-        if R - L > 2 and a [L : R].startswith ("bnj"): print ("m_l", a [L : R], b [Lb : Rb], end = "  ")
+
     """
     längster prefix wird kombiniert wird mit bis 3 Folgezeichen (palindrome) in a, Vorfolgezeichen in b
     """
@@ -316,80 +309,84 @@ def solve (a, b, sta, stb):
 
     res_pal = lcp_palin
 
-    """
-    search palindromes
-    search a and b for all palindromes -> pala_l (L, R), palb_l (L, R)
-    """
+    """ puuzle palindrome fact tc14_1: 
+        length b: 49473,   1630 + 29033 + 1630
+                          cutb_ + palb  + cutb """
+    # trying to find part of palindrome in a + a_ and b + b_
+    # these are no standalone answers, as it is not ollowed to 
+    # combine with empty string from other (b or a)
     tim = time ()
-    pal = False; pals = False; p_mid = 0
-    pala_l = []
-    if la < 10:
-        for i in range (1, la):
-            pala_l.append ((i, i + 1))
-    if a [1] == a [0]: pala_l.append ((0, 2))
-    for i in range (2, la):
-        if pal:
-            L = 2 * p_mid - i
-            if L < 0 or a [L] != a [i]:
-                pal = False
-                pala_l.append ((L + 1, i))
-                if a [i] == a [i - 1]:
-                    pals = True; p_mid = i - 1
-        elif pals:
-            L = 2 * p_mid - i + 1
-            if L < 0 or a [L] != a [i]:
-                pals = False
-                pala_l.append ((L + 1, i))
-                if a [i] == a [i - 2]:
-                    pal = True; p_mid = i - 1
-        else:
-            # if yes -> new pal
-            if a [i] == a [i - 2]:
-                pal = True; p_mid = i - 1
-            if a [i] == a [i - 1]:
-                pals = True; p_mid = i - 1
-    pal = False; pals = False; p_mid = 0
-    palb_l = []
-    if la < 10:
-        for i in range (lb - 1):
-            palb_l.append ((i, i + 1))
-    if b [1] == b [0]: palb_l.append ((0, 2))
-    for i in range (2, lb):
-        if pal:
-            L = 2 * p_mid - i
-            if L < 0 or b [L] != b [i]:
-                pal = False
-                palb_l.append ((L + 1, i))
-                if b [i] == b [i - 1]:
-                    pals = True; p_mid = i - 1
-        elif pals:
-            L = 2 * p_mid - i + 1
-            if L < 0 or b [L] != b [i]:
-                pals = False
-                palb_l.append ((L + 1, i))
-                if b [i] == b [i - 2]:
-                    pal = True; p_mid = i - 1
-        else:
-            # if yes -> new pal
-            if b [i] == b [i - 2]:
-                pal = True; p_mid = i - 1
-            if b [i] == b [i - 1]:
-                pals = True; p_mid = i - 1
-    print ("len pala_l", len (pala_l))
-    print ("len palb_l", len (palb_l))
-#    for L, R in pala_l:
-#        if R - L > 7: print (a [L : R], end = " ")
-#    for L, R in palb_l:
-#        if R - L > 7: print (b [L : R], end = " ")
-    print ("time for search palindromes", time () - tim)
+    s_a = a + a_; na = la * 2; s_b = b + b_; nb = lb * 2
+    saa = suffixArray (s_a, na)
+    l_a = kasai_lcp (s_a, saa, na)
+#    print ()
+#    print ("kasai lcps of partly palindromes of a")
+#    for i in range (na):
+#        if l_a [i]: print ((str (i) + " " + str (l_a [i]) + " " + s_a [saa [i] : saa [i] + l_a [i]]).ljust (10), end = " ")
+    sab = suffixArray (s_b, nb)
+    l_b = kasai_lcp (s_b, sab, nb)
+#    print ()
+#    print ("kasai lcps of partly palindromes of b")
+#    for i in range (nb):
+#        if l_b [i]: print ((str (i) + " " + str (l_b [i]) + " " + s_b [sab [i] : sab [i] + l_b [i]]).ljust (10), end = " ")
+    """ code used for super palindrome """
+    # get max a_palin if "La" == R
+
+    """ change to find from longest of l_a list a_palin which "La" == R """
+#    l_a_ix = l_a.index (max (l_a)); l_a_p = l_a [l_a_ix]
+#    La = saa [l_a_ix]; Ra = La + l_a_p
+#    p_a = a [La : Ra]
+#    p_a_palin = p_a if p_a == p_a [::-1] and La == R else ""
+
+#    print ()
+#    print ("part of palindrome in a", p_a_palin)
+    # get max b_palin if "Rbp" == Lb
+
+    """ change to find from longest of l_b list b_palin which "Rbp" == Lb """
+#    l_b_ix = l_b.index (max (l_b)); l_b_p = l_b [l_b_ix]
+#    Lbp = sab [l_b_ix]; Rbp = Lbp + l_b_p
+#    p_b = b [Lbp : Rbp]
+#    p_b_palin = p_b if p_b == p_b [::-1] and Rbp == Lb else ""
+
+#    print ("part of palindrome in b", p_b_palin)
+    """ super palindrome, if exists
+this is a palindrome consistent of 
+part of palindrome + found pal in a or b + part of palindrome_
+    """
+#    s_pal = lcp_palin_l + p_a_palin + lcp_palin_r if La == R else ""
+#    s_pal_p = lcp_palin_l + "_" + p_a_palin + "_" + lcp_palin_r if La == R else ""
+#    s_pal_pl = str (len (lcp_palin_l)) + "_" + str (len (p_a_palin)) + "_" + str (len (lcp_palin_r)) if La == R else ""
+#    if len (s_pal) > len (res_pal): res_pal = s_pal
+#    elif len (s_pal) == len (res_pal) and s_pal < res_pal:
+#        res_pal = s_pal
+#    s_pal_ = lcp_palin_l + p_b_palin + lcp_palin_r if Rbp == Lb else ""
+#    s_pal_p_ = lcp_palin_l + "_" + p_b_palin + "_" + lcp_palin_r if Rbp == Lb else ""
+#    s_pal_p_l = str (len (lcp_palin_l)) + "_" + str (len (p_b_palin)) + "_" + str (len (lcp_palin_r)) if Rbp == Lb else ""
+#    if len (s_pal_) > len (res_pal): res_pal = s_pal_
+#    elif len (s_pal_) == len (res_pal) and s_pal_ < res_pal:
+#        res_pal = s_pal_
+##    print ()
+#    if jsl:
+#        print ("super palindrome a ", s_pal_pl)
+#        print ("super palindrome b ", "{:7.5f}".format (time () - tim), s_pal_p_l)
+#    else: 
+#        print ("super palindrome a ", s_pal_p)
+#        print ("super palindrome b ", "{:7.5f}".format (time () - tim), s_pal_p_)
+    print ("time to build suffix array saa, sab", time () - tim)
 
     """          puzzle palindrome 2         """
     # combine and find maximum palindrome:
     # combine m_l list with all palindromes in a and in b, check if overlap / fit, find maximum
     tim = time ()
     p2_ca_pal = p2_ca_pal_p = p2_ca_pal_pl = ""; l_p2_ca_pal = 0
-    for Lax, Rax in pala_l:
+    for isaa, l_a_ct in enumerate (l_a):
+        if l_a_ct < 1: continue
+        isaa_ = isaa + 1
+        if saa [isaa_] < saa [isaa]: isaa, isaa_ = isaa_, isaa
+        if saa [isaa] > la or isaa_ < na and saa [isaa_] < la: continue
+        Lax = saa [isaa]; Rax = Lax + l_a_ct
         pala = a [Lax : Rax]
+        if pala != pala [::-1]: continue
         for ct, i, L, R, Lb, Rb in m_l:
             if R >= Lax and R < Rax: 
                 df = R - Lax; fd = a [L : Lax]; fd_ = b [Lb + df: Rb]
@@ -411,8 +408,14 @@ def solve (a, b, sta, stb):
     else: print ("puzzle palindrome 2 a ", "{:7.5f}".format (time () - tim), p2_ca_pal_p)
     tim = time ()
     p2_cb_pal = p2_cb_pal_p = p2_cb_pal_pl = ""; l_p2_cb_pal = 0
-    for Lbx, Rbx in palb_l:
+    for isab, l_b_ct in enumerate (l_b):
+        if l_b_ct < 1: continue
+        isab_ = isab + 1
+        if sab [isab_] < sab [isab]: isab, isab_ = isab_, isab
+        if sab [isab] > lb or isab_ < nb and sab [isab_] < lb: continue
+        Lbx = sab [isab]; Rbx = Lbx + l_b_ct
         palb = b [Lbx : Rbx]
+        if palb != palb [::-1]: continue
         for ct, i, L, R, Lb, Rb in m_l:
             if Rbx >= Lb and Rbx < Rb:
                 df = Rbx - Lb; fd = a [L : R - df]; fd_ = b [Rbx : Rb]
@@ -442,20 +445,28 @@ def solve (a, b, sta, stb):
     # build   plcp + pal + plcp_ (reverse) and take longest
     # with b cut text from end of pal to end of b
     print ("length of a",la)
-    if la < 100 or la == 95540:
+    if la < 100 or la == 9098 or la == 95540:
         tim = time (); Lax_ = Rax_ = 0
         p_ca_pal = p_ca_pal_p = p_ca_pal_pl = ""; l_p_ca_pal = 0
-        for Lax, Rax in pala_l:
-            pala = a [Lax : Rax]
+        #mx_ix = l_a.index (max (l_a))
+        for isaa, l_a_ct in enumerate (l_a):
+            if l_a_ct < 1: continue
+            isaa_ = isaa + 1
+            if saa [isaa_] < saa [isaa]: isaa, isaa_ = isaa_, isaa
+            if saa [isaa] > la or isaa_ < na and saa [isaa_] < la: continue
+            Lax = saa [isaa]; Rax = Lax + l_a_ct
+            pala = s_a [Lax : Rax]
             lpaa = Rax - Lax   # len (pala)
 #            if la > 9500 and lpaa < 10 or la > 2500 and lpaa < 5  or la > 100 and lpaa < 3 or pala != pala [::-1]: continue
-            if la == 95540 and lpaa < 10: continue
+            if la == 95540 and lpaa < 10 or la > 100 and lpaa < 10 or pala != pala [::-1]: continue            
             # pala now are only palindromes for further processing
             cuta_ = a [ : Lax] [::-1]; s_ca = cuta_ + '$' + b + '|'
     #        print (cuta_, end = " ")
             nca = len (s_ca)
             saca = suffixArray (s_ca, nca)
+    #        print (saca)
             l_ca = kasai_lcp (s_ca, saca, nca)
+    #        print (l_ca)
             # finde den prefix dessen Eintrag in saca 0 ist (Beginn cuta_)
             aix = saca.index (0)
             # wenn l_ca [aix - 1] > l_ca [aix], dann nimm aix - 1, weil nächster anderer prefix ist
@@ -485,22 +496,31 @@ def solve (a, b, sta, stb):
         if len (p_ca_pal) > len (res_pal): res_pal = p_ca_pal
         elif len (p_ca_pal) == len (res_pal) and p_ca_pal < res_pal:
             res_pal = p_ca_pal
-        if jsl: print ("puzzle palindrome a ", "{:7.5f}".format (time () - tim), p_ca_pal_pl, p_ca_pal [ : 5], "..", Lax_, a [Lax_ : Lax_ + 5] + "..." + a [Rax_ - 5 : Rax_], Rax_, "length of a", la)
+        if jsl: print ("puzzle palindrome a ", "{:7.5f}".format (time () - tim), p_ca_pal_pl, p_ca_pal [ : 5], "..", Lax_, s_a [Lax_ : Lax_ + 5] + "..." + s_a [Rax_ - 5 : Rax_], Rax_, "length of a", la)
         else: print ("puzzle palindrome a ", "{:7.5f}".format (time () - tim), p_ca_pal_p)
         
 #    print ()
-    if la < 100:
+    if la < 100 or la == 6938:
         tim = time (); Lbx_ = Rbx_ = 0
         p_cb_pal = p_cb_pal_p = p_cb_pal_pl = ""; l_p_cb_pal = 0
-        for Lbx, Rbx in palb_l:
-            palb = b [Lbx : Rbx]
-            #lpab = Rbx - Lbx   # len (palb)
+        #mx_ix = l_b.index (max (l_b))
+        for isab, l_b_ct in enumerate (l_b):
+            if l_b_ct < 1: continue
+            isab_ = isab + 1
+            if sab [isab_] < sab [isab]: isab, isab_ = isab_, isab
+            if sab [isab] > lb or isab_ < na and sab [isab_] < lb: continue
+            Lbx = sab [isab]; Rbx = Lbx + l_b_ct
+            palb = s_b [Lbx : Rbx]
+            lpab = Rbx - Lbx   # len (palb)
 #            if lb > 2500 and lpab < 10 or lb > 100 and lpab < 3 or palb != palb [::-1]: continue
+            if la == 6938 and lpab < 6 or palb != palb [::-1]: continue
             # palb now are only palindromes for further processing
             cutb = b [Rbx : ]; s_cb = cutb + '$' + a_ + '|'
             ncb = len (s_cb)
             sacb = suffixArray (s_cb, ncb)
+    #        print (sacb)
             l_cb = kasai_lcp (s_cb, sacb, ncb)
+    #        print (l_cb)
             # finde den prefix dessen Eintrag in sacb 0 ist (Beginn cutb)
             bix = sacb.index (0)
             # wenn l_cb [bix - 1] > l_cb [bix], dann nimm bix - 1, weil nächster anderer prefix ist
@@ -532,7 +552,6 @@ def solve (a, b, sta, stb):
             res_pal = p_cb_pal
         if jsl: print ("puzzle palindrome b ", "{:7.5f}".format (time () - tim), p_cb_pal_pl, p_cb_pal [ : 5], "..", Lbx_, b [Lbx_ : Lbx_ + 5] + "..." + b [Rbx_ - 5 : Rbx_], Rbx_, "length of b", lb)
         else: print ("puzzle palindrome b ", "{:7.5f}".format (time () - tim), p_cb_pal_p)
-
     return res_pal
     
 
