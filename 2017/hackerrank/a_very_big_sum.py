@@ -1,19 +1,19 @@
 #!/usr/bin/python3
 
-import os
-import sys
-
 #
 # Complete the aVeryBigSum function below.
 #
 def aVeryBigSum(n, ar):
     return sum(ar)
 
-if __name__ == '__main__':
+def main ():
     n = int(input())
     ar = list(map(int, input().rstrip().split()))
     result = aVeryBigSum(n, ar)
-    print(result)
+    print (result)
+
+if __name__ == '__main__':
+    main ()
 
 # test input:
 # 5
