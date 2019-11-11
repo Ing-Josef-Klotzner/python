@@ -87,7 +87,9 @@ def ashtonString (s, k):
         lcp_ = 0
         for il in range (1, len (lcp_str) + 1):
             if lcp_str [ : il] in dstnctSet: lcp_ += 1
-            else: break
+            else: 
+                dstnctSet.add (lcp_str [ : il])
+                break
 #        print ("lcp_", lcp_, "lcp_str", lcp_str, end = " ")
         cnt_dstnct = gauss_sum (dstnct_substr_len) - gauss_sum (lcp_)
 #        print (count, dstnct_substr_len, cnt_dstnct)
@@ -99,9 +101,6 @@ def ashtonString (s, k):
 #            print ("d_sub_len", d_sub_len, "diff", diff, "index", k - 1 - diff)
             return s [s_a [i] + k - 1 - count - diff] 
         #if substr of lcp_str not in dstnctSet: dstnctSet.add (lcp_str ["substring"])
-        for il in range (1, len (lcp_str) + 1):
-            if lcp_str [ : il] not in dstnctSet:
-                dstnctSet.add (lcp_str [ : il])
         count += cnt_dstnct
 #        print (count, end = " ")
 #    print (n, i, s_a [i], k, count, end = " ")
