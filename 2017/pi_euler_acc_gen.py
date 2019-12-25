@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function
 """
@@ -12,7 +12,7 @@ def sqr(x):
 
 def firstn(g, n):
     for i in range(n):
-        yield g.next()
+        yield next(g)#.next()
 
 def pi_series():
     sum = 0
@@ -23,12 +23,12 @@ def pi_series():
         i = i + 2; j = j * -1
 
 def euler_accelerator(g):
-    s0 = g.next() # Sn-1
-    s1 = g.next() # Sn
-    s2 = g.next() # Sn+1
+    s0 = next(g)# .next() # Sn-1
+    s1 = next(g)#.next() # Sn
+    s2 = next(g)#.next() # Sn+1
     while 1:
         yield s2 - (sqr(s2 - s1))/(s0 - 2*s1 + s2)
-        s0, s1, s2 = s1, s2, g.next()
+        s0, s1, s2 = s1, s2, next(g)#.next()
 
 if __name__ == '__main__':
-    print(list(firstn(euler_accelerator(pi_series()), 8)))
+    print(list(firstn(euler_accelerator(pi_series()), 16)))

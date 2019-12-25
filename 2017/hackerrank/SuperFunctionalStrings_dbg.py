@@ -14,24 +14,23 @@ from os import environ
 #from itertools import permutations, combinations, product
 #from bisect import bisect_right, bisect_left
 #from math import factorial as fac
-#from collections import defaultdict   # , deque
-from time import time   #sleep
+#from collections import deque   #, defaultdict
+#from time import time   #sleep
 from functools import reduce
-from operator import add    #mul
+#from operator import add    #mul
 #from sys import exit  #, maxsize
 
-from sys import setrecursionlimit
-setrecursionlimit (10010)
+#from sys import setrecursionlimit
+#setrecursionlimit (10000)
 
 class TrieNode:
     # Trie node class
     def __init__ (self):
-        #self.children = defaultdict (list)
-        self.children = [None] *26
+        self.children = [None] * 26
         self.child_ixs_objs = []
         self.len_bra = 0
         self.dst_cnt = 0
-#        self.papaIsRoot = False
+        self.papaIsRoot = False
         # isEndOfWord is True if node represent the end of the word
         self.isEndOfWord = False
 
@@ -56,21 +55,18 @@ class Trie:
             pCrawl.isEndOfWord = True
             ix = self._charToIndex (char)
             # if current character is not present
-            child = None
-            if ix in pCrawl.children:
-                child = pCrawl.children [ix]
+            child = pCrawl.children [ix]
             if not child:
                 pCrawl.children [ix] = child = self.getNode ()
                 pCrawl.child_ixs_objs.append ((ix, child))
                 pCrawl.children [ix].isEndOfWord = True
-#                if pCrawl == self.root:
-#                    child.papaIsRoot = True
+                if pCrawl == self.root:
+                    child.papaIsRoot = True
             dst_cnt = dst.add (char)
-#            print (il, char, key_, il + 1, dst_cnt, end = "  ")
+            print (il, char, key_, il + 1, dst_cnt, end = "  ")
             #yield (len (key_) - il, dst_cnt)
             child.len_bra = il + 1
             child.dst_cnt = dst_cnt
-#            print (child.len_bra, child.dst_cnt)
             pCrawl = child
         # mark last node as leaf
         pCrawl.isEndOfWord = True
@@ -88,10 +84,10 @@ class Trie:
         pCrawl = self.root
         def dfs (pCrl):
             for ix, ob in pCrl.child_ixs_objs:
-#                if ob.papaIsRoot: 
-#                    print ()
-#                    print ("Ast:", end = " ")
-#                print (chr (ix + ord ('a')), end = " ")
+                if ob.papaIsRoot: 
+                    print ()
+                    print ("Ast:", end = " ")
+                print (chr (ix + ord ('a')), end = " ")
                 ln = len (ob.child_ixs_objs)
                 if ln > 1: print (ln, end = "")
                 if ob.isEndOfWord: print ('*', end = "  ")
@@ -99,14 +95,14 @@ class Trie:
 #                    print ('|', end = "")
                 dfs (ob)
         dfs (pCrawl)
-#        print ()
-#        print ("* indicates word¹ ending, number shows count of following")
-#        print ("branches creating new words together with word¹")
+        print ()
+        print ("* indicates word¹ ending, number shows count of following")
+        print ("branches creating new words together with word¹")
     def get_len_dist (self):
         pCrawl = self.root
         def dfs (pCrl):
             for _, ob in pCrl.child_ixs_objs:
-#                print (ob.len_bra, ob.dst_cnt, end = "  ")
+                print (ob.len_bra, ob.dst_cnt, end = "  ")
                 yield (ob.len_bra, ob.dst_cnt)
                 yield from dfs (ob) #, bra)
         yield from dfs (pCrawl)
@@ -116,8 +112,19 @@ class DistinctCounter:
         self.a_z_arr = [0] * 26
         # distinct count
         self.d_cnt = 0
+        self.d_cntL = []
     def get_ix (self, x):  # get index
         return ord (x) - ord ('a')
+    def init (self, s):
+        n = len (s)
+        for i in range (n):
+            self.add (s [i])
+            # init self.d_cntL
+            self.d_cntL.append (self.d_cnt)
+#        for i in range (n):
+#            self.d_cntL.append (self.d_cnt)
+#            self.sub (s [i])
+        return self.d_cntL
     # if count was 0 increment distint counter
     # add char to a-z array (relative index - shift by 65)
     def add (self, x):
@@ -139,23 +146,18 @@ def superFunctionalStrings_ (s):
     res = 0
     def suffixes (_testword):
         lt = len (_testword)
-        for i in range (lt): yield _testword [i : ]
+        for i in range (lt):
+            yield _testword [i : ]
+    # Trie object
     t = Trie ()
-    tim = time ()
-    # Construct trie with suffixes
+    # Construct trie with suffixes and distinct count lists of testword
     for key in suffixes (s):
-#        print ()
-#        print (key, end = "  ")
+        print ()
+        print (key, end = "  ")
         t.insert (key)
-    print ("insert tree", time () - tim)
-    tim = time ()
     for len_, distinct_len in t.get_len_dist ():
         res = (res + len_ ** distinct_len) % mod
-    # this is a bit slower:
-#    def f (y, x): return (y + x) % mod
-#    res = reduce (f, (b ** d for b, d in t.get_len_dist ()))
-    print ("get result and calc", time () - tim)
-#    t.printTrie ()
+    t.printTrie ()
     return res
 
 # simple, correct, but slow - lower memory using generator - little faster
@@ -172,8 +174,8 @@ def superFunctionalStrings__ (s):
                 subh = hash (sub)
                 dst.add (s [i - 1])
                 if subh not in d_subs:
+                    print (s [j : i], dst.d_cnt)  #, end = " ")
                     yield (len (sub), dst.d_cnt)
-                    #print (s [j : i], dst.d_cnt)  #, end = " ")
                     d_subs.add (subh)
     for b, d in subs ():
         res = res + (b ** d) % mod
@@ -182,7 +184,7 @@ def superFunctionalStrings__ (s):
     #return sum (len (b) ** len (set (b)) for b in substrs) % mod
     return res
 
-# simple, correct, but slow - uses MUCH memory!
+# simple, correct, but slow
 def superFunctionalStrings (s):
     length = len (s) + 1
     mod = 10 ** 9 + 7
@@ -190,18 +192,16 @@ def superFunctionalStrings (s):
     def f (y, x):
         return (y + x) % mod
     return reduce (f, (len (b) ** len ( set (b)) for b in substrs))
-#    return sum (len (b) ** len (set (b)) for b in substrs) % mod
+    #return sum (len (b) ** len (set (b)) for b in substrs) % mod
 
 def main ():
     fptr = open (environ ['OUTPUT_PATH'], 'w')
     t = int (input ())
     for _ in range (t):
-#        tim = time ()
         s = input ().rstrip ()
-#        print ("string einlesen", time () - tim)
         result = superFunctionalStrings__ (s)
-#        print ("neu", result)
-#        print ("richtig", superFunctionalStrings (s))
+        print ("neu", result)
+        print ("richtig", superFunctionalStrings (s))
         fptr.write (str (result) + '\n')
     fptr.close ()
 

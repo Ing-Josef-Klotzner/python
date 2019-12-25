@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 def make_pi():
     q, r, t, k, m, x = 1, 0, 1, 1, 3, 3
     while True:
@@ -14,7 +14,7 @@ for x in make_pi():
     my_array.append(str(x))
     i+=1
     if i == 1001:
-	break
+	    break
 big_string = "".join(my_array)
 
-print "here is a big string:\npi= %s.%s" % (big_string[0],big_string[1:]) 
+print ("here is a big string:\npi= %s.%s" % (big_string[0],big_string[1:]))

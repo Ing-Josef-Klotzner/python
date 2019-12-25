@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 from time import sleep
 def make_pi():
     q, r, t, k, m, x = 1, 0, 1, 1, 3, 3
@@ -19,4 +19,4 @@ for x in make_pi():
     if i == 1001:
         break
 
-print "pi= %s.%s" % (pi_str[0],pi_str[1:])
+print ("pi= %s.%s" % (pi_str[0],pi_str[1:]))

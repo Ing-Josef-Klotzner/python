@@ -1,0 +1,2 @@
+djflefjlanhfkic9e0eeß0eoejo9g98euzehvkvcödü = "gittis einfachdrauflos"
+print (djflefjlanhfkic9e0eeß0eoejo9g98euzehvkvcödü)

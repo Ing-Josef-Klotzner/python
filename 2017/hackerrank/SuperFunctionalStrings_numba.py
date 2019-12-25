@@ -10,24 +10,25 @@ elif version_info.major == 2:
 else:
     print ("Unknown python version - input function not safe")
 
+from numba import jit, jitclass, int32
 from os import environ
 #from itertools import permutations, combinations, product
 #from bisect import bisect_right, bisect_left
 #from math import factorial as fac
 #from collections import defaultdict   # , deque
-from time import time   #sleep
+#from time import time   #sleep
 from functools import reduce
-from operator import add    #mul
+#from operator import add    #mul
 #from sys import exit  #, maxsize
 
-from sys import setrecursionlimit
-setrecursionlimit (10010)
+#from sys import setrecursionlimit
+#setrecursionlimit (10000)
 
 class TrieNode:
     # Trie node class
     def __init__ (self):
         #self.children = defaultdict (list)
-        self.children = [None] *26
+        self.children = dict ()   #[None] *26
         self.child_ixs_objs = []
         self.len_bra = 0
         self.dst_cnt = 0
@@ -111,9 +112,16 @@ class Trie:
                 yield from dfs (ob) #, bra)
         yield from dfs (pCrawl)
 
+spec = [
+    ('d_cnt', int32),               # a simple scalar field
+    ('a_z_arr', int32[:]),          # an array field
+]
+
+@jitclass (spec)
 class DistinctCounter:
     def __init__ (self):
         self.a_z_arr = [0] * 26
+        #self.a_z_arr = np.zeros(value, dtype=np.int32)
         # distinct count
         self.d_cnt = 0
     def get_ix (self, x):  # get index
@@ -133,36 +141,42 @@ class DistinctCounter:
         if not self.a_z_arr [ix]: self.d_cnt -= 1
 
 
-
+@jit (nopython = True)
 def superFunctionalStrings_ (s):
     mod = 1000000007
     res = 0
     def suffixes (_testword):
         lt = len (_testword)
-        for i in range (lt): yield _testword [i : ]
+        for i in range (lt):
+            yield _testword [i : ]
+    # Trie object
     t = Trie ()
-    tim = time ()
-    # Construct trie with suffixes
+    # Construct trie with suffixes and distinct count lists of testword
     for key in suffixes (s):
 #        print ()
 #        print (key, end = "  ")
         t.insert (key)
-    print ("insert tree", time () - tim)
-    tim = time ()
     for len_, distinct_len in t.get_len_dist ():
         res = (res + len_ ** distinct_len) % mod
-    # this is a bit slower:
-#    def f (y, x): return (y + x) % mod
-#    res = reduce (f, (b ** d for b, d in t.get_len_dist ()))
-    print ("get result and calc", time () - tim)
 #    t.printTrie ()
     return res
 
 # simple, correct, but slow - lower memory using generator - little faster
+@jit (nopython = True)
 def superFunctionalStrings__ (s):
     length = len (s)
     mod = 10 ** 9 + 7
     res = 0
+    # precalculate break even point where distinct does not change any more
+    dst = DistinctCounter ()
+    mx = 0
+    for j in range (length):
+        dst.add (s [j])
+        mx_new = max (mx, dst.d_cnt)
+        if mx_new > mx:
+            mx = mx_new
+            mx_i = j
+            #print ("initial new max", mx, "at", j, end = "   ")
     def subs ():
         d_subs = set ()
         for j in range (length):
@@ -177,12 +191,13 @@ def superFunctionalStrings__ (s):
                     d_subs.add (subh)
     for b, d in subs ():
         res = res + (b ** d) % mod
+    
 #    def f (y, x): return (y + x) % mod
 #    return reduce (f, (b ** d for b, d in subs ()))
     #return sum (len (b) ** len (set (b)) for b in substrs) % mod
     return res
 
-# simple, correct, but slow - uses MUCH memory!
+# simple, correct, but slowvon
 def superFunctionalStrings (s):
     length = len (s) + 1
     mod = 10 ** 9 + 7
@@ -190,15 +205,13 @@ def superFunctionalStrings (s):
     def f (y, x):
         return (y + x) % mod
     return reduce (f, (len (b) ** len ( set (b)) for b in substrs))
-#    return sum (len (b) ** len (set (b)) for b in substrs) % mod
+    #return sum (len (b) ** len (set (b)) for b in substrs) % mod
 
 def main ():
     fptr = open (environ ['OUTPUT_PATH'], 'w')
     t = int (input ())
     for _ in range (t):
-#        tim = time ()
         s = input ().rstrip ()
-#        print ("string einlesen", time () - tim)
         result = superFunctionalStrings__ (s)
 #        print ("neu", result)
 #        print ("richtig", superFunctionalStrings (s))

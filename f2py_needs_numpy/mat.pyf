@@ -1,0 +1,12 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module mat ! in 
+    interface  ! in :mat
+        subroutine addier ! in :mat:fortran_test.f90
+        end subroutine addier
+    end interface 
+end python module mat
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
